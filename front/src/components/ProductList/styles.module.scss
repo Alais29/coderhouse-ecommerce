@@ -1,0 +1,17 @@
+.product-list {
+  gap: 1.5rem;
+  :global(.card) {
+    flex-basis: 300px;
+  }
+  :global(.card-body) {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  :global(.card-img-top) {
+    width: 100%;
+    height: 300px;
+    max-height: 100%;
+    object-fit: cover;
+  }
+}

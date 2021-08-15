@@ -1,0 +1,44 @@
+.chat-channel {
+  margin-bottom: 1rem;
+  &__messages {
+    border: solid 1px #d0d0d0;
+    height: 300px;
+    overflow-y: auto;
+    padding: 1rem;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    @media(min-width: 992px) {
+      height: 600px;
+    }
+  }
+  &__message {
+    margin-bottom: 0.5rem;
+    background-color: rgba(7, 120, 168, 0.57);
+    border-radius: 8px;
+    padding: 0.5rem;
+    color: #fff;
+    p {
+      margin: 0;
+      padding: 0;
+    }
+    &-email {
+      color: #014663;
+      font-weight: bold;
+    }
+    &-text {
+      font-style: italic;
+    }
+    &-date {
+      font-size: 0.75rem;
+    }
+  }
+  &__form {
+    :global(.form-control) {
+      border-radius: 0;
+    }
+    :global(.btn-primary) {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+  }
+}
