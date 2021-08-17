@@ -1,29 +1,19 @@
-import { Card } from 'react-bootstrap';
-import { IItem } from '../../commons/interfaces';
+import { Dispatch, SetStateAction } from 'react';
+import { IItemAPI } from '../../commons/interfaces';
 import cx from 'classnames/bind'
 import styles from './styles.module.scss'
+import Product from '../Product/Product';
 
 interface IProductList {
-  productos: IItem[]
+  setProductos: Dispatch<SetStateAction<IItemAPI[]>>
+  productos: IItemAPI[]
 }
 
-const ProductList = ({ productos }: IProductList) => {
+const ProductList = ({ productos, setProductos }: IProductList) => {
   return (
     <div className={cx(styles['product-list'], 'my-4', 'd-flex', 'flex-wrap', 'justify-content-center')}>
-      {productos.map((producto: IItem) => (
-        <Card>
-          <Card.Img variant="top" src={`${producto.foto}`} />
-          <Card.Body>
-            <div>
-              <Card.Title>{producto.nombre}</Card.Title>
-              <Card.Subtitle className="mb-2 text-muted">${producto.precio}</Card.Subtitle>
-              <Card.Text>{producto.descripcion}</Card.Text>
-            </div>
-            <div className="text-end mt-2">
-              <Card.Text><small>{producto.codigo}</small></Card.Text>
-            </div>
-          </Card.Body>
-        </Card>
+      {productos.map((producto: IItemAPI) => (
+        <Product key={producto.id} product={producto} setProductos={setProductos}/>
       ))}
     </div>
   )

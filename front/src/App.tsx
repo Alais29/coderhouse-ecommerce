@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { IItem, IAlert } from './commons/interfaces';
+import { IItemAPI, IAlert } from './commons/interfaces';
 import { getProducts } from './services/Productos';
 import { Alert, Container } from 'react-bootstrap';
 import ProductForm from './components/ProductForm/ProductForm';
 import ProductList from './components/ProductList/ProductList';
 
 const App = () => {
-  const [productos, setProductos] = useState<IItem[] | []>([])
+  const [productos, setProductos] = useState<IItemAPI[] | []>([])
   const [alert, setAlert] = useState<IAlert>({ show: false, text: '' })
   
   useEffect(() => {
@@ -24,7 +24,7 @@ const App = () => {
     <Container>
       <ProductForm productos={productos} setProductos={setProductos} />
       {productos.length !== 0
-        ? <ProductList productos={productos} />
+        ? <ProductList productos={productos} setProductos={setProductos} />
         : alert.show && <Alert variant='danger'>{alert.text}</Alert>
       }
     </Container>

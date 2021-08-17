@@ -1,11 +1,11 @@
 import React, { Dispatch, SetStateAction, useState } from 'react'
 import { Alert, Button, Form } from 'react-bootstrap'
-import { IItem, IAlert } from '../../commons/interfaces';
+import { IItemAPI, IAlert } from '../../commons/interfaces';
 import { saveProduct } from '../../services/Productos';
 
 interface IProductForm {
-  setProductos: Dispatch<SetStateAction<IItem[]>>
-  productos: IItem[]
+  setProductos: Dispatch<SetStateAction<IItemAPI[]>>
+  productos: IItemAPI[]
 }
 
 const ProductForm = ({ productos, setProductos }: IProductForm) => {
