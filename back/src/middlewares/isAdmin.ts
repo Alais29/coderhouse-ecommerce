@@ -1,18 +1,16 @@
-import { NextFunction } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
-export interface AuthenticatedRequest extends Request {
-  admin: boolean;
+declare module 'express-serve-static-core' {
+  interface Request {
+    admin: boolean
+  }
 }
 
-const admin = true;
+const admin = false;
 
-export const isAdmin = (): ((req: AuthenticatedRequest, res: Response, next: NextFunction) => void) => {
-  return (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    if (admin) {
-      req.admin = admin;
-      next();
-    } else {
-      next();
-    }
-  };
+export const isAdmin = (req: Request, res: Response, next: NextFunction):void => {
+  if (admin) {
+    req.admin = admin;
+  } 
+  next();
 };

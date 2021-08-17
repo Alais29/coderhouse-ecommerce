@@ -3,7 +3,7 @@ import moment from 'moment';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { IItem } from '../common/interfaces';
-import { isValidProduct } from '../utils/productValidation';
+import { isValidProduct } from '../utils/validations';
 
 const ProductosPath = path.resolve(__dirname, '../../productos.json');
 export class Productos {

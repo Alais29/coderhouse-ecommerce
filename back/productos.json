@@ -98,15 +98,5 @@
 		"foto": "http://dummyimage.com/128x215.png/dddddd/000000",
 		"timestamp": "10/03/2020 11:49:32",
 		"stock": 38
-	},
-	{
-		"nombre": "Prueba",
-		"descripcion": "Lorem ipsum dolor sit amet, nam fierent perfecto ea, pro in albucius oportere accommodare. Ius everti consectetuer et, meis mutat.",
-		"codigo": "ECOM-1234-1234",
-		"precio": 120.68,
-		"foto": "http://dummyimage.com/109x108.png/ff4444/ffffff",
-		"stock": 55,
-		"id": "903d039b-8f4a-4c20-b2e7-ca17dcaf85e2",
-		"timestamp": "15/08/2021 18:08:38"
 	}
 ]

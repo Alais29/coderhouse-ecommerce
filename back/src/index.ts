@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import path from 'path';
 import routes from './routes';
+import { unknownEndpoint } from './middlewares/unknownEndpoint';
 
 const app: express.Application = express();
 const PORT = 8080;
@@ -17,3 +18,5 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 app.use('/api', routes);
+
+app.use(unknownEndpoint);

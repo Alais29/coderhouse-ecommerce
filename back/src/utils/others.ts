@@ -1,3 +1,5 @@
+import { Request } from 'express';
+
 export const isEmpty = (item: string | number | unknown): boolean => {
   switch (typeof item) {
     case 'string':
@@ -14,4 +16,12 @@ export const isEmpty = (item: string | number | unknown): boolean => {
       return false;
   }
   return true;
+};
+
+export const throwUnauthorizedError = (req: Request): Error => {
+  throw {
+    error: '-1',
+    descripcion: `Ruta ${req.originalUrl} método ${req.method} no autorizada`,
+    message: 'No tienes permisos para realizar esa acción'
+  };
 };
