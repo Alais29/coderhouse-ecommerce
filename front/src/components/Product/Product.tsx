@@ -1,19 +1,25 @@
 import { Dispatch, SetStateAction } from "react"
 import { Button, Card } from "react-bootstrap"
-import { IItemAPI } from "../../commons/interfaces"
+import { IItemAPI, IToastInfo } from "../../commons/interfaces"
 import { deleteProduct } from "../../services/Productos"
 
 interface IProps {
   product: IItemAPI
   setProductos: Dispatch<SetStateAction<IItemAPI[]>>
+  handleToggleShowToast: () => void
+  setToastInfo: Dispatch<SetStateAction<IToastInfo>>
+  handleToggleShowModal: () => void
 }
 
-const Product = ({ product, setProductos }: IProps) => {
+const Product = ({ product, setProductos, handleToggleShowToast, setToastInfo, handleToggleShowModal }: IProps) => {
 
   const handleDelete = () => {
+    // handleToggleShowModal()
     deleteProduct(product.id)
       .then((res) => {
         setProductos(res)
+        handleToggleShowToast()
+        setToastInfo({text: 'Producto eliminado con éxito', type: 'success'})
       })
   }
 

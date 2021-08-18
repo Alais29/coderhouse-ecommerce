@@ -1,15 +1,12 @@
-import React, { Dispatch, SetStateAction, useState } from 'react'
-import { Alert, Button, Form } from 'react-bootstrap'
-import { IItemAPI, IAlert } from '../../commons/interfaces';
+import React, { useState } from 'react'
+import { Button, Form } from 'react-bootstrap'
+import { IToastInfo } from '../../commons/interfaces';
 import { saveProduct } from '../../services/Productos';
+import Notification from '../Notification/Notification';
 
-interface IProductForm {
-  setProductos: Dispatch<SetStateAction<IItemAPI[]>>
-  productos: IItemAPI[]
-}
-
-const ProductForm = ({ productos, setProductos }: IProductForm) => {
-  const [alert, setAlert] = useState<IAlert>({show: false, text: ''})
+const ProductForm = () => {
+  const [showToast, setShowToast] = useState(false)
+  const [toastInfo, setToastInfo] = useState<IToastInfo>({ text: '', type: '' })
   const [formValues, setFormValues] = useState({
     codigo: '',
     nombre: '',
@@ -27,15 +24,13 @@ const ProductForm = ({ productos, setProductos }: IProductForm) => {
     })
   }
 
+  const handleToggleShow = () => setShowToast(!showToast)
+
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault()
   
     saveProduct(formValues)
-      .then((newProduct) => {
-        setProductos([
-          ...productos,
-          newProduct
-        ])
+      .then(() => {
         setFormValues({
           codigo: '',
           nombre: '',
@@ -44,16 +39,19 @@ const ProductForm = ({ productos, setProductos }: IProductForm) => {
           stock: '',
           foto: ''
         })
-        setAlert({ show: false, text: '' })
+        setToastInfo({ text: 'El producto fue agregado con éxito', type: 'success' })
+        handleToggleShow()
       })
       .catch((e) => {
-        setAlert({ show: true, text: e.message })
+        setToastInfo({ text: e.message, type: 'danger' })
+        handleToggleShow()
       })
   }
 
   return (
     <>
-      <h1 className="text-center">Agrega un producto</h1>
+      <Notification show={showToast} toggleShow={handleToggleShow} toastInfo={toastInfo} />
+      <h1 className="text-center mt-5 pt-3">Agrega un producto</h1>
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="codigo">
           <Form.Label>Código</Form.Label>
@@ -79,7 +77,6 @@ const ProductForm = ({ productos, setProductos }: IProductForm) => {
           <Form.Label>URL de imagen</Form.Label>
           <Form.Control type="url" value={foto} name="foto" onChange={handleChange} />
         </Form.Group>
-        {alert.show && <Alert variant="danger">{alert.text}</Alert>}
         <Button type="submit" className="mb-2">
           Guardar
         </Button>

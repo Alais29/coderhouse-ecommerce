@@ -15,4 +15,10 @@ export interface IItemAPI extends IItem {
 export interface IAlert {
   show: boolean;
   text: string;
+  type?: 'success' | 'danger' | 'warning' | ''
+}
+
+export interface IToastInfo {
+  type: '' | 'success' | 'warning' | 'danger'
+  text: string
 }
