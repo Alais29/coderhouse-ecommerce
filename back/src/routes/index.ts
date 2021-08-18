@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import { IItem } from '../common/interfaces';
 import { isAdmin } from '../middlewares/isAdmin';
-import { Productos } from '../services/producto';
+import { productosService } from '../services/producto';
 import { throwUnauthorizedError } from '../utils/others';
 
 const routes = express.Router();
@@ -12,7 +12,7 @@ const {
   saveProducto,
   updateProducto,
   deleteProducto,
-} = new Productos();
+} = productosService;
 
 routes.get(
   '/productos/listar',

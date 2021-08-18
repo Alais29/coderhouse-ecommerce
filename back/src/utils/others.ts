@@ -1,5 +1,10 @@
 import { Request } from 'express';
 
+/**
+ * 
+ * @param item string, number, array, or object
+ * @returns Determines if the item passed as argument is empty or not
+ */
 export const isEmpty = (item: string | number | unknown): boolean => {
   switch (typeof item) {
     case 'string':
@@ -18,6 +23,11 @@ export const isEmpty = (item: string | number | unknown): boolean => {
   return true;
 };
 
+/**
+ * 
+ * @param req request object
+ * @throws throws the specified error
+ */
 export const throwUnauthorizedError = (req: Request): Error => {
   throw {
     error: '-1',

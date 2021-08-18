@@ -2,6 +2,11 @@ import { isUrl, isValidCode } from './strings';
 import { IItem } from '../common/interfaces';
 import { getEmptyFields } from './objects';
 
+/**
+ * 
+ * @param producto a product item
+ * @returns checks if the product has empty fields, and if all the fields are valid, if they're not, it will return a proper error
+ */
 export const isValidProduct = (producto: IItem): boolean | Error => {
   const emptyFields = getEmptyFields(producto);
 

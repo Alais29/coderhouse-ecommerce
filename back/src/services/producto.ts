@@ -6,7 +6,7 @@ import { IItem } from '../common/interfaces';
 import { isValidProduct } from '../utils/validations';
 
 const ProductosPath = path.resolve(__dirname, '../../productos.json');
-export class Productos {
+class Productos {
   async getProductos(): Promise<IItem[]> {
     try {
       const products = await fsPromises.readFile(ProductosPath, 'utf-8');
@@ -132,3 +132,5 @@ export class Productos {
     }
   }
 }
+
+export const productosService = new Productos;
