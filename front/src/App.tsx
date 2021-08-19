@@ -2,7 +2,7 @@ import { Container } from 'react-bootstrap';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Navigation from './components/Navigation/Navigation';
 import ProductForm from './components/ProductForm/ProductForm';
-import ProductList from './components/ProductList/ProductList';
+import Productos from './pages/Productos';
 
 const App = () => {
   return (
@@ -14,7 +14,7 @@ const App = () => {
             <ProductForm />
           </Route>
           <Route path="/">
-            <ProductList />
+            <Productos />
           </Route>
         </Switch>
       </Container>

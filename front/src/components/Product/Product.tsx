@@ -1,28 +1,15 @@
 import { Dispatch, SetStateAction } from "react"
 import { Button, Card } from "react-bootstrap"
 import { IItemAPI, IToastInfo } from "../../commons/interfaces"
-import { deleteProduct } from "../../services/Productos"
 
 interface IProps {
   product: IItemAPI
   setProductos: Dispatch<SetStateAction<IItemAPI[]>>
-  handleToggleShowToast: () => void
   setToastInfo: Dispatch<SetStateAction<IToastInfo>>
-  handleToggleShowModal: () => void
+  handleToggleShowModal: (producto: IItemAPI | null) => void
 }
 
-const Product = ({ product, setProductos, handleToggleShowToast, setToastInfo, handleToggleShowModal }: IProps) => {
-
-  const handleDelete = () => {
-    // handleToggleShowModal()
-    deleteProduct(product.id)
-      .then((res) => {
-        setProductos(res)
-        handleToggleShowToast()
-        setToastInfo({text: 'Producto eliminado con éxito', type: 'success'})
-      })
-  }
-
+const Product = ({ product, handleToggleShowModal }: IProps) => {
   return (
     <Card>
       <Card.Img variant="top" src={`${product.foto}`} />
@@ -36,7 +23,7 @@ const Product = ({ product, setProductos, handleToggleShowToast, setToastInfo, h
           <Card.Text><small>{product.codigo}</small></Card.Text>
         </div>
         <div className="d-flex justify-content-between mt-2">
-          <Button variant="danger" onClick={handleDelete}>Borrar</Button>
+          <Button variant="danger" onClick={() => handleToggleShowModal(product)}>Eliminar</Button>
           <Button variant="primary">Editar</Button>
         </div>
       </Card.Body>
