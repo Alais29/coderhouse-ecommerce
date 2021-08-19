@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { Button, Form } from 'react-bootstrap'
-import { IToastInfo } from '../../commons/interfaces';
-import { saveProduct } from '../../services/Productos';
-import Notification from '../Notification/Notification';
+import { IToastInfo } from 'commons/interfaces';
+import { saveProduct } from 'services/Productos';
+import Notification from 'components/Notification/Notification';
 
 const ProductForm = () => {
   const [showToast, setShowToast] = useState(false)
@@ -24,7 +24,7 @@ const ProductForm = () => {
     })
   }
 
-  const handleToggleShow = () => setShowToast(!showToast)
+  const handleToggleShowToast = () => setShowToast(!showToast)
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -40,17 +40,17 @@ const ProductForm = () => {
           foto: ''
         })
         setToastInfo({ text: 'El producto fue agregado con éxito', type: 'success' })
-        handleToggleShow()
+        handleToggleShowToast()
       })
       .catch((e) => {
         setToastInfo({ text: e.message, type: 'danger' })
-        handleToggleShow()
+        handleToggleShowToast()
       })
   }
 
   return (
     <>
-      <Notification show={showToast} toggleShow={handleToggleShow} toastInfo={toastInfo} />
+      <Notification show={showToast} handleToggleShowToast={handleToggleShowToast} toastInfo={toastInfo} />
       <h1 className="text-center mt-5 pt-3">Agrega un producto</h1>
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="codigo">

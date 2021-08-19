@@ -12,11 +12,6 @@ export interface IItemAPI extends IItem {
   timestamp: string
 }
 
-export interface IAlert {
-  show: boolean;
-  text: string;
-  type?: 'success' | 'danger' | 'warning' | ''
-}
 
 export interface IToastInfo {
   type: '' | 'success' | 'warning' | 'danger'

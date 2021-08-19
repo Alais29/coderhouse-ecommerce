@@ -1,11 +1,8 @@
-import { Dispatch, SetStateAction } from "react"
 import { Button, Card } from "react-bootstrap"
-import { IItemAPI, IToastInfo } from "../../commons/interfaces"
+import { IItemAPI } from "commons/interfaces"
 
 interface IProps {
   product: IItemAPI
-  setProductos: Dispatch<SetStateAction<IItemAPI[]>>
-  setToastInfo: Dispatch<SetStateAction<IToastInfo>>
   handleToggleShowModal: (producto: IItemAPI | null) => void
 }
 

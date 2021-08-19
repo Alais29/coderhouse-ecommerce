@@ -1,26 +1,13 @@
 import { Modal, Button } from 'react-bootstrap'
-import { IItemAPI, IToastInfo } from '../../../commons/interfaces'
-import { deleteProduct } from '../../../services/Productos'
+import { IItemAPI } from 'commons/interfaces'
 
-interface IModal {
+interface IConfirmationModal {
   productToDelete: IItemAPI | null
-  setProductos: React.Dispatch<React.SetStateAction<[] | IItemAPI[]>>
-  handleClose: () => void
-  handleToggleShowToast: (info?: IToastInfo) => void
+  handleToggleShowModal: () => void
+  handleConfirmDelete: () => void
 }
 
-const ConfirmationModal = ({ handleClose, productToDelete, setProductos, handleToggleShowToast }: IModal) => {
-
-  const handleConfirmDelete = () => {
-    if (productToDelete) {
-      deleteProduct(productToDelete.id)
-      .then((res) => {
-          handleClose()
-          handleToggleShowToast({ text: 'Producto eliminado con éxito', type: 'success' })
-          setProductos(res)
-        })
-    }
-  }
+const ConfirmationModal = ({ handleToggleShowModal, productToDelete, handleConfirmDelete }: IConfirmationModal) => {
   return (
     <>
       <Modal.Header>
@@ -28,7 +15,7 @@ const ConfirmationModal = ({ handleClose, productToDelete, setProductos, handleT
       </Modal.Header>
       <Modal.Body>¿Seguro que quieres eliminar {productToDelete?.nombre}?</Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={() => handleClose()}>
+        <Button variant="secondary" onClick={() => handleToggleShowModal()}>
           Cancelar
         </Button>
         <Button variant="danger" onClick={handleConfirmDelete}>
