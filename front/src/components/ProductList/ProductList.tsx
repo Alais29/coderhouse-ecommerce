@@ -6,7 +6,7 @@ import styles from './styles.module.scss'
 
 interface IProductList {
   productos: IItemAPI[] | []
-  handleToggleShowModal: (producto: IItemAPI | null) => void
+  handleToggleShowModal: (producto?: IItemAPI, action?: 'edit' | 'delete') => void
 }
 
 const ProductList = ({ handleToggleShowModal, productos }: IProductList) => {

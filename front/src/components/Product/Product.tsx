@@ -3,7 +3,7 @@ import { IItemAPI } from "commons/interfaces"
 
 interface IProps {
   product: IItemAPI
-  handleToggleShowModal: (producto: IItemAPI | null) => void
+  handleToggleShowModal: (producto?: IItemAPI, action?: 'edit' | 'delete') => void
 }
 
 const Product = ({ product, handleToggleShowModal }: IProps) => {
@@ -20,8 +20,8 @@ const Product = ({ product, handleToggleShowModal }: IProps) => {
           <Card.Text><small>{product.codigo}</small></Card.Text>
         </div>
         <div className="d-flex justify-content-between mt-2">
-          <Button variant="danger" onClick={() => handleToggleShowModal(product)}>Eliminar</Button>
-          <Button variant="primary">Editar</Button>
+          <Button variant="danger" onClick={() => handleToggleShowModal(product, 'delete')}>Eliminar</Button>
+          <Button variant="primary" onClick={() => handleToggleShowModal(product, 'edit')}>Editar</Button>
         </div>
       </Card.Body>
     </Card>

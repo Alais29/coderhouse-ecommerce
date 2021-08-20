@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { Button, Form } from 'react-bootstrap'
-import { IToastInfo } from 'commons/interfaces';
-import { saveProduct } from 'services/Productos';
-import Notification from 'components/Notification/Notification';
+import { IItem, IItemAPI } from 'commons/interfaces';
 
-const ProductForm = () => {
-  const [showToast, setShowToast] = useState(false)
-  const [toastInfo, setToastInfo] = useState<IToastInfo>({ text: '', type: '' })
+interface IProductForm {
+  handleSaveProduct: (formValues: IItem | IItemAPI, callback: () => void) => void
+}
+
+const ProductForm = ({ handleSaveProduct }: IProductForm) => {
   const [formValues, setFormValues] = useState({
     codigo: '',
     nombre: '',
@@ -24,35 +24,22 @@ const ProductForm = () => {
     })
   }
 
-  const handleToggleShowToast = () => setShowToast(!showToast)
-
-  const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
-    e.preventDefault()
-  
-    saveProduct(formValues)
-      .then(() => {
-        setFormValues({
-          codigo: '',
-          nombre: '',
-          descripcion: '',
-          precio: '',
-          stock: '',
-          foto: ''
-        })
-        setToastInfo({ text: 'El producto fue agregado con éxito', type: 'success' })
-        handleToggleShowToast()
+  const handleSubmit = () => {
+    handleSaveProduct(formValues, () => {
+      setFormValues({
+        codigo: '',
+        nombre: '',
+        descripcion: '',
+        precio: '',
+        stock: '',
+        foto: ''
       })
-      .catch((e) => {
-        setToastInfo({ text: e.message, type: 'danger' })
-        handleToggleShowToast()
-      })
+    })
   }
 
   return (
     <>
-      <Notification show={showToast} handleToggleShowToast={handleToggleShowToast} toastInfo={toastInfo} />
-      <h1 className="text-center mt-5 pt-3">Agrega un producto</h1>
-      <Form onSubmit={handleSubmit}>
+      <Form>
         <Form.Group className="mb-3" controlId="codigo">
           <Form.Label>Código</Form.Label>
           <Form.Control type="text" value={codigo} name="codigo" onChange={handleChange} />
@@ -77,7 +64,7 @@ const ProductForm = () => {
           <Form.Label>URL de imagen</Form.Label>
           <Form.Control type="url" value={foto} name="foto" onChange={handleChange} />
         </Form.Group>
-        <Button type="submit" className="mb-2">
+        <Button className="mb-2" onClick={handleSubmit}>
           Guardar
         </Button>
       </Form>
