@@ -76,15 +76,15 @@ class Productos {
         ...producto,
       };
 
-      const newProductList = productosJSON.filter(
-        (item: IItem) => item.id !== id
-      );
-      newProductList.push(productToUpdate);
+      const productToUpdateIndex = productosJSON.map(
+        (item: IItem) => item.id
+      ).indexOf(id);
+      productosJSON.splice(productToUpdateIndex, 1, productToUpdate);
 
       if (fs.existsSync(ProductosPath)) {
         await fsPromises.writeFile(
           ProductosPath,
-          JSON.stringify(newProductList, null, '\t')
+          JSON.stringify(productosJSON, null, '\t')
         );
         return productToUpdate;
       } else {
