@@ -1,5 +1,3 @@
-import { Request } from 'express';
-
 /**
  * 
  * @param item string, number, array, or object
@@ -21,17 +19,4 @@ export const isEmpty = (item: string | number | unknown): boolean => {
       return false;
   }
   return true;
-};
-
-/**
- * 
- * @param req request object
- * @throws throws the specified error
- */
-export const throwUnauthorizedError = (req: Request): Error => {
-  throw {
-    error: '-1',
-    descripcion: `Ruta ${req.originalUrl} método ${req.method} no autorizada`,
-    message: 'No tienes permisos para realizar esa acción'
-  };
 };

@@ -7,7 +7,7 @@ import { isValidProduct } from '../utils/validations';
 
 const ProductosPath = path.resolve(__dirname, '../../productos.json');
 class Productos {
-  async getProductos(): Promise<IItem[]> {
+  async getProductosService(): Promise<IItem[]> {
     try {
       const products = await fsPromises.readFile(ProductosPath, 'utf-8');
       return JSON.parse(products);
@@ -16,7 +16,7 @@ class Productos {
     }
   }
 
-  async getProducto(id: string): Promise<IItem> {
+  async getProductoService(id: string): Promise<IItem> {
     try {
       const productos = await fsPromises.readFile(ProductosPath, 'utf-8');
       const productosJSON = JSON.parse(productos);
@@ -27,7 +27,7 @@ class Productos {
     }
   }
 
-  async saveProducto(producto: IItem): Promise<IItem> {
+  async saveProductoService(producto: IItem): Promise<IItem> {
     try {
       const productos = await fsPromises.readFile(ProductosPath, 'utf-8');
       const productosJSON = JSON.parse(productos);
@@ -59,7 +59,7 @@ class Productos {
     }
   }
 
-  async updateProducto(id: string, producto: IItem): Promise<IItem> {
+  async updateProductoService(id: string, producto: IItem): Promise<IItem> {
     try {
       const productos = await fsPromises.readFile(ProductosPath, 'utf-8');
       const productosJSON = JSON.parse(productos);
@@ -102,7 +102,7 @@ class Productos {
     }
   }
 
-  async deleteProducto(id: string): Promise<IItem> {
+  async deleteProductoService(id: string): Promise<IItem> {
     try {
       const productos = await fsPromises.readFile(ProductosPath, 'utf-8');
       const productosJSON = JSON.parse(productos);
