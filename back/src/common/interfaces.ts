@@ -3,12 +3,12 @@ export interface IObject {
 }
 
 export interface IItem extends IObject {
-  id: string
-  nombre: string
-  descripcion: string
-  codigo: string
-  precio: number
-  foto: string
-  timestamp: string
-  stock: number
+  id: string;
+  nombre: string;
+  descripcion: string;
+  codigo: string;
+  precio: number;
+  foto: string;
+  timestamp: string;
+  stock: number;
 }

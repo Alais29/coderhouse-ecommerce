@@ -1,5 +1,5 @@
 /**
- * 
+ *
  * @param item string, number, array, or object
  * @returns Determines if the item passed as argument is empty or not
  */

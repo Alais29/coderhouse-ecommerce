@@ -5,10 +5,13 @@ const {
   getCarritoService,
   getCarritoProductService,
   saveCarritoProductService,
-  deleteCarritoProductService
+  deleteCarritoProductService,
 } = carritoService;
 
-export const getCarrito = async (req: Request, res: Response): Promise<void> => {
+export const getCarrito = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const productos = await getCarritoService();
     if (productos.length !== 0) res.json({ data: productos });
@@ -18,7 +21,10 @@ export const getCarrito = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
-export const getCarritoProduct = async (req: Request, res: Response): Promise<void> => {
+export const getCarritoProduct = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const producto = await getCarritoProductService(req.params.id);
     if (producto) res.json({ data: producto });
@@ -28,7 +34,10 @@ export const getCarritoProduct = async (req: Request, res: Response): Promise<vo
   }
 };
 
-export const saveCarritoProduct = async (req: Request, res: Response): Promise<void> => {
+export const saveCarritoProduct = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const newProducto = await saveCarritoProductService(req.params.id);
     res.json({ data: newProducto });
@@ -37,9 +46,14 @@ export const saveCarritoProduct = async (req: Request, res: Response): Promise<v
   }
 };
 
-export const deleteCarritoProduct = async (req: Request, res: Response): Promise<void> => {
+export const deleteCarritoProduct = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
-    const newCarritoProductList = await deleteCarritoProductService(req.params.id);
+    const newCarritoProductList = await deleteCarritoProductService(
+      req.params.id
+    );
     res.json({ data: newCarritoProductList });
   } catch (e) {
     res.status(404).json({ error: e.error, message: e.message });

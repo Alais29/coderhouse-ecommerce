@@ -1,6 +1,6 @@
 /**
- * 
- * @param string 
+ *
+ * @param string
  * @returns checks if the string is a valid URL
  */
 export const isUrl = (string: string): boolean => {
@@ -10,8 +10,8 @@ export const isUrl = (string: string): boolean => {
 };
 
 /**
- * 
- * @param string 
+ *
+ * @param string
  * @returns checks if the string is a valid email
  */
 export const isEmail = (string: string): boolean => {
@@ -20,8 +20,8 @@ export const isEmail = (string: string): boolean => {
 };
 
 /**
- * 
- * @param string 
+ *
+ * @param string
  * @returns checks if the string is a valid product code
  */
 export const isValidCode = (string: string): boolean => {

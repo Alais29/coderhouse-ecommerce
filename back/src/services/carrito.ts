@@ -1,7 +1,5 @@
-import fs, { promises as fsPromises } from 'fs';
-import moment from 'moment';
+import { promises as fsPromises } from 'fs';
 import path from 'path';
-import { v4 as uuidv4 } from 'uuid';
 import { IItem } from '../common/interfaces';
 import { productosService } from './producto';
 
@@ -33,8 +31,8 @@ class Carrito {
   async saveCarritoProductService(id: string): Promise<IItem> {
     try {
       const allProducts = await getProductosService();
-      const productToAdd = allProducts.find(item => item.id === id);
-  
+      const productToAdd = allProducts.find((item) => item.id === id);
+
       if (productToAdd) {
         const carrito = await fsPromises.readFile(carritosPath, 'utf-8');
         const carritoJSON = JSON.parse(carrito);
@@ -54,17 +52,20 @@ class Carrito {
         throw { error: e.error, message: e.message };
       }
     }
-    
   }
 
   async deleteCarritoProductService(id: string): Promise<IItem[]> {
     try {
       const carrito = await fsPromises.readFile(carritosPath, 'utf-8');
       const carritoJSON = JSON.parse(carrito);
-      const productToDelete = carritoJSON.productos.find((item: IItem) => item.id === id);
+      const productToDelete = carritoJSON.productos.find(
+        (item: IItem) => item.id === id
+      );
 
       if (productToDelete) {
-        const newCarritoProducts = carritoJSON.productos.filter((item: IItem) => item.id !== id);
+        const newCarritoProducts = carritoJSON.productos.filter(
+          (item: IItem) => item.id !== id
+        );
         carritoJSON.productos = newCarritoProducts;
         await fsPromises.writeFile(
           carritosPath,
@@ -84,6 +85,4 @@ class Carrito {
   }
 }
 
-
-
-export const carritoService = new Carrito;
+export const carritoService = new Carrito();

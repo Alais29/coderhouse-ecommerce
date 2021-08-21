@@ -1,6 +1,12 @@
 import express from 'express';
 import { isAdmin } from '../middlewares/isAdmin';
-import { deleteProducto, getProducto, getProductos, saveProducto, updateProducto } from '../persistencia/producto';
+import {
+  deleteProducto,
+  getProducto,
+  getProductos,
+  saveProducto,
+  updateProducto,
+} from '../persistencia/producto';
 
 const productoRoutes = express.Router();
 

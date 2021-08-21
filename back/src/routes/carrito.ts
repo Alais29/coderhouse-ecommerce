@@ -1,5 +1,10 @@
 import express from 'express';
-import { getCarrito, getCarritoProduct, saveCarritoProduct, deleteCarritoProduct } from '../persistencia/carrito';
+import {
+  getCarrito,
+  getCarritoProduct,
+  saveCarritoProduct,
+  deleteCarritoProduct,
+} from '../persistencia/carrito';
 
 const carritoRoutes = express.Router();
 

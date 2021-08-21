@@ -76,9 +76,9 @@ class Productos {
         ...producto,
       };
 
-      const productToUpdateIndex = productosJSON.map(
-        (item: IItem) => item.id
-      ).indexOf(id);
+      const productToUpdateIndex = productosJSON
+        .map((item: IItem) => item.id)
+        .indexOf(id);
       productosJSON.splice(productToUpdateIndex, 1, productToUpdate);
 
       if (fs.existsSync(productosPath)) {
@@ -92,12 +92,9 @@ class Productos {
       }
     } catch (e) {
       if (e.code) {
-        throw {
-          error: e,
-          message: 'No se pudo actualizar el producto',
-        };
+        throw { error: e, message: 'No se pudo actualizar el producto' };
       } else {
-        throw {error: e.error, message: e.message};
+        throw { error: e.error, message: e.message };
       }
     }
   }
@@ -122,10 +119,7 @@ class Productos {
       }
     } catch (e) {
       if (e.code) {
-        throw {
-          error: e,
-          message: 'No se pudo borrar el producto',
-        };
+        throw { error: e, message: 'No se pudo borrar el producto' };
       } else {
         throw Error(e.message);
       }
@@ -133,4 +127,4 @@ class Productos {
   }
 }
 
-export const productosService = new Productos;
+export const productosService = new Productos();
