@@ -1,11 +1,11 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
+import { getCarrito, getCarritoProduct, saveCarritoProduct, deleteCarritoProduct } from '../persistencia/carrito';
 
 const carritoRoutes = express.Router();
 
-carritoRoutes.get('/', (req: Request, res: Response) => {
-  res.json({
-    msg: 'Desde carrito'
-  });
-});
+carritoRoutes.get('/listar', getCarrito);
+carritoRoutes.get('/listar/:id', getCarritoProduct);
+carritoRoutes.post('/agregar/:id', saveCarritoProduct);
+carritoRoutes.delete('/borrar/:id', deleteCarritoProduct);
 
 export default carritoRoutes;

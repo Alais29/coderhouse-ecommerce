@@ -5,11 +5,11 @@ import { v4 as uuidv4 } from 'uuid';
 import { IItem } from '../common/interfaces';
 import { isValidProduct } from '../utils/validations';
 
-const ProductosPath = path.resolve(__dirname, '../../productos.json');
+const productosPath = path.resolve(__dirname, '../../productos.json');
 class Productos {
   async getProductosService(): Promise<IItem[]> {
     try {
-      const products = await fsPromises.readFile(ProductosPath, 'utf-8');
+      const products = await fsPromises.readFile(productosPath, 'utf-8');
       return JSON.parse(products);
     } catch (e) {
       throw { error: e, message: 'Hubo un problema al cargar los productos' };
@@ -18,7 +18,7 @@ class Productos {
 
   async getProductoService(id: string): Promise<IItem> {
     try {
-      const productos = await fsPromises.readFile(ProductosPath, 'utf-8');
+      const productos = await fsPromises.readFile(productosPath, 'utf-8');
       const productosJSON = JSON.parse(productos);
       const producto = productosJSON.find((item: IItem) => item.id === id);
       return producto;
@@ -29,7 +29,7 @@ class Productos {
 
   async saveProductoService(producto: IItem): Promise<IItem> {
     try {
-      const productos = await fsPromises.readFile(ProductosPath, 'utf-8');
+      const productos = await fsPromises.readFile(productosPath, 'utf-8');
       const productosJSON = JSON.parse(productos);
 
       producto.id = uuidv4();
@@ -40,10 +40,10 @@ class Productos {
       // check if all fields in product are valid and not empty
       isValidProduct(producto);
 
-      if (fs.existsSync(ProductosPath)) {
+      if (fs.existsSync(productosPath)) {
         productosJSON.push(producto);
         await fsPromises.writeFile(
-          ProductosPath,
+          productosPath,
           JSON.stringify(productosJSON, null, '\t')
         );
         return producto;
@@ -54,14 +54,14 @@ class Productos {
       if (e.code) {
         throw { error: e, message: 'No se pudo guardar el producto' };
       } else {
-        throw {error: e.error, message: e.message};
+        throw { error: e.error, message: e.message };
       }
     }
   }
 
   async updateProductoService(id: string, producto: IItem): Promise<IItem> {
     try {
-      const productos = await fsPromises.readFile(ProductosPath, 'utf-8');
+      const productos = await fsPromises.readFile(productosPath, 'utf-8');
       const productosJSON = JSON.parse(productos);
 
       producto.precio = Number(producto.precio);
@@ -81,9 +81,9 @@ class Productos {
       ).indexOf(id);
       productosJSON.splice(productToUpdateIndex, 1, productToUpdate);
 
-      if (fs.existsSync(ProductosPath)) {
+      if (fs.existsSync(productosPath)) {
         await fsPromises.writeFile(
-          ProductosPath,
+          productosPath,
           JSON.stringify(productosJSON, null, '\t')
         );
         return productToUpdate;
@@ -102,18 +102,18 @@ class Productos {
     }
   }
 
-  async deleteProductoService(id: string): Promise<IItem> {
+  async deleteProductoService(id: string): Promise<IItem[]> {
     try {
-      const productos = await fsPromises.readFile(ProductosPath, 'utf-8');
+      const productos = await fsPromises.readFile(productosPath, 'utf-8');
       const productosJSON = JSON.parse(productos);
 
       const newProductList = productosJSON.filter(
         (item: IItem) => item.id !== id
       );
 
-      if (fs.existsSync(ProductosPath)) {
+      if (fs.existsSync(productosPath)) {
         await fsPromises.writeFile(
-          ProductosPath,
+          productosPath,
           JSON.stringify(newProductList, null, '\t')
         );
         return newProductList;

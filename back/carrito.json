@@ -1,0 +1,26 @@
+{
+	"id": "c0b42f74-75c8-4770-9246-ee41d0464a19",
+	"timestamp": "20/08/2020 11:49:32",
+	"productos": [
+		{
+			"id": "87b34bc5-c3eb-4663-84a2-54de8200ed6d",
+			"nombre": "Soup - Campbells, Lentil",
+			"descripcion": "Nulla ac hendrerit ante. Maecenas sollicitudin velit ut malesuada rhoncus. Nullam iaculis vel diam ut euismod. Fusce egestas tellus a nulla venenatis, id vehicula ipsum egestas.",
+			"codigo": "ECOM-9619-1404",
+			"precio": 55.55,
+			"foto": "http://dummyimage.com/155x218.png/cc0000/ffffff",
+			"timestamp": "06/04/2020 16:10:33",
+			"stock": 2
+		},
+		{
+			"id": "17f05c9f-7d35-4a34-9826-ba7c085aad1e",
+			"nombre": "Lid Coffee Cup 8oz Blk",
+			"descripcion": "Nullam tincidunt pellentesque justo. Cras nulla augue, efficitur nec pellentesque laoreet, egestas eu metus. Nulla sed mi non nisi aliquam malesuada.",
+			"codigo": "ECOM-4585-6999",
+			"precio": 78.89,
+			"foto": "http://dummyimage.com/128x215.png/dddddd/000000",
+			"timestamp": "10/03/2020 11:49:32",
+			"stock": 38
+		}
+	]
+}
