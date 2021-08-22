@@ -8,7 +8,7 @@
 			"descripcion": "Nulla ac hendrerit ante. Maecenas sollicitudin velit ut malesuada rhoncus. Nullam iaculis vel diam ut euismod. Fusce egestas tellus a nulla venenatis, id vehicula ipsum egestas.",
 			"codigo": "ECOM-9619-1404",
 			"precio": 55.55,
-			"foto": "http://dummyimage.com/155x218.png/cc0000/ffffff",
+			"foto": "https://picsum.photos/300?random=9",
 			"timestamp": "06/04/2020 16:10:33",
 			"stock": 2
 		},
@@ -18,7 +18,7 @@
 			"descripcion": "Nullam tincidunt pellentesque justo. Cras nulla augue, efficitur nec pellentesque laoreet, egestas eu metus. Nulla sed mi non nisi aliquam malesuada.",
 			"codigo": "ECOM-4585-6999",
 			"precio": 78.89,
-			"foto": "http://dummyimage.com/128x215.png/dddddd/000000",
+			"foto": "https://picsum.photos/300?random=10",
 			"timestamp": "10/03/2020 11:49:32",
 			"stock": 38
 		}
