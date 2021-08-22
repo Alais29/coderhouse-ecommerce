@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import { EErrorCodes } from '../common/enums';
 
 const admin = false;
 
@@ -11,7 +12,7 @@ export const isAdmin = (
     next();
   } else {
     res.status(401).send({
-      error: '-1',
+      error: `-${EErrorCodes.UnauthorizedRoute}`,
       descripcion: `Ruta ${req.originalUrl} método ${req.method} no autorizada`,
       message: 'No tienes permisos para realizar esa acción',
     });

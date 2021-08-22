@@ -1,8 +1,9 @@
-import fs, { promises as fsPromises } from 'fs';
+import { promises as fsPromises } from 'fs';
 import moment from 'moment';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { IItem } from '../common/interfaces';
+import { EErrorCodes } from '../common/enums';
 import { isValidProduct } from '../utils/validations';
 
 const productosPath = path.resolve(__dirname, '../../productos.json');
@@ -40,21 +41,21 @@ class Productos {
       // check if all fields in product are valid and not empty
       isValidProduct(producto);
 
-      if (fs.existsSync(productosPath)) {
-        productosJSON.push(producto);
-        await fsPromises.writeFile(
-          productosPath,
-          JSON.stringify(productosJSON, null, '\t')
-        );
-        return producto;
-      } else {
-        throw new Error('No se pudo guardar el producto');
-      }
+      productosJSON.push(producto);
+      await fsPromises.writeFile(
+        productosPath,
+        JSON.stringify(productosJSON, null, '\t')
+      );
+      return producto;
     } catch (e) {
       if (e.code) {
         throw { error: e, message: 'No se pudo guardar el producto' };
       } else {
-        throw { error: e.error, message: e.message };
+        throw {
+          error: e.error,
+          descripcion: e.descripcion,
+          message: e.message,
+        };
       }
     }
   }
@@ -71,30 +72,38 @@ class Productos {
       isValidProduct(producto);
 
       let productToUpdate = productosJSON.find((item: IItem) => item.id === id);
-      productToUpdate = {
-        ...productToUpdate,
-        ...producto,
-      };
 
-      const productToUpdateIndex = productosJSON
-        .map((item: IItem) => item.id)
-        .indexOf(id);
-      productosJSON.splice(productToUpdateIndex, 1, productToUpdate);
+      if (productToUpdate) {
+        productToUpdate = {
+          ...productToUpdate,
+          ...producto,
+        };
 
-      if (fs.existsSync(productosPath)) {
+        const productToUpdateIndex = productosJSON
+          .map((item: IItem) => item.id)
+          .indexOf(id);
+        productosJSON.splice(productToUpdateIndex, 1, productToUpdate);
+
         await fsPromises.writeFile(
           productosPath,
           JSON.stringify(productosJSON, null, '\t')
         );
         return productToUpdate;
       } else {
-        throw new Error('No se pudo actualizar el producto');
+        throw {
+          error: `-${EErrorCodes.ProductNotFound}`,
+          message: 'El producto que desea actualizar no existe',
+        };
       }
     } catch (e) {
       if (e.code) {
-        throw { error: e, message: 'No se pudo actualizar el producto' };
+        throw { error: e, message: 'No se pudo guardar el producto' };
       } else {
-        throw { error: e.error, message: e.message };
+        throw {
+          error: e.error,
+          descripcion: e.descripcion,
+          message: e.message,
+        };
       }
     }
   }
@@ -104,24 +113,31 @@ class Productos {
       const productos = await fsPromises.readFile(productosPath, 'utf-8');
       const productosJSON = JSON.parse(productos);
 
-      const newProductList = productosJSON.filter(
-        (item: IItem) => item.id !== id
+      const productToDelete = productosJSON.find(
+        (item: IItem) => item.id === id
       );
 
-      if (fs.existsSync(productosPath)) {
+      if (productToDelete) {
+        const newProductList = productosJSON.filter(
+          (item: IItem) => item.id !== id
+        );
+
         await fsPromises.writeFile(
           productosPath,
           JSON.stringify(newProductList, null, '\t')
         );
         return newProductList;
       } else {
-        throw new Error('No se pudo borrar el producto');
+        throw {
+          error: `-${EErrorCodes.ProductNotFound}`,
+          message: 'El producto que desea eliminar no existe',
+        };
       }
     } catch (e) {
       if (e.code) {
         throw { error: e, message: 'No se pudo borrar el producto' };
       } else {
-        throw Error(e.message);
+        throw { error: e.error, message: e.message };
       }
     }
   }

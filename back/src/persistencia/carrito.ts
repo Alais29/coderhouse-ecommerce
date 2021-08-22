@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { carritoService } from '../services/carrito';
+import { EErrorCodes } from '../common/enums';
 
 const {
   getCarritoService,
@@ -15,9 +16,13 @@ export const getCarrito = async (
   try {
     const productos = await getCarritoService();
     if (productos.length !== 0) res.json({ data: productos });
-    else throw new Error('No hay productos en el carrito');
+    else
+      throw {
+        error: `-${EErrorCodes.ProductNotFound}`,
+        message: 'No hay productos en el carrito',
+      };
   } catch (e) {
-    res.status(400).json({ error: e.error, message: e.message });
+    res.status(404).json({ error: e.error, message: e.message });
   }
 };
 
@@ -28,9 +33,13 @@ export const getCarritoProduct = async (
   try {
     const producto = await getCarritoProductService(req.params.id);
     if (producto) res.json({ data: producto });
-    else throw new Error('El producto no está en el carrito');
+    else
+      throw {
+        error: `-${EErrorCodes.ProductNotFound}`,
+        message: 'El producto no está en el carrito',
+      };
   } catch (e) {
-    res.status(400).json({ error: e.error, message: e.message });
+    res.status(404).json({ error: e.error, message: e.message });
   }
 };
 

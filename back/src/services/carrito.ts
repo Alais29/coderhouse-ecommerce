@@ -1,6 +1,7 @@
 import { promises as fsPromises } from 'fs';
 import path from 'path';
 import { IItem } from '../common/interfaces';
+import { EErrorCodes } from '../common/enums';
 import { productosService } from './producto';
 
 const { getProductosService } = productosService;
@@ -43,7 +44,10 @@ class Carrito {
         );
         return carritoJSON.productos;
       } else {
-        throw new Error('El producto que desea agregar no existe');
+        throw {
+          error: `-${EErrorCodes.ProductNotFound}`,
+          message: 'El producto que desea agregar no existe',
+        };
       }
     } catch (e) {
       if (e.code) {
@@ -63,17 +67,20 @@ class Carrito {
       );
 
       if (productToDelete) {
-        const newCarritoProducts = carritoJSON.productos.filter(
-          (item: IItem) => item.id !== id
-        );
-        carritoJSON.productos = newCarritoProducts;
+        const productToDeleteIndex = carritoJSON.productos
+          .map((item: IItem) => item.id)
+          .indexOf(id);
+        carritoJSON.productos.splice(productToDeleteIndex, 1);
         await fsPromises.writeFile(
           carritosPath,
           JSON.stringify(carritoJSON, null, '\t')
         );
-        return newCarritoProducts;
+        return carritoJSON.productos;
       } else {
-        throw new Error('El producto que desea eliminar no esta en el carrito');
+        throw {
+          error: `-${EErrorCodes.ProductNotFound}`,
+          message: 'El producto que desea eliminar no esta en el carrito',
+        };
       }
     } catch (e) {
       if (e.code) {

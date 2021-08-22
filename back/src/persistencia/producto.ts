@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { IItem } from '../common/interfaces';
 import { productosService } from '../services/producto';
+import { EErrorCodes } from '../common/enums';
 
 const {
   getProductosService,
@@ -17,9 +18,13 @@ export const getProductos = async (
   try {
     const productos = await getProductosService();
     if (productos.length !== 0) res.json({ data: productos });
-    else throw new Error('No hay productos');
+    else
+      throw {
+        error: `-${EErrorCodes.ProductNotFound}`,
+        message: 'No hay productos',
+      };
   } catch (e) {
-    res.status(400).json({ error: e.error, message: e.message });
+    res.status(404).json({ error: e.error, message: e.message });
   }
 };
 
@@ -30,9 +35,13 @@ export const getProducto = async (
   try {
     const producto = await getProductoService(req.params.id);
     if (producto) res.json({ data: producto });
-    else throw new Error('Producto no encontrado');
+    else
+      throw {
+        error: `-${EErrorCodes.ProductNotFound}`,
+        message: 'Producto no encontrado',
+      };
   } catch (e) {
-    res.status(400).json({ error: e.error, message: e.message });
+    res.status(404).json({ error: e.error, message: e.message });
   }
 };
 
@@ -45,7 +54,15 @@ export const saveProducto = async (
     const newProducto: IItem = await saveProductoService(producto);
     res.json({ data: newProducto });
   } catch (e) {
-    res.status(400).json({ error: e.error, message: e.message });
+    if (e.error.errno) {
+      res.status(404).json({ error: e.error, message: e.message });
+    } else {
+      res.status(400).json({
+        error: e.error,
+        message: e.message,
+        descripcion: e.descripcion,
+      });
+    }
   }
 };
 
@@ -57,7 +74,15 @@ export const updateProducto = async (
     const producto = await updateProductoService(req.params.id, req.body);
     res.json({ data: producto });
   } catch (e) {
-    res.status(404).json({ error: e.error, message: e.message });
+    if (e.error.errno) {
+      res.status(404).json({ error: e.error, message: e.message });
+    } else {
+      res.status(400).json({
+        error: e.error,
+        message: e.message,
+        descripcion: e.descripcion,
+      });
+    }
   }
 };
 
