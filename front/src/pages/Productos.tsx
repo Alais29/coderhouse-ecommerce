@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
 import { Modal } from 'react-bootstrap'
 import { IItemAPI, IToastInfo } from 'commons/interfaces'
+import { getProducts, deleteProduct, updateProduct } from 'services/Productos'
+import { saveCarritoProduct } from 'services/Carrito'
+import { isEmpty } from 'utilities/others'
 import ConfirmationModal from 'components/Modals/ConfirmationModal/ConfirmationModal'
 import Notification from 'components/Notification/Notification'
 import ProductList from 'components/ProductList/ProductList'
-import { getProducts, deleteProduct, updateProduct } from 'services/Productos'
-import { isEmpty } from 'utilities/others'
 import EditModal from 'components/Modals/EditModal/EditModal'
 
 const Productos = () => {
@@ -36,12 +37,16 @@ const Productos = () => {
           handleToggleShowModal()
           handleToggleShowToast({ text: 'Producto eliminado con éxito', type: 'success' })
           setProductos(res)
-          setProductToDelete(null)
+          setTimeout(() => {
+            setProductToDelete(null)
+          }, 1000)
         })
         .catch((e) => {
           handleToggleShowToast({ type: 'warning', text: e.message })
           handleToggleShowModal()
-          setProductToDelete(null)
+          setTimeout(() => {
+            setProductToDelete(null)
+          }, 1000)
         })
     }
   }
@@ -59,14 +64,25 @@ const Productos = () => {
           setProductos(newProductList)
           handleToggleShowModal()
           handleToggleShowToast({ text: 'Producto editado con éxito', type: 'success' })
-          setProductToEdit(null)
+          setTimeout(() => {
+            setProductToEdit(null)
+          }, 1000)
         })
         .catch((e) => {
           handleToggleShowToast({ type: 'warning', text: e.message })
           handleToggleShowModal()
-          setProductToEdit(null)
+          setTimeout(() => {
+            setProductToEdit(null)
+          }, 1000)
         })
     }
+  }
+
+  const handleAddToCart = (producto: IItemAPI) => {
+    saveCarritoProduct(producto.id)
+      .then(() => {
+        handleToggleShowToast({ text: `${producto.nombre} agregado al carrito`, type: 'success' })
+      })
   }
 
   useEffect(() => {
@@ -83,8 +99,10 @@ const Productos = () => {
     <>
       <h1 className="text-center mt-5 pt-4">Productos</h1>
       <ProductList
+        location="home"
         productos={productos}
         handleToggleShowModal={handleToggleShowModal}
+        handleAddToCart={handleAddToCart}
       />
       <Notification
         show={showToast}

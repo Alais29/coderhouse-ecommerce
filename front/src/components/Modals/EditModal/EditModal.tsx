@@ -81,7 +81,7 @@ const EditModal = ({ handleToggleShowModal, productToEdit, handleConfirmEdit }: 
         <Button variant="secondary" onClick={() => handleToggleShowModal()}>
           Cancelar
         </Button>
-        <Button variant="danger" onClick={handleSubmit}>
+        <Button variant="primary" onClick={handleSubmit}>
           Editar
         </Button>
       </Modal.Footer>

@@ -1,12 +1,15 @@
 import { Button, Card } from "react-bootstrap"
 import { IItemAPI } from "commons/interfaces"
+import cx from 'classnames/bind'
+import styles from './styles.module.scss'
 
 interface IProps {
   product: IItemAPI
-  handleToggleShowModal: (producto?: IItemAPI, action?: 'edit' | 'delete') => void
+  handleToggleShowModal: (producto?: IItemAPI, action?: 'edit' | 'delete') => void,
+  handleAddToCart: (producto: IItemAPI) => void
 }
 
-const Product = ({ product, handleToggleShowModal }: IProps) => {
+const Product = ({ product, handleToggleShowModal, handleAddToCart }: IProps) => {
   return (
     <Card>
       <Card.Img variant="top" src={`${product.foto}`} />
@@ -19,9 +22,12 @@ const Product = ({ product, handleToggleShowModal }: IProps) => {
         <div className="text-end mt-2">
           <Card.Text><small>{product.codigo}</small></Card.Text>
         </div>
-        <div className="d-flex justify-content-between mt-2">
-          <Button variant="danger" onClick={() => handleToggleShowModal(product, 'delete')}>Eliminar</Button>
-          <Button variant="primary" onClick={() => handleToggleShowModal(product, 'edit')}>Editar</Button>
+        <div className={cx('d-flex', 'flex-column', styles['product-btns'])}>
+          <div className={cx('d-flex', 'mt-2', styles['product-add-edit'])}>
+            <Button variant="danger" onClick={() => handleToggleShowModal(product, 'delete')}>Eliminar</Button>
+            <Button variant="info" onClick={() => handleToggleShowModal(product, 'edit')}>Editar</Button>
+          </div>
+          <Button variant="primary" onClick={() => handleAddToCart(product)}>Agregar al carrito</Button>
         </div>
       </Card.Body>
     </Card>

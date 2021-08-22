@@ -1,0 +1,10 @@
+.product-carrito {
+  padding: 1rem;
+  gap: 0.8rem;
+  &__img {
+    width: 150px;
+  }
+  &__price {
+    font-weight: bold;
+  }
+}

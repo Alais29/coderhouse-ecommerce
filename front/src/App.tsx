@@ -2,6 +2,7 @@ import { Container } from 'react-bootstrap';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Navigation from './components/Navigation/Navigation';
 import AddProduct from 'pages/AddProduct';
+import Cart from 'pages/Cart';
 import Productos from './pages/Productos';
 
 const App = () => {
@@ -12,6 +13,9 @@ const App = () => {
         <Switch>
           <Route path="/add-product">
             <AddProduct />
+          </Route>
+          <Route path="/cart">
+            <Cart />
           </Route>
           <Route path="/">
             <Productos />

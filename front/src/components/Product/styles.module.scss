@@ -1,0 +1,9 @@
+.product-btns {
+  gap: 0.5rem;
+  .product-add-edit {
+    gap: 0.5rem;
+    button {
+      flex-grow: 1;
+    }
+  }
+}
