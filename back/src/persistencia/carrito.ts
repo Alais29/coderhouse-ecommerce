@@ -33,21 +33,29 @@ class Carrito {
     try {
       const allProducts = await getProductosPersist();
       const productToAdd = allProducts.find((item) => item.id === id);
-
-      if (productToAdd) {
-        const carrito = await fsPromises.readFile(carritosPath, 'utf-8');
-        const carritoJSON = JSON.parse(carrito);
-        carritoJSON.productos.push(productToAdd);
-        await fsPromises.writeFile(
-          carritosPath,
-          JSON.stringify(carritoJSON, null, '\t')
-        );
-        return carritoJSON.productos;
-      } else {
+      const carrito = await fsPromises.readFile(carritosPath, 'utf-8');
+      const carritoJSON = JSON.parse(carrito);
+      const productToAddInCart = carritoJSON.productos.find((item: IItem) => item.id === id);
+      
+      if (productToAddInCart) {
         throw {
-          error: `-${EErrorCodes.ProductNotFound}`,
-          message: 'El producto que desea agregar no existe',
+          error: `-${EErrorCodes.ProductRepeated}`,
+          message: 'El producto que desea agregar ya se encuentra en el carrito',
         };
+      } else {
+        if (productToAdd) {
+          carritoJSON.productos.push(productToAdd);
+          await fsPromises.writeFile(
+            carritosPath,
+            JSON.stringify(carritoJSON, null, '\t')
+          );
+          return carritoJSON.productos;
+        } else {
+          throw {
+            error: `-${EErrorCodes.ProductNotFound}`,
+            message: 'El producto que desea agregar no existe',
+          };
+        }
       }
     } catch (e) {
       if (e.code) {

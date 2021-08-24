@@ -3,4 +3,5 @@ export enum EErrorCodes {
   UnknownEndpoint,
   ProductValidation,
   ProductNotFound,
+  ProductRepeated,
 }
