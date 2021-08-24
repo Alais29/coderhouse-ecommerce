@@ -6,14 +6,14 @@ import {
   getProductos,
   saveProducto,
   updateProducto,
-} from '../persistencia/producto';
+} from '../controllers/producto';
 
-const productoRoutes = express.Router();
+const productoRouter = express.Router();
 
-productoRoutes.get('/listar', getProductos);
-productoRoutes.get('/listar/:id', getProducto);
-productoRoutes.post('/guardar', isAdmin, saveProducto);
-productoRoutes.put('/actualizar/:id', isAdmin, updateProducto);
-productoRoutes.delete('/borrar/:id', isAdmin, deleteProducto);
+productoRouter.get('/listar', getProductos);
+productoRouter.get('/listar/:id', getProducto);
+productoRouter.post('/guardar', isAdmin, saveProducto);
+productoRouter.put('/actualizar/:id', isAdmin, updateProducto);
+productoRouter.delete('/borrar/:id', isAdmin, deleteProducto);
 
-export default productoRoutes;
+export default productoRouter;

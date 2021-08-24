@@ -1,70 +1,108 @@
-import { Request, Response } from 'express';
-import { carritoService } from '../services/carrito';
+import { promises as fsPromises } from 'fs';
+import path from 'path';
+import { IItem } from '../common/interfaces';
 import { EErrorCodes } from '../common/enums';
+import { productos } from './producto';
 
-const {
-  getCarritoService,
-  getCarritoProductService,
-  saveCarritoProductService,
-  deleteCarritoProductService,
-} = carritoService;
+const { getProductosPersist } = productos;
 
-export const getCarrito = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  try {
-    const productos = await getCarritoService();
-    if (productos.length !== 0) res.json({ data: productos });
-    else
-      throw {
-        error: `-${EErrorCodes.ProductNotFound}`,
-        message: 'No hay productos en el carrito',
-      };
-  } catch (e) {
-    res.status(404).json({ error: e.error, message: e.message });
+const carritosPath = path.resolve(__dirname, '../../carrito.json');
+
+class Carrito {
+  async getCarritoPersist(): Promise<IItem[]> {
+    try {
+      const carrito = await fsPromises.readFile(carritosPath, 'utf-8');
+      return JSON.parse(carrito).productos;
+    } catch (e) {
+      throw { error: e, message: 'Hubo un problema al cargar el carrito' };
+    }
   }
-};
 
-export const getCarritoProduct = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  try {
-    const producto = await getCarritoProductService(req.params.id);
-    if (producto) res.json({ data: producto });
-    else
-      throw {
-        error: `-${EErrorCodes.ProductNotFound}`,
-        message: 'El producto no está en el carrito',
-      };
-  } catch (e) {
-    res.status(404).json({ error: e.error, message: e.message });
+  async getCarritoProductPersist(id: string): Promise<IItem> {
+    try {
+      const carrito = await fsPromises.readFile(carritosPath, 'utf-8');
+      const productos = JSON.parse(carrito).productos;
+      const producto = productos.find((item: IItem) => item.id === id);
+      return producto;
+    } catch (e) {
+      throw { error: e, message: 'Hubo un problema al cargar el producto' };
+    }
   }
-};
 
-export const saveCarritoProduct = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  try {
-    const newProducto = await saveCarritoProductService(req.params.id);
-    res.json({ data: newProducto });
-  } catch (e) {
-    res.status(400).json({ error: e.error, message: e.message });
-  }
-};
+  async saveCarritoProductPersist(id: string): Promise<IItem> {
+    try {
+      const carrito = await fsPromises.readFile(carritosPath, 'utf-8');
+      const carritoJSON = JSON.parse(carrito);
+      const productToAddInCart = carritoJSON.productos.find((producto: IItem) => producto.id === id);
 
-export const deleteCarritoProduct = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  try {
-    const newCarritoProductList = await deleteCarritoProductService(
-      req.params.id
-    );
-    res.json({ data: newCarritoProductList });
-  } catch (e) {
-    res.status(404).json({ error: e.error, message: e.message });
+      if (productToAddInCart) {
+        productToAddInCart.qty += 1;
+        const productIndex = carritoJSON.productos.map((product: IItem) => product.id).indexOf(id);
+        carritoJSON.productos.splice(productIndex, 1, productToAddInCart);
+        await fsPromises.writeFile(
+          carritosPath,
+          JSON.stringify(carritoJSON, null, '\t')
+        );
+        return carritoJSON.productos;
+      } else {
+        const allProducts = await getProductosPersist();
+        const productToAdd = allProducts.find((item) => item.id === id);
+        if (productToAdd) {
+          productToAdd.qty = 1;
+          carritoJSON.productos.push(productToAdd);
+          await fsPromises.writeFile(
+            carritosPath,
+            JSON.stringify(carritoJSON, null, '\t')
+          );
+          return carritoJSON.productos;
+        } else {
+          throw {
+            error: `-${EErrorCodes.ProductNotFound}`,
+            message: 'El producto que desea agregar no existe',
+          };
+        }
+      }
+    } catch (e) {
+      if (e.code) {
+        throw { error: e, message: 'Hubo un problema al agregar el producto' };
+      } else {
+        throw { error: e.error, message: e.message };
+      }
+    }
   }
-};
+
+  async deleteCarritoProductPersist(id: string): Promise<IItem[]> {
+    try {
+      const carrito = await fsPromises.readFile(carritosPath, 'utf-8');
+      const carritoJSON = JSON.parse(carrito);
+      const productToDelete = carritoJSON.productos.find(
+        (item: IItem) => item.id === id
+      );
+
+      if (productToDelete) {
+        const productToDeleteIndex = carritoJSON.productos
+          .map((item: IItem) => item.id)
+          .indexOf(id);
+        carritoJSON.productos.splice(productToDeleteIndex, 1);
+        await fsPromises.writeFile(
+          carritosPath,
+          JSON.stringify(carritoJSON, null, '\t')
+        );
+        return carritoJSON.productos;
+      } else {
+        throw {
+          error: `-${EErrorCodes.ProductNotFound}`,
+          message: 'El producto que desea eliminar no esta en el carrito',
+        };
+      }
+    } catch (e) {
+      if (e.code) {
+        throw { error: e, message: 'Hubo un problema al eliminar el producto' };
+      } else {
+        throw { error: e.error, message: e.message };
+      }
+    }
+  }
+}
+
+export const carrito = new Carrito();

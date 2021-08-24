@@ -4,13 +4,13 @@ import {
   getCarritoProduct,
   saveCarritoProduct,
   deleteCarritoProduct,
-} from '../persistencia/carrito';
+} from '../controllers/carrito';
 
-const carritoRoutes = express.Router();
+const carritoRouter = express.Router();
 
-carritoRoutes.get('/listar', getCarrito);
-carritoRoutes.get('/listar/:id', getCarritoProduct);
-carritoRoutes.post('/agregar/:id', saveCarritoProduct);
-carritoRoutes.delete('/borrar/:id', deleteCarritoProduct);
+carritoRouter.get('/listar', getCarrito);
+carritoRouter.get('/listar/:id', getCarritoProduct);
+carritoRouter.post('/agregar/:id', saveCarritoProduct);
+carritoRouter.delete('/borrar/:id', deleteCarritoProduct);
 
-export default carritoRoutes;
+export default carritoRouter;
