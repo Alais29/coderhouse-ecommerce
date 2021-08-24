@@ -1,0 +1,10 @@
+.cart-icon {
+  svg {
+    transition: fill 0.3s ease-in-out;
+  }
+  &:hover {
+    svg {
+      fill: #ffffff;
+    }
+  }
+}

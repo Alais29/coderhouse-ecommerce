@@ -33,10 +33,11 @@ const Productos = () => {
   const handleConfirmDelete = () => {
     if (productToDelete) {
       deleteProduct(productToDelete.id)
-        .then((res) => {
+        .then(() => {
           handleToggleShowModal()
           handleToggleShowToast({ text: 'Producto eliminado con éxito', type: 'success' })
-          setProductos(res)
+          const newProducts = productos.filter(item => item.id !== productToDelete.id)
+          setProductos(newProducts)
           setTimeout(() => {
             setProductToDelete(null)
           }, 1000)
