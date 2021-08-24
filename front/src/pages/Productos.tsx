@@ -84,6 +84,9 @@ const Productos = () => {
       .then(() => {
         handleToggleShowToast({ text: `${producto.nombre} agregado al carrito`, type: 'success' })
       })
+      .catch((e) => {
+        handleToggleShowToast({ text: e.message, type: 'warning' })
+      })
   }
 
   useEffect(() => {

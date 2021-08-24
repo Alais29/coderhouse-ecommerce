@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { IItemAPI, IToastInfo } from 'commons/interfaces'
 import { deleteCarritoProduct, getCarritoProducts } from 'services/Carrito'
+import { isEmpty } from 'utilities/others'
+import { Link } from 'react-router-dom'
 import ProductList from 'components/ProductList/ProductList'
 import Notification from 'components/Notification/Notification'
 
@@ -48,11 +50,18 @@ const Cart = () => {
       <h1 className="text-center mt-5 pt-3 mb-">Carrito</h1>
       <Notification show={showToast} handleToggleShowToast={handleToggleShowToast} toastInfo={toastInfo} />
       <ProductList productos={productos} location="cart" handleRemove={handleRemove} />
-      <div className="d-flex justify-content-end">
-        <p className="border rounded p-4">
-          <span className="fw-bold">Total:</span> ${total}
-        </p>
-      </div>
+      {isEmpty(productos) ?
+        <div className="text-center">
+          <h2 className="">El carrito está vacío</h2>
+          <p className="display-6">Agrega algunos productos</p>
+          <Link to='/' className="btn btn-primary">Ir a inicio</Link>
+        </div>
+        : <div className="d-flex justify-content-end">
+          <p className="border rounded p-4">
+            <span className="fw-bold">Total:</span> ${total}
+          </p>
+        </div>
+      }
     </>
   )
 }
