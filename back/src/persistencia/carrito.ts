@@ -31,36 +31,23 @@ class Carrito {
 
   async saveCarritoProductPersist(id: string): Promise<IItem> {
     try {
-      const carrito = await fsPromises.readFile(carritosPath, 'utf-8');
-      const carritoJSON = JSON.parse(carrito);
-      const productToAddInCart = carritoJSON.productos.find((producto: IItem) => producto.id === id);
+      const allProducts = await getProductosPersist();
+      const productToAdd = allProducts.find((item) => item.id === id);
 
-      if (productToAddInCart) {
-        productToAddInCart.qty += 1;
-        const productIndex = carritoJSON.productos.map((product: IItem) => product.id).indexOf(id);
-        carritoJSON.productos.splice(productIndex, 1, productToAddInCart);
+      if (productToAdd) {
+        const carrito = await fsPromises.readFile(carritosPath, 'utf-8');
+        const carritoJSON = JSON.parse(carrito);
+        carritoJSON.productos.push(productToAdd);
         await fsPromises.writeFile(
           carritosPath,
           JSON.stringify(carritoJSON, null, '\t')
         );
         return carritoJSON.productos;
       } else {
-        const allProducts = await getProductosPersist();
-        const productToAdd = allProducts.find((item) => item.id === id);
-        if (productToAdd) {
-          productToAdd.qty = 1;
-          carritoJSON.productos.push(productToAdd);
-          await fsPromises.writeFile(
-            carritosPath,
-            JSON.stringify(carritoJSON, null, '\t')
-          );
-          return carritoJSON.productos;
-        } else {
-          throw {
-            error: `-${EErrorCodes.ProductNotFound}`,
-            message: 'El producto que desea agregar no existe',
-          };
-        }
+        throw {
+          error: `-${EErrorCodes.ProductNotFound}`,
+          message: 'El producto que desea agregar no existe',
+        };
       }
     } catch (e) {
       if (e.code) {
