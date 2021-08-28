@@ -1,8 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
-import routes from './routes';
-import { unknownEndpoint } from './middlewares/unknownEndpoint';
+import routes from 'routes';
+import { unknownEndpoint } from 'middlewares/unknownEndpoint';
 
 const app: express.Application = express();
 const PORT = process.env.PORT || 8080;

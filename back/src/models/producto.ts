@@ -1,14 +1,12 @@
 import { promises as fsPromises } from 'fs';
-import moment from 'moment';
 import path from 'path';
-import { v4 as uuidv4 } from 'uuid';
 import { IItem } from '../common/interfaces';
 import { EErrorCodes } from '../common/enums';
-import { isValidProduct } from '../utils/validations';
 
 const productosPath = path.resolve(__dirname, '../../productos.json');
-class Productos {
-  async getProductosPersist(): Promise<IItem[]> {
+
+class ProductosModel {
+  async getAll(): Promise<IItem[]> {
     try {
       const products = await fsPromises.readFile(productosPath, 'utf-8');
       return JSON.parse(products);
@@ -17,7 +15,7 @@ class Productos {
     }
   }
 
-  async getProductoPersist(id: string): Promise<IItem> {
+  async get(id: string): Promise<IItem> {
     try {
       const productos = await fsPromises.readFile(productosPath, 'utf-8');
       const productosJSON = JSON.parse(productos);
@@ -28,18 +26,10 @@ class Productos {
     }
   }
 
-  async saveProductoPersist(producto: IItem): Promise<IItem> {
+  async save(producto: IItem): Promise<IItem> {
     try {
       const productos = await fsPromises.readFile(productosPath, 'utf-8');
       const productosJSON = JSON.parse(productos);
-
-      producto.id = uuidv4();
-      producto.precio = Number(producto.precio);
-      producto.stock = Number(producto.stock);
-      producto.timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
-
-      // check if all fields in product are valid and not empty
-      isValidProduct(producto);
 
       productosJSON.push(producto);
       await fsPromises.writeFile(
@@ -60,16 +50,10 @@ class Productos {
     }
   }
 
-  async updateProductoPersist(id: string, producto: IItem): Promise<IItem> {
+  async update(id: string, producto: IItem): Promise<IItem> {
     try {
       const productos = await fsPromises.readFile(productosPath, 'utf-8');
       const productosJSON = JSON.parse(productos);
-
-      producto.precio = Number(producto.precio);
-      producto.stock = Number(producto.stock);
-
-      // check if all fields in product are valid and not empty
-      isValidProduct(producto);
 
       let productToUpdate = productosJSON.find((item: IItem) => item.id === id);
 
@@ -108,7 +92,7 @@ class Productos {
     }
   }
 
-  async deleteProductoPersist(id: string): Promise<void> {
+  async delete(id: string): Promise<void> {
     try {
       const productos = await fsPromises.readFile(productosPath, 'utf-8');
       const productosJSON = JSON.parse(productos);
@@ -142,4 +126,4 @@ class Productos {
   }
 }
 
-export const productos = new Productos();
+export const productosModel = new ProductosModel();

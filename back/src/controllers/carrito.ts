@@ -1,20 +1,13 @@
 import { Request, Response } from 'express';
-import { carrito } from '../persistencia/carrito';
-import { EErrorCodes } from '../common/enums';
-
-const {
-  getCarritoPersist,
-  getCarritoProductPersist,
-  saveCarritoProductPersist,
-  deleteCarritoProductPersist,
-} = carrito;
+import { carritoModel } from 'models/carrito';
+import { EErrorCodes } from 'common/enums';
 
 export const getCarrito = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   try {
-    const productos = await getCarritoPersist();
+    const productos = await carritoModel.getAll();
     if (productos.length !== 0) res.json({ data: productos });
     else
       throw {
@@ -31,7 +24,7 @@ export const getCarritoProduct = async (
   res: Response
 ): Promise<void> => {
   try {
-    const producto = await getCarritoProductPersist(req.params.id);
+    const producto = await carritoModel.get(req.params.id);
     if (producto) res.json({ data: producto });
     else
       throw {
@@ -48,7 +41,7 @@ export const saveCarritoProduct = async (
   res: Response
 ): Promise<void> => {
   try {
-    const newProducto = await saveCarritoProductPersist(req.params.id);
+    const newProducto = await carritoModel.save(req.params.id);
     res.json({ data: newProducto });
   } catch (e) {
     res.status(400).json({ error: e.error, message: e.message });
@@ -60,7 +53,7 @@ export const deleteCarritoProduct = async (
   res: Response
 ): Promise<void> => {
   try {
-    const newCarritoProductList = await deleteCarritoProductPersist(
+    const newCarritoProductList = await carritoModel.delete(
       req.params.id
     );
     res.json({ data: newCarritoProductList });

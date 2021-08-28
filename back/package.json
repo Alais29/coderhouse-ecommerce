@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build:ui": "rm -rf public && cd ../front/ && npm run build --prod && cp -r build ../back/public",
-    "dev": "nodemon -L ./src/index.ts",
-    "start": "npx tsc && node ./build/index.js",
+    "dev": "NODE_PATH=./src nodemon -L ./src/index.ts",
+    "start": "NODE_PATH=./ npx tsc && node ./build/index.js",
     "build": "npx tsc",
     "lint": "eslint . --ext .ts",
     "prettier": "prettier --config .prettierrc 'src/**/*.ts' --write"

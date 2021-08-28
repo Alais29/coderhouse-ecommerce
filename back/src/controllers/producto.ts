@@ -1,22 +1,17 @@
 import { Request, Response } from 'express';
-import { IItem } from '../common/interfaces';
-import { productos } from '../persistencia/producto';
-import { EErrorCodes } from '../common/enums';
-
-const {
-  getProductosPersist,
-  getProductoPersist,
-  saveProductoPersist,
-  updateProductoPersist,
-  deleteProductoPersist,
-} = productos;
+import { v4 as uuidv4 } from 'uuid';
+import moment from 'moment';
+import { isValidProduct } from 'utils/validations';
+import { IItem } from 'common/interfaces';
+import { productosModel } from 'models/producto';
+import { EErrorCodes } from 'common/enums';
 
 export const getProductos = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   try {
-    const productos = await getProductosPersist();
+    const productos = await productosModel.getAll();
     if (productos.length !== 0) res.json({ data: productos });
     else
       throw {
@@ -33,7 +28,7 @@ export const getProducto = async (
   res: Response
 ): Promise<void> => {
   try {
-    const producto = await getProductoPersist(req.params.id);
+    const producto = await productosModel.get(req.params.id);
     if (producto) res.json({ data: producto });
     else
       throw {
@@ -51,7 +46,15 @@ export const saveProducto = async (
 ): Promise<void> => {
   try {
     const producto = req.body;
-    const newProducto: IItem = await saveProductoPersist(producto);
+
+    producto.id = uuidv4();
+    producto.precio = Number(producto.precio);
+    producto.stock = Number(producto.stock);
+    producto.timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
+
+    isValidProduct(producto);
+
+    const newProducto: IItem = await productosModel.save(producto);
     res.json({ data: newProducto });
   } catch (e) {
     if (e.error.errno) {
@@ -71,7 +74,14 @@ export const updateProducto = async (
   res: Response
 ): Promise<void> => {
   try {
-    const producto = await updateProductoPersist(req.params.id, req.body);
+    const dataToUpdate = req.body;
+
+    dataToUpdate.precio = Number(dataToUpdate.precio);
+    dataToUpdate.stock = Number(dataToUpdate.stock);
+
+    isValidProduct(dataToUpdate);
+
+    const producto = await productosModel.update(req.params.id, dataToUpdate);
     res.json({ data: producto });
   } catch (e) {
     if (e.error.errno) {
@@ -91,7 +101,7 @@ export const deleteProducto = async (
   res: Response
 ): Promise<void> => {
   try {
-    await deleteProductoPersist(req.params.id);
+    await productosModel.delete(req.params.id);
     res.json({ data: 'Producto eliminado' });
   } catch (e) {
     res.status(404).json({ error: e.error, message: e.message });

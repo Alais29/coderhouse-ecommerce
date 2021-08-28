@@ -4,7 +4,7 @@ import {
   getCarritoProduct,
   saveCarritoProduct,
   deleteCarritoProduct,
-} from '../controllers/carrito';
+} from 'controllers/carrito';
 
 const carritoRouter = express.Router();
 

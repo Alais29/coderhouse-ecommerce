@@ -1,15 +1,13 @@
 import { promises as fsPromises } from 'fs';
 import path from 'path';
-import { IItem } from '../common/interfaces';
-import { EErrorCodes } from '../common/enums';
-import { productos } from './producto';
-
-const { getProductosPersist } = productos;
+import { IItem } from 'common/interfaces';
+import { EErrorCodes } from 'common/enums';
+import { productosModel } from 'models/producto';
 
 const carritosPath = path.resolve(__dirname, '../../carrito.json');
 
-class Carrito {
-  async getCarritoPersist(): Promise<IItem[]> {
+class CarritoModel {
+  async getAll(): Promise<IItem[]> {
     try {
       const carrito = await fsPromises.readFile(carritosPath, 'utf-8');
       return JSON.parse(carrito).productos;
@@ -18,7 +16,7 @@ class Carrito {
     }
   }
 
-  async getCarritoProductPersist(id: string): Promise<IItem> {
+  async get(id: string): Promise<IItem> {
     try {
       const carrito = await fsPromises.readFile(carritosPath, 'utf-8');
       const productos = JSON.parse(carrito).productos;
@@ -29,9 +27,9 @@ class Carrito {
     }
   }
 
-  async saveCarritoProductPersist(id: string): Promise<IItem> {
+  async save(id: string): Promise<IItem> {
     try {
-      const allProducts = await getProductosPersist();
+      const allProducts = await productosModel.getAll();
       const productToAdd = allProducts.find((item) => item.id === id);
       const carrito = await fsPromises.readFile(carritosPath, 'utf-8');
       const carritoJSON = JSON.parse(carrito);
@@ -66,7 +64,7 @@ class Carrito {
     }
   }
 
-  async deleteCarritoProductPersist(id: string): Promise<IItem[]> {
+  async delete(id: string): Promise<IItem[]> {
     try {
       const carrito = await fsPromises.readFile(carritosPath, 'utf-8');
       const carritoJSON = JSON.parse(carrito);
@@ -100,4 +98,4 @@ class Carrito {
   }
 }
 
-export const carrito = new Carrito();
+export const carritoModel = new CarritoModel();

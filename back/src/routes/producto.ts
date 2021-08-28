@@ -1,5 +1,5 @@
 import express from 'express';
-import { isAdmin } from '../middlewares/isAdmin';
+import { isAdmin } from 'middlewares/isAdmin';
 import {
   deleteProducto,
   getProducto,
