@@ -25,8 +25,14 @@ const Productos = () => {
   }
   
   const handleToggleShowModal = (producto?: IItemAPI, action?: 'edit' | 'delete') => {
-    if (producto && action === 'delete') setProductToDelete(producto)
-    if (producto && action === 'edit') setProductToEdit(producto)
+    if (producto && action === 'delete') {
+      setProductToDelete(producto)
+      setProductToEdit(null)
+    }
+    if (producto && action === 'edit') {
+      setProductToEdit(producto)
+      setProductToDelete(null)
+    }
     setShowModal(!showModal)
   }
 
