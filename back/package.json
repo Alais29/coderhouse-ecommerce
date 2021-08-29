@@ -9,14 +9,20 @@
     "start": "NODE_PATH=./ npx tsc && node ./build/index.js",
     "build": "npx tsc",
     "lint": "eslint . --ext .ts",
-    "prettier": "prettier --config .prettierrc 'src/**/*.ts' --write"
+    "prettier": "prettier --config .prettierrc 'src/**/*.ts' --write",
+    "migrate:db": "npx knex migrate:latest --env development",
+    "rollback:db": "npx knex migrate:rollback --env development",
+    "seed:db": "npx knex seed:run --env development",
+    "iniciar:db": "npm run rollback:db && npm run migrate:db && npm run seed:db"
   },
   "author": "Alfonsina Lizardo",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "knex": "^0.95.10",
     "moment": "^2.29.1",
+    "mysql": "^2.18.1",
     "socket.io": "^4.1.3",
     "uuid": "^8.3.2"
   },
