@@ -7,7 +7,7 @@ export default {
       host: 'localhost',
       user: 'root',
       password: '',
-      database: 'test',
+      database: 'coder_ecommerce',
     },
     migrations: {
       directory: __dirname + '/db/migrations',
@@ -16,5 +16,11 @@ export default {
       directory: __dirname + '/db/seeds',
     },
     pool: { min: 0, max: 7 },
+  },
+
+  local: {
+    client: 'sqlite3',
+    connection: { filename: './mensajes.sqlite' },
+    useNullAsDefault: true,
   },
 };

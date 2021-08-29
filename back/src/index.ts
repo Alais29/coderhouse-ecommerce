@@ -4,6 +4,7 @@ import path from 'path';
 import routes from 'routes';
 import { unknownEndpoint } from 'middlewares/unknownEndpoint';
 import { mySqlDbService } from 'services/mysqldb';
+import { sqlLiteDbService } from 'services/sqlite';
 
 const app: express.Application = express();
 const PORT = process.env.PORT || 8080;
@@ -14,6 +15,7 @@ const server = app.listen(PORT, () => {
 server.on('error', (error) => console.log(`Error en el servidor: ${error}`));
 
 mySqlDbService.init();
+sqlLiteDbService.init();
 
 app.use(express.static(path.resolve(__dirname, '../', 'public')));
 app.use(express.json());

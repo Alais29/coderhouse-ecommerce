@@ -12,3 +12,8 @@ export interface IItem extends IObject {
   timestamp: string;
   stock: number;
 }
+
+export interface IMesssage {
+  email: string
+  text: string
+}
