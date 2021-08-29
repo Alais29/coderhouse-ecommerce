@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IItem, IItemAPI } from "../commons/interfaces";
+import { IItem } from "../commons/interfaces";
 const baseUrl = "/api/productos";
 
 export const getProducts = async () => {
@@ -29,7 +29,7 @@ export const deleteProduct = async (id: string) => {
   }
 }
 
-export const updateProduct = async (id: string, product: IItemAPI) => {
+export const updateProduct = async (id: string, product: IItem) => {
   try {
     const response = await axios.put(`${baseUrl}/actualizar/${id}`, product);
     return response.data.data;

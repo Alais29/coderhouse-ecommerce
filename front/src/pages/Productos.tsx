@@ -59,8 +59,9 @@ const Productos = () => {
   }
 
   const handleConfirmEdit = (formValues: IItemAPI, callback: () => void) => {
+    const { id, timestamp, ...dataToUpdate } = formValues
     if (productToEdit) {
-      updateProduct(formValues.id, formValues)
+      updateProduct(id, dataToUpdate)
         .then((res) => {
           callback()
           const productToUpdateIndex = productos.map(
