@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build:ui": "rm -rf public && cd ../front/ && npm run build --prod && cp -r build ../back/public",
-    "dev": "NODE_PATH=./src nodemon -L ./src/index.ts",
-    "start": "NODE_PATH=./ npx tsc && node ./build/index.js",
+    "dev": "cross-env NODE_PATH=./src nodemon -L ./src/index.ts",
+    "start": "cross-env NODE_PATH=./ npx tsc && node ./build/index.js",
     "build": "npx tsc",
     "lint": "eslint . --ext .ts",
     "prettier": "prettier --config .prettierrc 'src/**/*.ts' --write",
@@ -19,6 +19,7 @@
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "express": "^4.17.1",
     "knex": "^0.95.10",
     "moment": "^2.29.1",

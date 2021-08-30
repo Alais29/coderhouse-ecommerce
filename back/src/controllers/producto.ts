@@ -1,6 +1,4 @@
 import { Request, Response } from 'express';
-import { v4 as uuidv4 } from 'uuid';
-import moment from 'moment';
 import { isValidProduct } from 'utils/validations';
 import { IItem } from 'common/interfaces';
 import { productosModel } from 'models/productoMySql';
@@ -81,7 +79,10 @@ export const updateProducto = async (
 
     isValidProduct(dataToUpdate);
 
-    const producto = await productosModel.update(Number(req.params.id), dataToUpdate);
+    const producto = await productosModel.update(
+      Number(req.params.id),
+      dataToUpdate
+    );
     res.json({ data: producto });
   } catch (e) {
     if (e.error.errno) {

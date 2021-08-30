@@ -4,6 +4,7 @@ import dbConfig from './../../knexfile';
 
 class SqlLiteSb {
   public connection: Knex;
+  public messages: IMesssage[];
   constructor() {
     const environment = process.env.NODE_ENV || 'local';
     console.log(`SETTING ${environment} DB`);
@@ -11,6 +12,11 @@ class SqlLiteSb {
     //@ts-ignore
     const options = dbConfig[environment];
     this.connection = knex(options);
+    this.messages = [
+      { email: 'juan@gmail.com', text: '¡Hola! ¿Que tal?' },
+      { email: 'pedro@gmail.com', text: '¡Muy bien! ¿Y vos?' },
+      { email: 'ana@gmail.com', text: '¡Genial!' },
+    ];
   }
 
   init() {
@@ -25,7 +31,9 @@ class SqlLiteSb {
           })
           .then(() => {
             console.log('Tabla mensajes creada');
-        });
+            this.create('mensajes', this.messages);
+            console.log('Mensajes agregados');
+          });
       }
     });
   }
@@ -35,7 +43,7 @@ class SqlLiteSb {
     return this.connection(tableName);
   }
 
-  async create(tableName: string, data: IMesssage) {
+  async create(tableName: string, data: IMesssage | IMesssage[]) {
     const newMessageId = await this.connection(tableName).insert(data);
     return this.get(tableName, newMessageId[0]);
   }

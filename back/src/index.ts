@@ -1,7 +1,9 @@
 import express from 'express';
 import cors from 'cors';
+import http from 'http';
 import path from 'path';
 import routes from 'routes';
+import { initWsServer } from 'services/socket';
 import { unknownEndpoint } from 'middlewares/unknownEndpoint';
 import { mySqlDbService } from 'services/mysqldb';
 import { sqlLiteDbService } from 'services/sqlite';
@@ -9,7 +11,10 @@ import { sqlLiteDbService } from 'services/sqlite';
 const app: express.Application = express();
 const PORT = process.env.PORT || 8080;
 
-const server = app.listen(PORT, () => {
+const server: http.Server = http.createServer(app);
+initWsServer(server);
+
+server.listen(PORT, () => {
   console.log(`Servidor inicializado en http://localhost:${PORT}`);
 });
 server.on('error', (error) => console.log(`Error en el servidor: ${error}`));
