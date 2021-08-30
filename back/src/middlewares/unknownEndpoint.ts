@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { EErrorCodes } from 'common/enums';
+import { EErrorCodes } from '/common/enums';
 
 export const unknownEndpoint = (req: Request, res: Response): void => {
   res.status(404).send({

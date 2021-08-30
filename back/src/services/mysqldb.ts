@@ -1,6 +1,6 @@
-import { IItem } from 'common/interfaces.js';
+import { IItem } from '/common/interfaces.js';
 import knex, { Knex } from 'knex';
-import dbConfig from './../../knexfile';
+import dbConfig from '/../knexfile';
 
 class MySqlDb {
   public connection: Knex;
@@ -24,7 +24,9 @@ class MySqlDb {
             productosTable.string('codigo').notNullable();
             productosTable.decimal('precio', 5, 2).notNullable();
             productosTable.string('foto').notNullable();
-            productosTable.timestamp('timestamp').defaultTo(this.connection.fn.now());
+            productosTable
+              .timestamp('timestamp')
+              .defaultTo(this.connection.fn.now());
             productosTable.integer('stock').notNullable();
           })
           .then(() => {

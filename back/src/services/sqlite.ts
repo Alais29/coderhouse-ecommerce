@@ -1,12 +1,12 @@
-import { IMesssage } from 'common/interfaces';
+import { IMesssage } from '/common/interfaces';
 import knex, { Knex } from 'knex';
-import dbConfig from './../../knexfile';
+import dbConfig from '/../knexfile';
 
 class SqlLiteSb {
   public connection: Knex;
   public messages: IMesssage[];
   constructor() {
-    const environment = process.env.NODE_ENV || 'local';
+    const environment = 'local';
     console.log(`SETTING ${environment} DB`);
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore

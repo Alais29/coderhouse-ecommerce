@@ -2,11 +2,11 @@ import express from 'express';
 import cors from 'cors';
 import http from 'http';
 import path from 'path';
-import routes from 'routes';
-import { initWsServer } from 'services/socket';
-import { unknownEndpoint } from 'middlewares/unknownEndpoint';
-import { mySqlDbService } from 'services/mysqldb';
-import { sqlLiteDbService } from 'services/sqlite';
+import routes from '/routes';
+import { initWsServer } from '/services/socket';
+import { unknownEndpoint } from '/middlewares/unknownEndpoint';
+import { mySqlDbService } from '/services/mysqldb';
+import { sqlLiteDbService } from '/services/sqlite';
 
 const app: express.Application = express();
 const PORT = process.env.PORT || 8080;

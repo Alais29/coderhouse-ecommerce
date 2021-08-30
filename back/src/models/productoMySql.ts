@@ -1,6 +1,6 @@
-import { mySqlDbService } from 'services/mysqldb';
-import { IItem } from 'common/interfaces';
-import { EErrorCodes } from 'common/enums';
+import { mySqlDbService } from '/services/mysqldb';
+import { IItem } from '/common/interfaces';
+import { EErrorCodes } from '/common/enums';
 
 class ProductosModel {
   async getAll(): Promise<IItem[]> {
@@ -38,7 +38,11 @@ class ProductosModel {
 
   async update(id: number, producto: IItem): Promise<IItem> {
     try {
-      const productUpdated = await mySqlDbService.update('productos', id, producto);
+      const productUpdated = await mySqlDbService.update(
+        'productos',
+        id,
+        producto
+      );
 
       if (productUpdated[0]) {
         return productUpdated[0];

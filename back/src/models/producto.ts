@@ -1,7 +1,7 @@
 import { promises as fsPromises } from 'fs';
 import path from 'path';
-import { IItem } from '../common/interfaces';
-import { EErrorCodes } from '../common/enums';
+import { IItem } from '/common/interfaces';
+import { EErrorCodes } from '/common/enums';
 
 const productosPath = path.resolve(__dirname, '../../productos.json');
 

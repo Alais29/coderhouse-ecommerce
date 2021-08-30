@@ -1,7 +1,7 @@
-import { isUrl, isValidCode } from './strings';
-import { IItem } from 'common/interfaces';
-import { EErrorCodes } from 'common/enums';
-import { getEmptyFields } from './objects';
+import { isUrl, isValidCode } from '/utils/strings';
+import { IItem } from '/common/interfaces';
+import { EErrorCodes } from '/common/enums';
+import { getEmptyFields } from '/utils/objects';
 
 /**
  *

@@ -1,5 +1,5 @@
-import { sqlLiteDbService } from 'services/sqlite';
-import { IMesssage } from '../common/interfaces';
+import { sqlLiteDbService } from '/services/sqlite';
+import { IMesssage } from '/common/interfaces';
 
 class MessagesModel {
   async get(): Promise<IMesssage[]> {

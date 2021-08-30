@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import { isValidProduct } from 'utils/validations';
-import { IItem } from 'common/interfaces';
-import { productosModel } from 'models/productoMySql';
-import { EErrorCodes } from 'common/enums';
+import { isValidProduct } from '/utils/validations';
+import { IItem } from '/common/interfaces';
+import { productosModel } from '/models/productoMySql';
+import { EErrorCodes } from '/common/enums';
 
 export const getProductos = async (
   req: Request,

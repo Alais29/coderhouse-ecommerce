@@ -1,5 +1,5 @@
-import { IObject } from 'common/interfaces';
-import { isEmpty } from './others';
+import { IObject } from '/common/interfaces';
+import { isEmpty } from '/utils/others';
 
 /**
  *

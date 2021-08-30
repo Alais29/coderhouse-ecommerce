@@ -1,8 +1,8 @@
 import { promises as fsPromises } from 'fs';
 import path from 'path';
-import { IItem } from 'common/interfaces';
-import { EErrorCodes } from 'common/enums';
-import { productosModel } from 'models/producto';
+import { IItem } from '/common/interfaces';
+import { EErrorCodes } from '/common/enums';
+import { productosModel } from '/models/producto';
 
 const carritosPath = path.resolve(__dirname, '../../carrito.json');
 
@@ -33,12 +33,15 @@ class CarritoModel {
       const productToAdd = allProducts.find((item) => item.id === id);
       const carrito = await fsPromises.readFile(carritosPath, 'utf-8');
       const carritoJSON = JSON.parse(carrito);
-      const productToAddInCart = carritoJSON.productos.find((item: IItem) => item.id === id);
-      
+      const productToAddInCart = carritoJSON.productos.find(
+        (item: IItem) => item.id === id
+      );
+
       if (productToAddInCart) {
         throw {
           error: `-${EErrorCodes.ProductRepeated}`,
-          message: 'El producto que desea agregar ya se encuentra en el carrito',
+          message:
+            'El producto que desea agregar ya se encuentra en el carrito',
         };
       } else {
         if (productToAdd) {

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { EErrorCodes } from 'common/enums';
+import { EErrorCodes } from '/common/enums';
 
 const admin = true;
 

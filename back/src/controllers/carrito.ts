@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { carritoModel } from 'models/carrito';
-import { EErrorCodes } from 'common/enums';
+import { carritoModel } from '/models/carrito';
+import { EErrorCodes } from '/common/enums';
 
 export const getCarrito = async (
   req: Request,
@@ -53,9 +53,7 @@ export const deleteCarritoProduct = async (
   res: Response
 ): Promise<void> => {
   try {
-    const newCarritoProductList = await carritoModel.delete(
-      req.params.id
-    );
+    const newCarritoProductList = await carritoModel.delete(req.params.id);
     res.json({ data: newCarritoProductList });
   } catch (e) {
     res.status(404).json({ error: e.error, message: e.message });
