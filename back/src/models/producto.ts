@@ -1,7 +1,7 @@
 import { promises as fsPromises } from 'fs';
 import path from 'path';
 import { IItem } from '../common/interfaces';
-import { EErrorCodes } from '../common/enums';
+import { NotFound } from 'errors';
 
 const productosPath = path.resolve(__dirname, '../../productos.json');
 
@@ -38,15 +38,7 @@ class ProductosModel {
       );
       return producto;
     } catch (e) {
-      if (e.code) {
-        throw { error: e, message: 'No se pudo guardar el producto' };
-      } else {
-        throw {
-          error: e.error,
-          descripcion: e.descripcion,
-          message: e.message,
-        };
-      }
+      throw { error: e, message: 'No se pudo guardar el producto' };
     }
   }
 
@@ -74,20 +66,13 @@ class ProductosModel {
         );
         return productToUpdate;
       } else {
-        throw {
-          error: `-${EErrorCodes.ProductNotFound}`,
-          message: 'El producto que desea actualizar no existe',
-        };
+        throw new NotFound('El producto que desea actualizar no existe');
       }
     } catch (e) {
-      if (e.code) {
-        throw { error: e, message: 'No se pudo actualizar el producto' };
+      if (e instanceof NotFound) {
+        throw e;
       } else {
-        throw {
-          error: e.error,
-          descripcion: e.descripcion,
-          message: e.message,
-        };
+        throw { error: e, message: 'No se pudo actualizar el producto' };
       }
     }
   }
@@ -111,16 +96,13 @@ class ProductosModel {
           JSON.stringify(newProductList, null, '\t')
         );
       } else {
-        throw {
-          error: `-${EErrorCodes.ProductNotFound}`,
-          message: 'El producto que desea eliminar no existe',
-        };
+        throw new NotFound('El producto que desea eliminar no existe');
       }
     } catch (e) {
-      if (e.code) {
-        throw { error: e, message: 'No se pudo borrar el producto' };
+      if (e instanceof NotFound) {
+        throw e;
       } else {
-        throw { error: e.error, message: e.message };
+        throw { error: e, message: 'No se pudo actualizar el producto' };
       }
     }
   }

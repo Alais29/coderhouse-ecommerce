@@ -1,8 +1,8 @@
 import { promises as fsPromises } from 'fs';
 import path from 'path';
 import { IItem } from 'common/interfaces';
-import { EErrorCodes } from 'common/enums';
 import { productosModel } from 'models/producto';
+import { NotFound, RepeatedProductInCart } from 'errors';
 
 const carritosPath = path.resolve(__dirname, '../../carrito.json');
 
@@ -33,13 +33,14 @@ class CarritoModel {
       const productToAdd = allProducts.find((item) => item.id === id);
       const carrito = await fsPromises.readFile(carritosPath, 'utf-8');
       const carritoJSON = JSON.parse(carrito);
-      const productToAddInCart = carritoJSON.productos.find((item: IItem) => item.id === id);
-      
+      const productToAddInCart = carritoJSON.productos.find(
+        (item: IItem) => item.id === id
+      );
+
       if (productToAddInCart) {
-        throw {
-          error: `-${EErrorCodes.ProductRepeated}`,
-          message: 'El producto que desea agregar ya se encuentra en el carrito',
-        };
+        throw new RepeatedProductInCart(
+          'El producto que desea agregar ya se encuentra en el carrito'
+        );
       } else {
         if (productToAdd) {
           carritoJSON.productos.push(productToAdd);
@@ -49,17 +50,14 @@ class CarritoModel {
           );
           return carritoJSON.productos;
         } else {
-          throw {
-            error: `-${EErrorCodes.ProductNotFound}`,
-            message: 'El producto que desea agregar no existe',
-          };
+          throw new NotFound('El producto que desea agregar no existe');
         }
       }
     } catch (e) {
-      if (e.code) {
-        throw { error: e, message: 'Hubo un problema al agregar el producto' };
+      if (e instanceof NotFound || e instanceof RepeatedProductInCart) {
+        throw e;
       } else {
-        throw { error: e.error, message: e.message };
+        throw { error: e, message: 'Hubo un problema al agregar el producto' };
       }
     }
   }
@@ -83,16 +81,15 @@ class CarritoModel {
         );
         return carritoJSON.productos;
       } else {
-        throw {
-          error: `-${EErrorCodes.ProductNotFound}`,
-          message: 'El producto que desea eliminar no esta en el carrito',
-        };
+        throw new NotFound(
+          'El producto que desea eliminar no esta en el carrito'
+        );
       }
     } catch (e) {
-      if (e.code) {
-        throw { error: e, message: 'Hubo un problema al eliminar el producto' };
+      if (e instanceof NotFound) {
+        throw e;
       } else {
-        throw { error: e.error, message: e.message };
+        throw { error: e, message: 'No se pudo eliminar el producto' };
       }
     }
   }

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { carritoModel } from 'models/carrito';
-import { EErrorCodes } from 'common/enums';
+import { NotFound, RepeatedProductInCart } from 'errors';
 
 export const getCarrito = async (
   req: Request,
@@ -9,13 +9,13 @@ export const getCarrito = async (
   try {
     const productos = await carritoModel.getAll();
     if (productos.length !== 0) res.json({ data: productos });
-    else
-      throw {
-        error: `-${EErrorCodes.ProductNotFound}`,
-        message: 'No hay productos en el carrito',
-      };
+    else throw new NotFound('No hay productos en el carrito');
   } catch (e) {
-    res.status(404).json({ error: e.error, message: e.message });
+    if (e instanceof NotFound) {
+      res.status(404).json({ error: e.error, message: e.message });
+    } else {
+      res.status(404).json(e);
+    }
   }
 };
 
@@ -26,13 +26,13 @@ export const getCarritoProduct = async (
   try {
     const producto = await carritoModel.get(req.params.id);
     if (producto) res.json({ data: producto });
-    else
-      throw {
-        error: `-${EErrorCodes.ProductNotFound}`,
-        message: 'El producto no está en el carrito',
-      };
+    else throw new NotFound('El producto no está en el carrito');
   } catch (e) {
-    res.status(404).json({ error: e.error, message: e.message });
+    if (e instanceof NotFound) {
+      res.status(404).json({ error: e.error, message: e.message });
+    } else {
+      res.status(404).json(e);
+    }
   }
 };
 
@@ -44,7 +44,11 @@ export const saveCarritoProduct = async (
     const newProducto = await carritoModel.save(req.params.id);
     res.json({ data: newProducto });
   } catch (e) {
-    res.status(400).json({ error: e.error, message: e.message });
+    if (e instanceof NotFound || e instanceof RepeatedProductInCart) {
+      res.status(400).json({ error: e.error, message: e.message });
+    } else {
+      res.status(400).json(e);
+    }
   }
 };
 
@@ -53,11 +57,13 @@ export const deleteCarritoProduct = async (
   res: Response
 ): Promise<void> => {
   try {
-    const newCarritoProductList = await carritoModel.delete(
-      req.params.id
-    );
+    const newCarritoProductList = await carritoModel.delete(req.params.id);
     res.json({ data: newCarritoProductList });
   } catch (e) {
-    res.status(404).json({ error: e.error, message: e.message });
+    if (e instanceof NotFound) {
+      res.status(404).json({ error: e.error, message: e.message });
+    } else {
+      res.status(404).json(e);
+    }
   }
 };
