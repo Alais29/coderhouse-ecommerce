@@ -5,8 +5,9 @@ import path from 'path';
 import routes from 'routes';
 import { initWsServer } from 'services/socket';
 import { unknownEndpoint } from 'middlewares/unknownEndpoint';
-import { mySqlDbService } from 'services/mysqldb';
-import { sqlLiteDbService } from 'services/sqlite';
+// import { mySqlDbService } from 'services/mysqldb';
+// import { sqlLiteDbService } from 'services/sqlite';
+import { mongoDbService } from 'services/mongodb';
 
 const app: express.Application = express();
 const PORT = process.env.PORT || 8080;
@@ -19,8 +20,9 @@ server.listen(PORT, () => {
 });
 server.on('error', (error) => console.log(`Error en el servidor: ${error}`));
 
-mySqlDbService.init();
-sqlLiteDbService.init();
+// mySqlDbService.init();
+// sqlLiteDbService.init();
+mongoDbService.init();
 
 app.use(express.static(path.resolve(__dirname, '../', 'public')));
 app.use(express.json());
