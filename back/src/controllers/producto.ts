@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { isValidProduct } from 'utils/validations';
-import { IItem } from 'common/interfaces';
-import { productosModel } from 'models/productoMySql';
+import { productosModel } from 'models/productoMongo';
 import { EErrorCodes } from 'common/enums';
 
 export const getProductos = async (
@@ -26,7 +25,7 @@ export const getProducto = async (
   res: Response
 ): Promise<void> => {
   try {
-    const producto = await productosModel.get(Number(req.params.id));
+    const producto = await productosModel.get(req.params.id);
     if (producto) res.json({ data: producto });
     else
       throw {
@@ -52,7 +51,7 @@ export const saveProducto = async (
 
     isValidProduct(producto);
 
-    const newProducto: IItem = await productosModel.save(producto);
+    const newProducto = await productosModel.save(producto);
     res.json({ data: newProducto });
   } catch (e) {
     if (e.error.errno) {
@@ -80,7 +79,7 @@ export const updateProducto = async (
     isValidProduct(dataToUpdate);
 
     const producto = await productosModel.update(
-      Number(req.params.id),
+      req.params.id,
       dataToUpdate
     );
     res.json({ data: producto });
@@ -102,7 +101,7 @@ export const deleteProducto = async (
   res: Response
 ): Promise<void> => {
   try {
-    await productosModel.delete(Number(req.params.id));
+    await productosModel.delete(req.params.id);
     res.json({ data: 'Producto eliminado' });
   } catch (e) {
     res.status(404).json({ error: e.error, message: e.message });
