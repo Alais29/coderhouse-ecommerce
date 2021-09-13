@@ -1,13 +1,15 @@
 import { Request, Response } from 'express';
-import { carritoModel } from 'models/carrito';
 import { NotFound, RepeatedProductInCart } from 'errors';
+import { CarritoModelFactory } from 'models/factory/carrito';
+
+const modelFactory = new CarritoModelFactory(0);
 
 export const getCarrito = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   try {
-    const productos = await carritoModel.get();
+    const productos = await modelFactory.model().get();
     if (productos.length !== 0) res.json({ data: productos });
     else throw new NotFound('No hay productos en el carrito');
   } catch (e) {
@@ -24,7 +26,7 @@ export const getCarritoProduct = async (
   res: Response
 ): Promise<void> => {
   try {
-    const producto = await carritoModel.get(req.params.id);
+    const producto = await modelFactory.model().get(req.params.id);
     if (producto) res.json({ data: producto });
     else throw new NotFound('El producto no está en el carrito');
   } catch (e) {
@@ -41,7 +43,7 @@ export const saveCarritoProduct = async (
   res: Response
 ): Promise<void> => {
   try {
-    const newProducto = await carritoModel.save(req.params.id);
+    const newProducto = await modelFactory.model().save(req.params.id);
     res.json({ data: newProducto });
   } catch (e) {
     if (e instanceof NotFound || e instanceof RepeatedProductInCart) {
@@ -57,7 +59,7 @@ export const deleteCarritoProduct = async (
   res: Response
 ): Promise<void> => {
   try {
-    const newCarritoProductList = await carritoModel.delete(req.params.id);
+    const newCarritoProductList = await modelFactory.model().delete(req.params.id);
     res.json({ data: newCarritoProductList });
   } catch (e) {
     if (e instanceof NotFound) {

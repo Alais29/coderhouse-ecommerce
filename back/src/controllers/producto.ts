@@ -3,15 +3,17 @@ import { v4 as uuidv4 } from 'uuid';
 import moment from 'moment';
 import { isValidProduct } from 'utils/validations';
 import { IItem } from 'common/interfaces';
-import { productosModel } from 'models/producto';
 import { MissingFieldsProduct, NotFound, ProductValidation } from 'errors';
+import { ProductosModelFactory } from 'models/factory/productos';
+
+const modelFactory = new ProductosModelFactory(0);
 
 export const getProductos = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   try {
-    const productos = await productosModel.get();
+    const productos = await modelFactory.model().get();
     if (productos.length !== 0) res.json({ data: productos });
     else throw new NotFound('No hay productos');
   } catch (e) {
@@ -28,7 +30,7 @@ export const getProducto = async (
   res: Response
 ): Promise<void> => {
   try {
-    const producto = await productosModel.get(req.params.id);
+    const producto = await modelFactory.model().get(req.params.id);
     if (producto) res.json({ data: producto });
     else throw new NotFound('Producto no encontrado');
   } catch (e) {
@@ -54,7 +56,7 @@ export const saveProducto = async (
 
     isValidProduct(producto);
 
-    const newProducto: IItem = await productosModel.save(producto);
+    const newProducto: IItem = await modelFactory.model().save(producto);
     res.json({ data: newProducto });
   } catch (e) {
     if (e instanceof MissingFieldsProduct) {
@@ -86,7 +88,7 @@ export const updateProducto = async (
 
     isValidProduct(dataToUpdate);
 
-    const producto = await productosModel.update(req.params.id, dataToUpdate);
+    const producto = await modelFactory.model().update(req.params.id, dataToUpdate);
     res.json({ data: producto });
   } catch (e) {
     if (e instanceof MissingFieldsProduct) {
@@ -113,7 +115,7 @@ export const deleteProducto = async (
   res: Response
 ): Promise<void> => {
   try {
-    await productosModel.delete(req.params.id);
+    await modelFactory.model().delete(req.params.id);
     res.json({ data: 'Producto eliminado' });
   } catch (e) {
     if (e instanceof NotFound) {

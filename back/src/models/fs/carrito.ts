@@ -1,10 +1,10 @@
 import { promises as fsPromises } from 'fs';
 import path from 'path';
 import { IItem } from 'common/interfaces';
-import { productosModel } from 'models/producto';
+import { productosModel } from 'models/fs/producto';
 import { NotFound, RepeatedProductInCart } from 'errors';
 
-const carritosPath = path.resolve(__dirname, '../../carrito.json');
+const carritosPath = path.resolve(__dirname, '../../../carrito.json');
 
 class CarritoModel {
   async get(id?: string): Promise<IItem> {
