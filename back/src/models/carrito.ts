@@ -7,21 +7,12 @@ import { NotFound, RepeatedProductInCart } from 'errors';
 const carritosPath = path.resolve(__dirname, '../../carrito.json');
 
 class CarritoModel {
-  async getAll(): Promise<IItem[]> {
-    try {
-      const carrito = await fsPromises.readFile(carritosPath, 'utf-8');
-      return JSON.parse(carrito).productos;
-    } catch (e) {
-      throw { error: e, message: 'Hubo un problema al cargar el carrito' };
-    }
-  }
-
-  async get(id: string): Promise<IItem> {
+  async get(id?: string): Promise<IItem> {
     try {
       const carrito = await fsPromises.readFile(carritosPath, 'utf-8');
       const productos = JSON.parse(carrito).productos;
-      const producto = productos.find((item: IItem) => item.id === id);
-      return producto;
+      if (id) return productos.find((item: IItem) => item.id === id);
+      return productos;
     } catch (e) {
       throw { error: e, message: 'Hubo un problema al cargar el producto' };
     }
@@ -29,8 +20,8 @@ class CarritoModel {
 
   async save(id: string): Promise<IItem> {
     try {
-      const allProducts = await productosModel.getAll();
-      const productToAdd = allProducts.find((item) => item.id === id);
+      const allProducts = await productosModel.get();
+      const productToAdd = (allProducts as IItem[]).find((item: IItem) => item.id === id);
       const carrito = await fsPromises.readFile(carritosPath, 'utf-8');
       const carritoJSON = JSON.parse(carrito);
       const productToAddInCart = carritoJSON.productos.find(

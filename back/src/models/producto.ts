@@ -6,21 +6,12 @@ import { NotFound } from 'errors';
 const productosPath = path.resolve(__dirname, '../../productos.json');
 
 class ProductosModel {
-  async getAll(): Promise<IItem[]> {
-    try {
-      const products = await fsPromises.readFile(productosPath, 'utf-8');
-      return JSON.parse(products);
-    } catch (e) {
-      throw { error: e, message: 'Hubo un problema al cargar los productos' };
-    }
-  }
-
-  async get(id: string): Promise<IItem> {
+  async get(id?: string): Promise<IItem | IItem[]> {
     try {
       const productos = await fsPromises.readFile(productosPath, 'utf-8');
       const productosJSON = JSON.parse(productos);
-      const producto = productosJSON.find((item: IItem) => item.id === id);
-      return producto;
+      if(id) return productosJSON.find((item: IItem) => item.id === id);
+      return productosJSON;
     } catch (e) {
       throw { error: e, message: 'Hubo un problema al cargar el producto' };
     }

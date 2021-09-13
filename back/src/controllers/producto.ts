@@ -11,7 +11,7 @@ export const getProductos = async (
   res: Response
 ): Promise<void> => {
   try {
-    const productos = await productosModel.getAll();
+    const productos = await productosModel.get();
     if (productos.length !== 0) res.json({ data: productos });
     else throw new NotFound('No hay productos');
   } catch (e) {
