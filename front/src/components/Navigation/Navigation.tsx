@@ -13,6 +13,7 @@ const Navigation = () => {
           <Nav className="me-auto">
             <Link className="nav-link" to="/">Inicio</Link>
             <Link className="nav-link" to="/add-product">Agregar Producto</Link>
+            <Link className="nav-link" to="/chat">Chat</Link>
             <Link className={cx('nav-link', 'ms-sm-auto', styles['cart-icon'])} to="/cart">
               <CartIcon />
             </Link>

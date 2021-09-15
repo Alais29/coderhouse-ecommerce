@@ -1,6 +1,4 @@
 import { Request, Response } from 'express';
-import { v4 as uuidv4 } from 'uuid';
-import moment from 'moment';
 import { isValidProduct } from 'utils/validations';
 import { IItem } from 'common/interfaces';
 import { MissingFieldsProduct, NotFound, ProductValidation } from 'errors';
@@ -49,10 +47,10 @@ export const saveProducto = async (
   try {
     const producto = req.body;
 
-    producto.id = uuidv4();
+    // producto.id = uuidv4();
     producto.precio = Number(producto.precio);
     producto.stock = Number(producto.stock);
-    producto.timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
+    // producto.timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 
     isValidProduct(producto);
 
