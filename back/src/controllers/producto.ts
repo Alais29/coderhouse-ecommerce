@@ -2,16 +2,14 @@ import { Request, Response } from 'express';
 import { isValidProduct } from 'utils/validations';
 import { IItem } from 'common/interfaces';
 import { MissingFieldsProduct, NotFound, ProductValidation } from 'errors';
-import { ProductosModelFactory } from 'models/factory/productos';
-
-const modelFactory = new ProductosModelFactory(0);
+import { productsAPI } from 'api/productos';
 
 export const getProductos = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   try {
-    const productos = await modelFactory.model().get();
+    const productos = await productsAPI.get();
     if (productos.length !== 0) res.json({ data: productos });
     else throw new NotFound('No hay productos');
   } catch (e) {
@@ -28,7 +26,7 @@ export const getProducto = async (
   res: Response
 ): Promise<void> => {
   try {
-    const producto = await modelFactory.model().get(req.params.id);
+    const producto = await productsAPI.get(req.params.id);
     if (producto) res.json({ data: producto });
     else throw new NotFound('Producto no encontrado');
   } catch (e) {
@@ -47,14 +45,12 @@ export const saveProducto = async (
   try {
     const producto = req.body;
 
-    // producto.id = uuidv4();
     producto.precio = Number(producto.precio);
     producto.stock = Number(producto.stock);
-    // producto.timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 
     isValidProduct(producto);
 
-    const newProducto: IItem = await modelFactory.model().save(producto);
+    const newProducto: IItem = await productsAPI.save(producto);
     res.json({ data: newProducto });
   } catch (e) {
     if (e instanceof MissingFieldsProduct) {
@@ -86,7 +82,7 @@ export const updateProducto = async (
 
     isValidProduct(dataToUpdate);
 
-    const producto = await modelFactory.model().update(req.params.id, dataToUpdate);
+    const producto = await productsAPI.update(req.params.id, dataToUpdate);
     res.json({ data: producto });
   } catch (e) {
     if (e instanceof MissingFieldsProduct) {
@@ -113,7 +109,7 @@ export const deleteProducto = async (
   res: Response
 ): Promise<void> => {
   try {
-    await modelFactory.model().delete(req.params.id);
+    await productsAPI.delete(req.params.id);
     res.json({ data: 'Producto eliminado' });
   } catch (e) {
     if (e instanceof NotFound) {

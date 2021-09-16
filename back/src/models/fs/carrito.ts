@@ -1,7 +1,7 @@
 import { promises as fsPromises } from 'fs';
 import path from 'path';
 import { IItem } from 'common/interfaces';
-import { productosModel } from 'models/fs/producto';
+import { ProductosModel } from 'models/fs/producto';
 import { NotFound, RepeatedProductInCart } from 'errors';
 
 const carritosPath = path.resolve(__dirname, '../../../carrito.json');
@@ -20,7 +20,8 @@ class CarritoModel {
 
   async save(id: string): Promise<IItem> {
     try {
-      const allProducts = await productosModel.get();
+      const productsModel = new ProductosModel();
+      const allProducts = await productsModel.get();
       const productToAdd = (allProducts as IItem[]).find((item: IItem) => item.id === id);
       const carrito = await fsPromises.readFile(carritosPath, 'utf-8');
       const carritoJSON = JSON.parse(carrito);

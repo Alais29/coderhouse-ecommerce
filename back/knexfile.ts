@@ -6,7 +6,7 @@ export default {
     connection: {
       host: 'localhost',
       user: 'root',
-      password: '',
+      password: '0000',
       database: 'coder_ecommerce',
     },
     migrations: {
@@ -18,9 +18,9 @@ export default {
     pool: { min: 0, max: 7 },
   },
 
-  local: {
+  development2: {
     client: 'sqlite3',
-    connection: { filename: './mensajes.sqlite' },
+    connection: { filename: './coder_ecommerce.sqlite' },
     useNullAsDefault: true,
   },
 };

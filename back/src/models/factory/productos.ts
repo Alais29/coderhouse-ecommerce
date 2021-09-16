@@ -1,5 +1,7 @@
 import { IItem } from 'common/interfaces';
-import { productosModel } from 'models/fs/producto';
+import { ProductosModel } from 'models/fs/producto';
+import { ProductosModelMySql } from 'models/mysql/producto';
+import { ProductosModelSqlite } from 'models/sqlite/producto';
 
 interface IModel {
   get: (id?: string) => Promise<IItem | IItem[]>
@@ -8,15 +10,26 @@ interface IModel {
   delete: (id: string) => Promise<void>
 }
 
-const models = [productosModel];
+export enum ModelType {
+  fs = 1,
+  mySql,
+  sqlite,
+  localMongo,
+  mongoAtlas,
+  firebase
+}
 
 export class ProductosModelFactory {
-  public modelNumber: number;
-  constructor(modelNumber: number) {
-    this.modelNumber = modelNumber;
-  }
+  static model(type: number): IModel {
+    switch (type) {      
+      case ModelType.mySql:
+        return new ProductosModelMySql();
+      
+      case ModelType.sqlite:
+        return new ProductosModelSqlite();
 
-  model(): IModel {
-    return models[this.modelNumber];
+      default:
+        return new ProductosModel();
+    }
   }
 }

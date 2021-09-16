@@ -1,11 +1,13 @@
 import { promises as fsPromises } from 'fs';
+import { v4 as uuidv4 } from 'uuid';
+import moment from 'moment';
 import path from 'path';
 import { IItem } from 'common/interfaces';
 import { NotFound } from 'errors';
 
 const productosPath = path.resolve(__dirname, '../../../productos.json');
 
-class ProductosModel {
+export class ProductosModel {
   async get(id?: string): Promise<IItem | IItem[]> {
     try {
       const productos = await fsPromises.readFile(productosPath, 'utf-8');
@@ -21,6 +23,9 @@ class ProductosModel {
     try {
       const productos = await fsPromises.readFile(productosPath, 'utf-8');
       const productosJSON = JSON.parse(productos);
+
+      producto.id = uuidv4();
+      producto.timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 
       productosJSON.push(producto);
       await fsPromises.writeFile(
@@ -98,5 +103,3 @@ class ProductosModel {
     }
   }
 }
-
-export const productosModel = new ProductosModel();
