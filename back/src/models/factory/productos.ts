@@ -1,7 +1,7 @@
 import { IItem } from 'common/interfaces';
 import { ProductosModel } from 'models/fs/producto';
+import { ProductosModelMongoDb } from 'models/mongoDb/producto';
 import { ProductosModelMySql } from 'models/mysql/producto';
-// import { ProductosModelSqlite } from 'models/sqlite/producto';
 
 interface IModel {
   get: (id?: string) => Promise<IItem | IItem[]>
@@ -27,6 +27,12 @@ export class ProductosModelFactory {
       
       case ModelType.sqlite:
         return new ProductosModelMySql('sqlite');
+      
+      case ModelType.localMongo:
+        return new ProductosModelMongoDb('local');
+      
+      case ModelType.mongoAtlas:
+        return new ProductosModelMongoDb('atlas');
 
       default:
         return new ProductosModel();
