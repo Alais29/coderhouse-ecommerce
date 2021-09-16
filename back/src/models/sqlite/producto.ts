@@ -22,15 +22,19 @@ export class ProductosModelSqlite {
             productosTable.string('codigo').notNullable();
             productosTable.decimal('precio', 5, 2).notNullable();
             productosTable.string('foto').notNullable();
-            productosTable.timestamp('timestamp').defaultTo(this.connection.fn.now());
+            productosTable
+              .timestamp('timestamp')
+              .defaultTo(this.connection.fn.now());
             productosTable.integer('stock').notNullable();
           })
           .then(() => {
             console.log('Tabla productos creada');
-            this.connection('productos').insert(productosMock);
-            console.log('Productos agregados');
+            this.connection('productos')
+              .insert(productosMock)
+              .then(() => console.log('Productos agregados'))
+              .catch((e) => console.log(e));
           })
-          .catch(e => console.log(e));
+          .catch((e) => console.log(e));
       }
     });
   }
@@ -38,7 +42,10 @@ export class ProductosModelSqlite {
   async get(id?: string): Promise<IItem | IItem[]> {
     try {
       if (id) {
-        const producto = await this.connection('productos').where('id', Number(id));
+        const producto = await this.connection('productos').where(
+          'id',
+          Number(id)
+        );
         return producto;
       }
       return this.connection('productos');
@@ -50,8 +57,8 @@ export class ProductosModelSqlite {
   async save(producto: IItem): Promise<IItem> {
     try {
       const newProductId = await this.connection('productos').insert(producto);
-      const newProduct = this.get(((newProductId[0] as unknown) as string));
-      return (newProduct as unknown) as IItem;
+      const newProduct = this.get(newProductId[0] as unknown as string);
+      return newProduct as unknown as IItem;
     } catch (e) {
       throw { error: e, message: 'No se pudo guardar el producto' };
     }
@@ -59,7 +66,9 @@ export class ProductosModelSqlite {
 
   async update(id: string, producto: IItem): Promise<IItem> {
     try {
-      await this.connection('productos').where('id', Number(id)).update(producto);
+      await this.connection('productos')
+        .where('id', Number(id))
+        .update(producto);
       const productUpdated = await this.get(id);
 
       if (productUpdated) {
@@ -78,7 +87,9 @@ export class ProductosModelSqlite {
 
   async delete(id: string): Promise<void> {
     try {
-      const productDeleted = await this.connection('productos').where('id', Number(id)).del();
+      const productDeleted = await this.connection('productos')
+        .where('id', Number(id))
+        .del();
       if (!productDeleted) {
         throw new NotFound('El producto que desea eliminar no existe');
       }
