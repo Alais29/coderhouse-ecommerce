@@ -1,7 +1,7 @@
 import { IItem } from 'common/interfaces';
 import { ProductosModel } from 'models/fs/producto';
 import { ProductosModelMySql } from 'models/mysql/producto';
-import { ProductosModelSqlite } from 'models/sqlite/producto';
+// import { ProductosModelSqlite } from 'models/sqlite/producto';
 
 interface IModel {
   get: (id?: string) => Promise<IItem | IItem[]>
@@ -23,10 +23,10 @@ export class ProductosModelFactory {
   static model(type: number): IModel {
     switch (type) {      
       case ModelType.mySql:
-        return new ProductosModelMySql();
+        return new ProductosModelMySql('mysql');
       
       case ModelType.sqlite:
-        return new ProductosModelSqlite();
+        return new ProductosModelMySql('sqlite');
 
       default:
         return new ProductosModel();

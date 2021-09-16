@@ -6,8 +6,8 @@ import { productosMock } from 'mocks/products';
 
 export class ProductosModelMySql {
   private connection: Knex;
-  constructor() {
-    const environment = process.env.NODE_ENV || 'development';
+  constructor(dbType: 'mysql' | 'sqlite') {
+    const environment = dbType === 'mysql' ? process.env.NODE_ENV || 'development' : 'development2';
     const configDb: IKnex = dbConfig;
     const options = configDb[environment];
     this.connection = knex(options);
@@ -27,8 +27,10 @@ export class ProductosModelMySql {
           })
           .then(() => {
             console.log('Tabla productos creada');
-            this.connection('productos').insert(productosMock);
-            console.log('Productos agregados');
+            this.connection('productos')
+              .insert(productosMock)
+              .then(() => console.log('Productos agregados'))
+              .catch((e) => console.log(e));
           })
           .catch(e => console.log(e));
       }
