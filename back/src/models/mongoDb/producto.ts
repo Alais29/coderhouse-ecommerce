@@ -48,11 +48,11 @@ export class ProductosModelMongoDb {
       .catch((e) => console.log(e));
   }
 
-  async get(id?: string): Promise<IItem[]> {
-    let output: IItem[] = [];
+  async get(id?: string): Promise<IItem[] | IItem> {
+    let output: IItem[] | IItem = [];
     if (id) {
       const document = await this.productos.find({ _id: id });
-      if (document) output.push((document as unknown) as IItem);
+      if (document) output = ((document as unknown) as IItem);
     } else {
       const products = await this.productos.find();
       output = (products as unknown) as IItem[];
