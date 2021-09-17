@@ -6,7 +6,7 @@ import { NotFound, RepeatedProductInCart } from 'errors';
 
 const carritosPath = path.resolve(__dirname, '../../../carrito.json');
 
-class CarritoModel {
+export class CarritoModel {
   async get(id?: string): Promise<IItem> {
     try {
       const carrito = await fsPromises.readFile(carritosPath, 'utf-8');
@@ -14,7 +14,7 @@ class CarritoModel {
       if (id) return productos.find((item: IItem) => item.id === id);
       return productos;
     } catch (e) {
-      throw { error: e, message: 'Hubo un problema al cargar el producto' };
+      throw { error: e, message: 'Hubo un problema al cargar los producto' };
     }
   }
 
@@ -86,5 +86,3 @@ class CarritoModel {
     }
   }
 }
-
-export const carritoModel = new CarritoModel();

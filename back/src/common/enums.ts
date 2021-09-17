@@ -5,3 +5,12 @@ export enum EErrorCodes {
   ProductNotFound,
   ProductRepeated,
 }
+
+export enum ModelType {
+  fs = 1,
+  mySql,
+  sqlite,
+  localMongo,
+  mongoAtlas,
+  firebase
+}

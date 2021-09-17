@@ -1,5 +1,7 @@
+import { ModelType } from 'common/enums';
 import { IItem } from 'common/interfaces';
-import { carritoModel } from 'models/fs/carrito';
+import { CarritoModel } from 'models/fs/carrito';
+import { CarritosModelMySql } from 'models/mysql/carrito';
 
 interface IModel {
   get: (id?: string) => Promise<IItem | IItem[]>
@@ -7,15 +9,17 @@ interface IModel {
   delete: (id: string) => Promise<IItem[]>
 }
 
-const models = [carritoModel];
-
 export class CarritoModelFactory {
-  public modelNumber: number;
-  constructor(modelNumber: number) {
-    this.modelNumber = modelNumber;
-  }
-
-  model(): IModel {
-    return models[this.modelNumber];
+  static model(type: number): IModel {
+    switch (type) {
+      case ModelType.mySql:
+        return new CarritosModelMySql('mysql');
+      
+      case ModelType.sqlite:
+        return new CarritosModelMySql('sqlite');
+      
+      default:
+        return new CarritoModel();
+    }
   }
 }

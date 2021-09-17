@@ -1,3 +1,4 @@
+import { ModelType } from 'common/enums';
 import { IItem } from 'common/interfaces';
 import { ProductosModelFirebase } from 'models/firebase/producto';
 import { ProductosModel } from 'models/fs/producto';
@@ -9,15 +10,6 @@ interface IModel {
   save: (producto: IItem) => Promise<IItem>
   update: (id: string, producto: IItem) => Promise<IItem>
   delete: (id: string) => Promise<void>
-}
-
-export enum ModelType {
-  fs = 1,
-  mySql,
-  sqlite,
-  localMongo,
-  mongoAtlas,
-  firebase
 }
 
 export class ProductosModelFactory {
