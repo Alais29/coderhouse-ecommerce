@@ -2,8 +2,8 @@ import Config from 'config';
 import { IItem, IItemBase } from 'common/interfaces';
 import moment from 'moment';
 import mongoose from 'mongoose';
-import { productosMock } from 'mocks/products';
-import { NotFound } from 'errors';
+import { NotFound, RepeatedProductInCart } from 'errors';
+import { productosModel } from 'models/mongoDb/producto';
 
 const ProductoSchema = new mongoose.Schema<IItemBase>({
   nombre: { type: String, require: true, max: 100 },
@@ -23,12 +23,12 @@ ProductoSchema.set('toJSON', {
   }
 });
 
-export const productosModel = mongoose.model<IItemBase>('productos', ProductoSchema);
-
-export class ProductosModelMongoDb {
+export class CarritoModelMongoDb {
   private dbURL: string;
+  private carrito;
   private productos;
   constructor(type: 'local' | 'atlas') {
+    this.carrito = mongoose.model<IItemBase>('carrito', ProductoSchema);
     this.productos = productosModel;
     if (type === 'local') {
       this.dbURL = 'mongodb://0.0.0.0:27017/ecommerce';
@@ -36,18 +36,7 @@ export class ProductosModelMongoDb {
       this.dbURL = `mongodb+srv://${Config.MONGO_ATLAS_USER}:${Config.MONGO_ATLAS_PASSWORD}@${Config.MONGO_ATLAS_CLUSTER}/${Config.MONGO_ATLAS_DB}?retryWrites=true&w=majority`;
     }
     mongoose.connect(this.dbURL)
-      .then(() => {
-        console.log('Base de datos Mongo conectada');
-        this.get()
-          .then((productos) => {
-            if (productos.length === 0) {
-              this.productos.insertMany(productosMock)
-                .then(() => console.log('Productos agregados'))
-                .catch((e) => console.log(e));
-            }
-          })
-          .catch((e) => console.log(e));
-      })
+      .then(() => console.log('Base de datos Mongo conectada'))
       .catch((e) => console.log(e));
   }
 
@@ -55,44 +44,64 @@ export class ProductosModelMongoDb {
     try {
       let output: IItem[] | IItem = [];
       if (id) {
-        const document = await this.productos.findById(id);
+        const document = await this.carrito.findById(id);
         if (document) output = ((document as unknown) as IItem);
+        else throw new NotFound('El producto no está en el carrito');
       } else {
-        const products = await this.productos.find();
+        const products = await this.carrito.find();
         output = (products as unknown) as IItem[];
       }
       return output;
     } catch (e) {
-      if (e instanceof mongoose.Error.CastError) {
-        throw new NotFound('Producto no encontrado');
+      if (e instanceof NotFound) {
+        throw e;
+      } else if (e instanceof mongoose.Error.CastError) {
+        throw new NotFound('El producto no está en el carrito');
       } else {
         throw { error: e, message: 'Hubo un problema al cargar los productos' };
       }
     }
   }
 
-  async save(data: IItem): Promise<IItem> {
-    const newProduct = await new this.productos(data);
-    await newProduct.save();
-    return (newProduct as unknown) as IItem;
-  }
-
-  async update(id: string, data: IItem): Promise<IItem> {
+  async save(id: string): Promise<IItem> {
     try {
-      const productUpdated = await this.productos.findByIdAndUpdate(id, data, { new: true, runValidators: true, rawResult: true });
-      return (productUpdated.value as unknown) as IItem;
+      const productsInCart = await this.get();
+      const productToAddInCart = (productsInCart as IItem[]).find(item => item.id === id);
+      
+      if (productToAddInCart) {
+        throw new RepeatedProductInCart(
+          'El producto que desea agregar ya se encuentra en el carrito'
+        );
+      } else {
+        const productToAdd = await this.productos.findById(id);
+        if (productToAdd) {
+          const productJSON = productToAdd.toJSON();
+          productJSON._id = productJSON.id;
+          delete productJSON.id;
+
+          const newProduct = await new this.carrito(productJSON as IItem);
+          await newProduct.save();
+          return newProduct as IItem;  
+        } else {
+          throw new NotFound('El producto que deseas agregar no existe');
+        }
+      }
     } catch (e) {
-      if (e instanceof mongoose.Error.CastError) {
-        throw new NotFound('El producto que desea actualizar no existe');
+      if (e instanceof RepeatedProductInCart || e instanceof NotFound ) {
+        throw e;
+      } else if (e instanceof mongoose.Error.CastError) {
+        throw new NotFound('El producto que deseas agregar no existe');
       } else {
-        throw { error: e, message: 'Hubo un problema al cargar los productos' };
+        throw { error: e, message: 'No se pudo agregar el producto' };
       }
     }
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: string): Promise<IItem[]> {
     try {
-      await this.productos.findByIdAndRemove(id);
+      await this.carrito.findByIdAndRemove(id);
+      const carritoProducts = await this.get();
+      return carritoProducts as IItem[];
     } catch (e) {
       if (e instanceof mongoose.Error.CastError) {
         throw new NotFound('El producto que desea eliminar no existe');

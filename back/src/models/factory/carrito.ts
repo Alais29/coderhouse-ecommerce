@@ -1,6 +1,7 @@
 import { ModelType } from 'common/enums';
 import { IItem } from 'common/interfaces';
 import { CarritoModel } from 'models/fs/carrito';
+import { CarritoModelMongoDb } from 'models/mongoDb/carrito';
 import { CarritosModelMySql } from 'models/mysql/carrito';
 
 interface IModel {
@@ -17,6 +18,12 @@ export class CarritoModelFactory {
       
       case ModelType.sqlite:
         return new CarritosModelMySql('sqlite');
+      
+      case ModelType.localMongo:
+        return new CarritoModelMongoDb('local');
+      
+      case ModelType.mongoAtlas:
+        return new CarritoModelMongoDb('atlas');
       
       default:
         return new CarritoModel();

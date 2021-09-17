@@ -59,7 +59,7 @@ export class CarritosModelMySql {
           const newProductAdded = await this.get((productAddedId[0] as unknown) as string);
           return (newProductAdded as unknown) as IItem;
         } else {
-          throw new NotFound('El producto que desea agregar no existe');
+          throw new NotFound('El producto que deseas agregar no existe');
         }
       }
     } catch (e) {
