@@ -1,4 +1,5 @@
 import { IItem } from 'common/interfaces';
+import { ProductosModelFirebase } from 'models/firebase/producto';
 import { ProductosModel } from 'models/fs/producto';
 import { ProductosModelMongoDb } from 'models/mongoDb/producto';
 import { ProductosModelMySql } from 'models/mysql/producto';
@@ -33,6 +34,9 @@ export class ProductosModelFactory {
       
       case ModelType.mongoAtlas:
         return new ProductosModelMongoDb('atlas');
+      
+      case ModelType.firebase:
+        return new ProductosModelFirebase();
 
       default:
         return new ProductosModel();

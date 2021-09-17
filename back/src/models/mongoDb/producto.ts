@@ -1,5 +1,5 @@
 import Config from 'config';
-import { IItem, IItemBase, IItemMongoDoc } from 'common/interfaces';
+import { IItem, IItemBase } from 'common/interfaces';
 import moment from 'moment';
 import mongoose from 'mongoose';
 import { productosMock } from 'mocks/products';
