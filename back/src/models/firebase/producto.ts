@@ -1,4 +1,5 @@
 import { IItem } from 'common/interfaces';
+import { NotFound } from 'errors';
 import admin, { ServiceAccount } from 'firebase-admin';
 import { productosMock } from 'mocks/products';
 import moment from 'moment';
@@ -17,7 +18,8 @@ export class ProductosModelFirebase {
       .then((productos) => {
         if (productos.length === 0) {
           const batch = db.batch();
-          productosMock.map((product) => {
+          (productosMock as IItem[]).map((product) => {
+            product.timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
             const docRef = this.productosDb.doc();
             batch.set(docRef, product);
           });
@@ -28,45 +30,83 @@ export class ProductosModelFirebase {
   }
 
   async get(id?: string): Promise<IItem[] | IItem> {
-    let output: IItem[] | IItem = [];
-    if (id) {
-      const data = await this.productosDb.doc(id).get();
-      const producto = data.data();
-      output = {
-        id: data.id,
-        ...producto
-      } as IItem;
-    } else {
-      const result = await this.productosDb.get();
-      const productos = result.docs;
-      output = productos.map(product => {
-        const productData = product.data();
-        return {
-          id: product.id,
-          ...productData
-        };
-      }) as IItem[];
+    try {
+      let output: IItem[] | IItem = [];
+      if (id) {
+        const data = await this.productosDb.doc(id).get();
+        const producto = data.data();
+        if (producto) {
+          output = {
+            id: data.id,
+            ...producto
+          } as IItem;
+        } else {
+          return output[0];
+        }
+      } else {
+        const result = await this.productosDb.get();
+        const productos = result.docs;
+        output = productos.map(product => {
+          const productData = product.data();
+          return {
+            id: product.id,
+            ...productData
+          };
+        }) as IItem[];
+      }
+      return output;
+    } catch (e) {
+      throw { error: e, message: 'Hubo un problema al cargar los productos' };
     }
-    return output;
   }
 
   async save(data: IItem): Promise<IItem> {
-    data.timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
-    const productDocumentRef = await this.productosDb.add({
-      ...data
-    });
-    const productCreatedId = productDocumentRef.id;
-    const productCreated = await this.get(productCreatedId);
-    return productCreated as IItem;
+    try {
+      data.timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
+      const productDocumentRef = await this.productosDb.add({
+        ...data
+      });
+      const productCreatedId = productDocumentRef.id;
+      const productCreated = await this.get(productCreatedId);
+      return productCreated as IItem;
+    } catch (e) {
+      throw { error: e, message: 'No se pudo guardar el producto' };
+    }
   }
 
   async update(id: string, producto: IItem): Promise<IItem> {
-    await this.productosDb.doc(id).update(producto);
-    const productUpdated = await this.get(id);
-    return productUpdated as IItem;
+    try {
+      const productToUpdate = await this.get(id);
+      if (productToUpdate) {
+        await this.productosDb.doc(id).update(producto);
+        const productUpdated = await this.get(id);
+        return productUpdated as IItem;
+      } else {
+        throw new NotFound('El producto que desea actualizar no existe');
+      }
+    } catch (e) {
+      if (e instanceof NotFound) {
+        throw e;
+      } else {
+        throw { error: e, message: 'No se pudo actualizar el producto' };
+      }
+    }
   }
 
   async delete(id: string): Promise<void> {
-    await this.productosDb.doc(id).delete();
+    try {
+      const productToDelete = await this.get(id);
+      if (productToDelete) {
+        await this.productosDb.doc(id).delete();
+      } else {
+        throw new NotFound('El producto que desea eliminar no existe');
+      }
+    } catch (e) {
+      if (e instanceof NotFound) {
+        throw e;
+      } else {
+        throw { error: e, message: 'No se pudo actualizar el producto' };
+      }
+    }
   }
 }

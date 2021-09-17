@@ -3,6 +3,7 @@ import { IItem, IItemBase } from 'common/interfaces';
 import moment from 'moment';
 import mongoose from 'mongoose';
 import { productosMock } from 'mocks/products';
+import { NotFound } from 'errors';
 
 const ProductoSchema = new mongoose.Schema<IItemBase>({
   nombre: { type: String, require: true, max: 100 },
@@ -49,15 +50,23 @@ export class ProductosModelMongoDb {
   }
 
   async get(id?: string): Promise<IItem[] | IItem> {
-    let output: IItem[] | IItem = [];
-    if (id) {
-      const document = await this.productos.find({ _id: id });
-      if (document) output = ((document as unknown) as IItem);
-    } else {
-      const products = await this.productos.find();
-      output = (products as unknown) as IItem[];
+    try {
+      let output: IItem[] | IItem = [];
+      if (id) {
+        const document = await this.productos.findById(id);
+        if (document) output = ((document as unknown) as IItem);
+      } else {
+        const products = await this.productos.find();
+        output = (products as unknown) as IItem[];
+      }
+      return output;
+    } catch (e) {
+      if (e instanceof mongoose.Error.CastError) {
+        throw new NotFound('Producto no encontrado');
+      } else {
+        throw { error: e, message: 'Hubo un problema al cargar los productos' };
+      }
     }
-    return output;
   }
 
   async save(data: IItem): Promise<IItem> {
@@ -67,11 +76,27 @@ export class ProductosModelMongoDb {
   }
 
   async update(id: string, data: IItem): Promise<IItem> {
-    const productUpdated = await this.productos.findByIdAndUpdate(id, data, { new: true, runValidators: true, rawResult: true });
-    return (productUpdated.value as unknown) as IItem;
+    try {
+      const productUpdated = await this.productos.findByIdAndUpdate(id, data, { new: true, runValidators: true, rawResult: true });
+      return (productUpdated.value as unknown) as IItem;
+    } catch (e) {
+      if (e instanceof mongoose.Error.CastError) {
+        throw new NotFound('El producto que desea actualizar no existe');
+      } else {
+        throw { error: e, message: 'Hubo un problema al cargar los productos' };
+      }
+    }
   }
 
   async delete(id: string): Promise<void> {
-    await this.productos.findByIdAndRemove(id);
+    try {
+      await this.productos.findByIdAndRemove(id);
+    } catch (e) {
+      if (e instanceof mongoose.Error.CastError) {
+        throw new NotFound('El producto que desea eliminar no existe');
+      } else {
+        throw { error: e, message: 'Hubo un problema al cargar los productos' };
+      }
+    }
   }
 }
