@@ -20,7 +20,7 @@ export class CarritoModelFirebase {
         if (producto) {
           output = {
             id: data.id,
-            ...producto
+            ...producto,
           } as IItem;
         } else {
           return output[0];
@@ -28,11 +28,11 @@ export class CarritoModelFirebase {
       } else {
         const result = await this.carritoDb.get();
         const productos = result.docs;
-        output = productos.map(product => {
+        output = productos.map((product) => {
           const productData = product.data();
           return {
             id: product.id,
-            ...productData
+            ...productData,
           };
         }) as IItem[];
       }
@@ -55,11 +55,11 @@ export class CarritoModelFirebase {
         const productToAdd = productToAddData.data();
         if (productToAdd) {
           await this.carritoDb.doc(id).set({
-            ...productToAdd
+            ...productToAdd,
           });
           return {
             id,
-            ...productToAdd
+            ...productToAdd,
           } as IItem;
         } else {
           throw new NotFound('El producto que deseas agregar no existe');

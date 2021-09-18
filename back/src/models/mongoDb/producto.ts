@@ -1,7 +1,7 @@
 import Config from 'config';
-import { IItem, IItemBase } from 'common/interfaces';
+import { IItem, IItemBase, IItemQuery } from 'common/interfaces';
 import moment from 'moment';
-import mongoose from 'mongoose';
+import mongoose, { FilterQuery } from 'mongoose';
 import { productosMock } from 'mocks/products';
 import { NotFound } from 'errors';
 
@@ -20,10 +20,13 @@ ProductoSchema.set('toJSON', {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
     delete returnedObject.__v;
-  }
+  },
 });
 
-export const productosModel = mongoose.model<IItemBase>('productos', ProductoSchema);
+export const productosModel = mongoose.model<IItemBase>(
+  'productos',
+  ProductoSchema
+);
 
 export class ProductosModelMongoDb {
   private dbURL: string;
@@ -35,13 +38,15 @@ export class ProductosModelMongoDb {
     } else {
       this.dbURL = `mongodb+srv://${Config.MONGO_ATLAS_USER}:${Config.MONGO_ATLAS_PASSWORD}@${Config.MONGO_ATLAS_CLUSTER}/${Config.MONGO_ATLAS_DB}?retryWrites=true&w=majority`;
     }
-    mongoose.connect(this.dbURL)
+    mongoose
+      .connect(this.dbURL)
       .then(() => {
         console.log('Base de datos Mongo conectada');
         this.get()
           .then((productos) => {
             if (productos.length === 0) {
-              this.productos.insertMany(productosMock)
+              this.productos
+                .insertMany(productosMock)
                 .then(() => console.log('Productos agregados'))
                 .catch((e) => console.log(e));
             }
@@ -56,10 +61,10 @@ export class ProductosModelMongoDb {
       let output: IItem[] | IItem = [];
       if (id) {
         const document = await this.productos.findById(id);
-        if (document) output = ((document as unknown) as IItem);
+        if (document) output = document as unknown as IItem;
       } else {
         const products = await this.productos.find();
-        output = (products as unknown) as IItem[];
+        output = products as unknown as IItem[];
       }
       return output;
     } catch (e) {
@@ -74,13 +79,17 @@ export class ProductosModelMongoDb {
   async save(data: IItem): Promise<IItem> {
     const newProduct = await new this.productos(data);
     await newProduct.save();
-    return (newProduct as unknown) as IItem;
+    return newProduct as unknown as IItem;
   }
 
   async update(id: string, data: IItem): Promise<IItem> {
     try {
-      const productUpdated = await this.productos.findByIdAndUpdate(id, data, { new: true, runValidators: true, rawResult: true });
-      return (productUpdated.value as unknown) as IItem;
+      const productUpdated = await this.productos.findByIdAndUpdate(id, data, {
+        new: true,
+        runValidators: true,
+        rawResult: true,
+      });
+      return productUpdated.value as unknown as IItem;
     } catch (e) {
       if (e instanceof mongoose.Error.CastError) {
         throw new NotFound('El producto que desea actualizar no existe');
@@ -100,5 +109,39 @@ export class ProductosModelMongoDb {
         throw { error: e, message: 'Hubo un problema al cargar los productos' };
       }
     }
+  }
+
+  async query(options: IItemQuery): Promise<IItem[]> {
+    const query: FilterQuery<IItemBase> = {};
+
+    if (options.nombre) query.nombre = options.nombre;
+
+    if (options.codigo) query.codigo = options.codigo;
+
+    if (options.minPrice && options.maxPrice) {
+      query.precio = {
+        $gte: options.minPrice,
+        $lte: options.maxPrice,
+      };
+    } else if (options.minPrice) {
+      query.precio = { $gte: options.minPrice };
+    } else if (options.maxPrice) {
+      query.precio = { $lte: options.maxPrice };
+    }
+
+    if (options.minStock && options.maxStock) {
+      query.stock = {
+        $gte: options.minStock,
+        $lte: options.maxStock,
+      };
+    } else if (options.minStock) {
+      query.stock = { $gte: options.minStock };
+    } else if (options.maxStock) {
+      query.stock = { $lte: options.maxStock };
+    }
+
+    const productos = await this.productos.find(query);
+
+    return productos as IItem[];
   }
 }

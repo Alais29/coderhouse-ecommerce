@@ -20,7 +20,7 @@ ProductoSchema.set('toJSON', {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
     delete returnedObject.__v;
-  }
+  },
 });
 
 export class CarritoModelMongoDb {
@@ -35,7 +35,8 @@ export class CarritoModelMongoDb {
     } else {
       this.dbURL = `mongodb+srv://${Config.MONGO_ATLAS_USER}:${Config.MONGO_ATLAS_PASSWORD}@${Config.MONGO_ATLAS_CLUSTER}/${Config.MONGO_ATLAS_DB}?retryWrites=true&w=majority`;
     }
-    mongoose.connect(this.dbURL)
+    mongoose
+      .connect(this.dbURL)
       .then(() => console.log('Base de datos Mongo conectada'))
       .catch((e) => console.log(e));
   }
@@ -45,11 +46,11 @@ export class CarritoModelMongoDb {
       let output: IItem[] | IItem = [];
       if (id) {
         const document = await this.carrito.findById(id);
-        if (document) output = ((document as unknown) as IItem);
+        if (document) output = document as unknown as IItem;
         else throw new NotFound('El producto no está en el carrito');
       } else {
         const products = await this.carrito.find();
-        output = (products as unknown) as IItem[];
+        output = products as unknown as IItem[];
       }
       return output;
     } catch (e) {
@@ -66,8 +67,10 @@ export class CarritoModelMongoDb {
   async save(id: string): Promise<IItem> {
     try {
       const productsInCart = await this.get();
-      const productToAddInCart = (productsInCart as IItem[]).find(item => item.id === id);
-      
+      const productToAddInCart = (productsInCart as IItem[]).find(
+        (item) => item.id === id
+      );
+
       if (productToAddInCart) {
         throw new RepeatedProductInCart(
           'El producto que desea agregar ya se encuentra en el carrito'
@@ -81,13 +84,13 @@ export class CarritoModelMongoDb {
 
           const newProduct = await new this.carrito(productJSON as IItem);
           await newProduct.save();
-          return newProduct as IItem;  
+          return newProduct as IItem;
         } else {
           throw new NotFound('El producto que deseas agregar no existe');
         }
       }
     } catch (e) {
-      if (e instanceof RepeatedProductInCart || e instanceof NotFound ) {
+      if (e instanceof RepeatedProductInCart || e instanceof NotFound) {
         throw e;
       } else if (e instanceof mongoose.Error.CastError) {
         throw new NotFound('El producto que deseas agregar no existe');

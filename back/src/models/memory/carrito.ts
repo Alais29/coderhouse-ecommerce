@@ -1,18 +1,18 @@
-import { promises as fsPromises } from 'fs';
-import path from 'path';
 import { IItem } from 'common/interfaces';
-import { ProductosModelFs } from 'models/fs/producto';
 import { NotFound, RepeatedProductInCart } from 'errors';
+import { ProductosModel } from './productos';
 
-const carritosPath = path.resolve(__dirname, '../../../carrito.json');
+export class CarritoModel {
+  private carrito;
+  constructor() {
+    this.carrito = [] as IItem[];
+  }
 
-export class CarritoModelFs {
-  async get(id?: string): Promise<IItem[] | IItem> {
+  async get(id?: string): Promise<IItem | IItem[]> {
     try {
-      const carrito = await fsPromises.readFile(carritosPath, 'utf-8');
-      const productos = JSON.parse(carrito).productos;
-      if (id) return productos.find((item: IItem) => item.id === id);
-      return productos;
+      if (id)
+        return this.carrito.find((item: IItem) => item.id === id) as IItem;
+      return this.carrito;
     } catch (e) {
       throw { error: e, message: 'Hubo un problema al cargar los producto' };
     }
@@ -20,14 +20,12 @@ export class CarritoModelFs {
 
   async save(id: string): Promise<IItem> {
     try {
-      const productsModel = new ProductosModelFs();
+      const productsModel = new ProductosModel();
       const allProducts = await productsModel.get();
       const productToAdd = (allProducts as IItem[]).find(
         (item: IItem) => item.id === id
       );
-      const carrito = await fsPromises.readFile(carritosPath, 'utf-8');
-      const carritoJSON = JSON.parse(carrito);
-      const productToAddInCart = carritoJSON.productos.find(
+      const productToAddInCart = this.carrito.find(
         (item: IItem) => item.id === id
       );
 
@@ -37,12 +35,8 @@ export class CarritoModelFs {
         );
       } else {
         if (productToAdd) {
-          carritoJSON.productos.push(productToAdd);
-          await fsPromises.writeFile(
-            carritosPath,
-            JSON.stringify(carritoJSON, null, '\t')
-          );
-          return carritoJSON.productos;
+          this.carrito.push(productToAdd);
+          return productToAdd;
         } else {
           throw new NotFound('El producto que desea agregar no existe');
         }
@@ -58,22 +52,16 @@ export class CarritoModelFs {
 
   async delete(id: string): Promise<IItem[]> {
     try {
-      const carrito = await fsPromises.readFile(carritosPath, 'utf-8');
-      const carritoJSON = JSON.parse(carrito);
-      const productToDelete = carritoJSON.productos.find(
+      const productToDelete = this.carrito.find(
         (item: IItem) => item.id === id
       );
 
       if (productToDelete) {
-        const productToDeleteIndex = carritoJSON.productos
+        const productToDeleteIndex = this.carrito
           .map((item: IItem) => item.id)
           .indexOf(id);
-        carritoJSON.productos.splice(productToDeleteIndex, 1);
-        await fsPromises.writeFile(
-          carritosPath,
-          JSON.stringify(carritoJSON, null, '\t')
-        );
-        return carritoJSON.productos;
+        this.carrito.splice(productToDeleteIndex, 1);
+        return this.carrito;
       } else {
         throw new NotFound(
           'El producto que desea eliminar no esta en el carrito'

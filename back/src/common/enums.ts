@@ -7,10 +7,11 @@ export enum EErrorCodes {
 }
 
 export enum ModelType {
-  fs = 1,
+  memory,
+  fs,
   mySql,
   sqlite,
   localMongo,
   mongoAtlas,
-  firebase
+  firebase,
 }

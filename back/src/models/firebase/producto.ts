@@ -1,6 +1,6 @@
-import { IItem } from 'common/interfaces';
+import { IItem, IItemQuery } from 'common/interfaces';
 import { NotFound } from 'errors';
-import admin, { ServiceAccount } from 'firebase-admin';
+import admin, { firestore, ServiceAccount } from 'firebase-admin';
 import { productosMock } from 'mocks/products';
 import moment from 'moment';
 import serviceAccount from './../../../firebase.json';
@@ -9,7 +9,7 @@ export class ProductosModelFirebase {
   public productosDb;
   constructor() {
     admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount as ServiceAccount)
+      credential: admin.credential.cert(serviceAccount as ServiceAccount),
     });
     const db = admin.firestore();
     console.log('Base de datos firebase configurada');
@@ -38,7 +38,7 @@ export class ProductosModelFirebase {
         if (producto) {
           output = {
             id: data.id,
-            ...producto
+            ...producto,
           } as IItem;
         } else {
           return output[0];
@@ -46,11 +46,11 @@ export class ProductosModelFirebase {
       } else {
         const result = await this.productosDb.get();
         const productos = result.docs;
-        output = productos.map(product => {
+        output = productos.map((product) => {
           const productData = product.data();
           return {
             id: product.id,
-            ...productData
+            ...productData,
           };
         }) as IItem[];
       }
@@ -64,7 +64,7 @@ export class ProductosModelFirebase {
     try {
       data.timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
       const productDocumentRef = await this.productosDb.add({
-        ...data
+        ...data,
       });
       const productCreatedId = productDocumentRef.id;
       const productCreated = await this.get(productCreatedId);
@@ -107,6 +107,81 @@ export class ProductosModelFirebase {
       } else {
         throw { error: e, message: 'No se pudo actualizar el producto' };
       }
+    }
+  }
+
+  async query(options: IItemQuery): Promise<IItem[]> {
+    let query: firestore.Query<firestore.DocumentData> = this.productosDb;
+    let productos: IItem[] = [];
+
+    try {
+      if (options.nombre) {
+        query = query.where('nombre', '==', options.nombre);
+      }
+      if (options.codigo) {
+        query = query.where('codigo', '==', options.codigo);
+      }
+      if (
+        (options.minPrice || options.maxPrice) &&
+        (options.minStock || options.maxStock)
+      ) {
+        if (options.minPrice) {
+          query = query.where('precio', '>=', options.minPrice);
+        }
+        if (options.maxPrice) {
+          query = query.where('precio', '<=', options.maxPrice);
+        }
+
+        const productsSnapshot = await query.get();
+        productsSnapshot.forEach((doc) => {
+          const id = doc.id;
+          const data = doc.data();
+          const product = {
+            id,
+            ...data,
+          };
+          productos.push(product as IItem);
+        });
+
+        if (options.minStock) {
+          productos = productos.filter(
+            (product) => product.stock >= (options.minStock as number)
+          );
+        }
+        if (options.maxStock) {
+          productos = productos.filter(
+            (product) => product.stock <= (options.maxStock as number)
+          );
+        }
+      } else {
+        if (options.minPrice) {
+          query = query.where('precio', '>=', options.minPrice);
+        }
+        if (options.maxPrice) {
+          query = query.where('precio', '<=', options.maxPrice);
+        }
+        if (options.minStock) {
+          query = query.where('stock', '>=', options.minStock);
+        }
+        if (options.maxStock) {
+          query = query.where('stock', '<=', options.maxStock);
+        }
+
+        const productsSnapshot = await query.get();
+        productsSnapshot.forEach((doc) => {
+          const id = doc.id;
+          const data = doc.data();
+          const product = {
+            id,
+            ...data,
+          };
+          productos.push(product as IItem);
+        });
+      }
+
+      return productos;
+    } catch (e) {
+      throw { error: e, message: 'Hubo un error en la búsqueda' };
     }
   }
 }

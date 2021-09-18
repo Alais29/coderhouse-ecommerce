@@ -6,26 +6,26 @@ export interface IObject {
 
 export interface IKnex {
   [key: string]: {
-    client: string,
+    client: string;
     connection: {
-      host?: string,
-      user?: string,
-      password?: string,
-      database?: string,
-      filename?: string
-    },
+      host?: string;
+      user?: string;
+      password?: string;
+      database?: string;
+      filename?: string;
+    };
     migrations?: {
-      directory: string,
-    },
+      directory: string;
+    };
     seeds?: {
-      directory: string,
-    },
+      directory: string;
+    };
     pool?: {
-      min?: number,
-      max?: number
-    },
-    useNullAsDefault?: boolean
-  },
+      min?: number;
+      max?: number;
+    };
+    useNullAsDefault?: boolean;
+  };
 }
 
 export interface IItemBase extends IObject {
@@ -43,9 +43,18 @@ export interface IItem extends IItemBase, IObject {
 }
 
 export interface IItemMongoDoc extends IItemBase, Document {
-  _id: ObjectId
+  _id: ObjectId;
 }
 
 export interface IItemMongoModel extends Model<IItemMongoDoc> {
-  get: (id?: string) => Promise<IItemMongoDoc[]>
+  get: (id?: string) => Promise<IItemMongoDoc[]>;
+}
+
+export interface IItemQuery {
+  nombre?: string;
+  codigo?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  minStock?: number;
+  maxStock?: number;
 }

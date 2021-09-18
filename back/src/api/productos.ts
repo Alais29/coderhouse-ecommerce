@@ -1,4 +1,4 @@
-import { IItem } from 'common/interfaces';
+import { IItem, IItemQuery } from 'common/interfaces';
 import { ProductosModelFactory } from 'models/factory/productos';
 import { modelTypeToUse } from './modelType';
 
@@ -9,9 +9,9 @@ class ProductsAPI {
     this.factory = ProductosModelFactory.model(modelTypeToUse);
   }
 
-  async get(id?: string) {
-    if (id) return await this.factory.get(id);
-    return await this.factory.get();
+  get(id?: string) {
+    if (id) return this.factory.get(id);
+    return this.factory.get();
   }
 
   async save(producto: IItem) {
@@ -26,6 +26,10 @@ class ProductsAPI {
 
   async delete(id: string) {
     await this.factory.delete(id);
+  }
+
+  async query(options: IItemQuery) {
+    return this.factory.query(options);
   }
 }
 

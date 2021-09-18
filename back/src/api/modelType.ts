@@ -1,3 +1,3 @@
 import { ModelType } from 'common/enums';
 
-export const modelTypeToUse = ModelType.firebase;
+export const modelTypeToUse = ModelType.memory;
