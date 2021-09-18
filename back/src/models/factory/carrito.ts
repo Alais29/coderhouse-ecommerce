@@ -1,5 +1,6 @@
 import { ModelType } from 'common/enums';
 import { IItem } from 'common/interfaces';
+import { CarritoModelFirebase } from 'models/firebase/carrito';
 import { CarritoModel } from 'models/fs/carrito';
 import { CarritoModelMongoDb } from 'models/mongoDb/carrito';
 import { CarritosModelMySql } from 'models/mysql/carrito';
@@ -24,6 +25,9 @@ export class CarritoModelFactory {
       
       case ModelType.mongoAtlas:
         return new CarritoModelMongoDb('atlas');
+      
+      case ModelType.firebase:
+        return new CarritoModelFirebase();
       
       default:
         return new CarritoModel();
