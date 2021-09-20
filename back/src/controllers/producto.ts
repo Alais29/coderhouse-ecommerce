@@ -11,7 +11,7 @@ export const getProductos = async (
 ): Promise<void> => {
   try {
     if (!isEmpty(req.query)) {
-      const { nombre, codigo, minPrice, maxPrice, minStock, maxStock } =
+      const { nombre, codigo, minPrice, maxPrice, minStock, maxStock, cant } =
         req.query;
       const query: IItemQuery = {};
 
@@ -21,6 +21,7 @@ export const getProductos = async (
       if (maxPrice) query.maxPrice = Number(maxPrice);
       if (minStock) query.minStock = Number(minStock);
       if (maxStock) query.maxStock = Number(maxStock);
+      if (cant) query.cant = Number(cant);
 
       res.json({
         data: await productsAPI.query(query),

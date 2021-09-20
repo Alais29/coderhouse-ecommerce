@@ -8,6 +8,7 @@ export enum EErrorCodes {
 
 export enum ModelType {
   memory,
+  faker,
   fs,
   mySql,
   sqlite,

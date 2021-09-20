@@ -57,4 +57,5 @@ export interface IItemQuery {
   maxPrice?: number;
   minStock?: number;
   maxStock?: number;
+  cant?: number;
 }

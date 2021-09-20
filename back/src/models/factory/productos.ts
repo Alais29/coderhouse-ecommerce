@@ -1,5 +1,6 @@
 import { ModelType } from 'common/enums';
 import { IItem, IItemQuery } from 'common/interfaces';
+import { ProductosModelFaker } from 'models/faker/productos';
 import { ProductosModelFirebase } from 'models/firebase/producto';
 import { ProductosModelFs } from 'models/fs/producto';
 import { ProductosModel } from 'models/memory/productos';
@@ -11,7 +12,7 @@ interface IModel {
   save: (producto: IItem) => Promise<IItem>;
   update: (id: string, producto: IItem) => Promise<IItem>;
   delete: (id: string) => Promise<void>;
-  query: (options: IItemQuery) => Promise<IItem | IItem[]>;
+  query?: (options: IItemQuery) => Promise<IItem | IItem[]>;
 }
 
 export class ProductosModelFactory {
@@ -34,6 +35,9 @@ export class ProductosModelFactory {
 
       case ModelType.firebase:
         return new ProductosModelFirebase();
+
+      case ModelType.faker:
+        return new ProductosModelFaker();
 
       default:
         return new ProductosModel();

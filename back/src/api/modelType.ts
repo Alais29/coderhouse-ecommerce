@@ -1,3 +1,3 @@
 import { ModelType } from 'common/enums';
 
-export const modelTypeToUse = ModelType.memory;
+export const modelTypeToUse = ModelType.faker;

@@ -29,7 +29,7 @@ class ProductsAPI {
   }
 
   async query(options: IItemQuery) {
-    return this.factory.query(options);
+    if (this.factory.query) return this.factory.query(options);
   }
 }
 
