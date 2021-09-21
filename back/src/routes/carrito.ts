@@ -5,12 +5,13 @@ import {
   saveCarritoProduct,
   deleteCarritoProduct,
 } from 'controllers/carrito';
+import asyncHandler from 'express-async-handler';
 
 const carritoRouter = express.Router();
 
-carritoRouter.get('/listar', getCarrito);
-carritoRouter.get('/listar/:id', getCarritoProduct);
-carritoRouter.post('/agregar/:id', saveCarritoProduct);
-carritoRouter.delete('/borrar/:id', deleteCarritoProduct);
+carritoRouter.get('/listar', asyncHandler(getCarrito));
+carritoRouter.get('/listar/:id', asyncHandler(getCarritoProduct));
+carritoRouter.post('/agregar/:id', asyncHandler(saveCarritoProduct));
+carritoRouter.delete('/borrar/:id', asyncHandler(deleteCarritoProduct));
 
 export default carritoRouter;

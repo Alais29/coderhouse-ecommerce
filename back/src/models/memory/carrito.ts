@@ -31,6 +31,7 @@ export class CarritoModel {
 
       if (productToAddInCart) {
         throw new RepeatedProductInCart(
+          400,
           'El producto que desea agregar ya se encuentra en el carrito'
         );
       } else {
@@ -38,7 +39,7 @@ export class CarritoModel {
           this.carrito.push(productToAdd);
           return productToAdd;
         } else {
-          throw new NotFound('El producto que desea agregar no existe');
+          throw new NotFound(404, 'El producto que desea agregar no existe');
         }
       }
     } catch (e) {
@@ -64,6 +65,7 @@ export class CarritoModel {
         return this.carrito;
       } else {
         throw new NotFound(
+          404,
           'El producto que desea eliminar no esta en el carrito'
         );
       }

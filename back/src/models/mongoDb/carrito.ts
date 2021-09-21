@@ -47,7 +47,7 @@ export class CarritoModelMongoDb {
       if (id) {
         const document = await this.carrito.findById(id);
         if (document) output = document as unknown as IItem;
-        else throw new NotFound('El producto no está en el carrito');
+        else throw new NotFound(404, 'El producto no está en el carrito');
       } else {
         const products = await this.carrito.find();
         output = products as unknown as IItem[];
@@ -57,7 +57,7 @@ export class CarritoModelMongoDb {
       if (e instanceof NotFound) {
         throw e;
       } else if (e instanceof mongoose.Error.CastError) {
-        throw new NotFound('El producto no está en el carrito');
+        throw new NotFound(404, 'El producto no está en el carrito');
       } else {
         throw { error: e, message: 'Hubo un problema al cargar los productos' };
       }
@@ -73,6 +73,7 @@ export class CarritoModelMongoDb {
 
       if (productToAddInCart) {
         throw new RepeatedProductInCart(
+          400,
           'El producto que desea agregar ya se encuentra en el carrito'
         );
       } else {
@@ -86,14 +87,14 @@ export class CarritoModelMongoDb {
           await newProduct.save();
           return newProduct as IItem;
         } else {
-          throw new NotFound('El producto que deseas agregar no existe');
+          throw new NotFound(404, 'El producto que deseas agregar no existe');
         }
       }
     } catch (e) {
       if (e instanceof RepeatedProductInCart || e instanceof NotFound) {
         throw e;
       } else if (e instanceof mongoose.Error.CastError) {
-        throw new NotFound('El producto que deseas agregar no existe');
+        throw new NotFound(404, 'El producto que deseas agregar no existe');
       } else {
         throw { error: e, message: 'No se pudo agregar el producto' };
       }
@@ -107,9 +108,12 @@ export class CarritoModelMongoDb {
       return carritoProducts as IItem[];
     } catch (e) {
       if (e instanceof mongoose.Error.CastError) {
-        throw new NotFound('El producto que desea eliminar no existe');
+        throw new NotFound(
+          404,
+          'El producto que desea eliminar no está en el carrito'
+        );
       } else {
-        throw { error: e, message: 'Hubo un problema al cargar los productos' };
+        throw { error: e, message: 'Hubo un problema al eliminar el producto' };
       }
     }
   }

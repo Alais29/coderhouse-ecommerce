@@ -48,6 +48,7 @@ export class CarritoModelFirebase {
 
       if (productToAddInCart) {
         throw new RepeatedProductInCart(
+          400,
           'El producto que desea agregar ya se encuentra en el carrito'
         );
       } else {
@@ -62,7 +63,7 @@ export class CarritoModelFirebase {
             ...productToAdd,
           } as IItem;
         } else {
-          throw new NotFound('El producto que deseas agregar no existe');
+          throw new NotFound(404, 'El producto que deseas agregar no existe');
         }
       }
     } catch (e) {
@@ -82,7 +83,7 @@ export class CarritoModelFirebase {
         const productsInCart = await this.get();
         return productsInCart as IItem[];
       } else {
-        throw new NotFound('El producto que desea eliminar no existe');
+        throw new NotFound(404, 'El producto que desea eliminar no existe');
       }
     } catch (e) {
       if (e instanceof NotFound) {

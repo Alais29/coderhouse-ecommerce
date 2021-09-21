@@ -58,6 +58,7 @@ export class CarritosModelMySql {
 
       if (productToAddInCart) {
         throw new RepeatedProductInCart(
+          400,
           'El producto que desea agregar ya se encuentra en el carrito'
         );
       } else {
@@ -74,7 +75,7 @@ export class CarritosModelMySql {
           );
           return newProductAdded as unknown as IItem;
         } else {
-          throw new NotFound('El producto que deseas agregar no existe');
+          throw new NotFound(404, 'El producto que deseas agregar no existe');
         }
       }
     } catch (e) {
@@ -93,6 +94,7 @@ export class CarritosModelMySql {
         .del();
       if (!productDeleted) {
         throw new NotFound(
+          404,
           'El producto que desea eliminar no está en el carrito'
         );
       } else {

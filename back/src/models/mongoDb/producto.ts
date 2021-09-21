@@ -69,7 +69,7 @@ export class ProductosModelMongoDb {
       return output;
     } catch (e) {
       if (e instanceof mongoose.Error.CastError) {
-        throw new NotFound('Producto no encontrado');
+        throw new NotFound(404, 'Producto no encontrado');
       } else {
         throw { error: e, message: 'Hubo un problema al cargar los productos' };
       }
@@ -92,9 +92,12 @@ export class ProductosModelMongoDb {
       return productUpdated.value as unknown as IItem;
     } catch (e) {
       if (e instanceof mongoose.Error.CastError) {
-        throw new NotFound('El producto que desea actualizar no existe');
+        throw new NotFound(404, 'El producto que desea actualizar no existe');
       } else {
-        throw { error: e, message: 'Hubo un problema al cargar los productos' };
+        throw {
+          error: e,
+          message: 'Hubo un problema al actualizar el producto',
+        };
       }
     }
   }
@@ -104,9 +107,9 @@ export class ProductosModelMongoDb {
       await this.productos.findByIdAndRemove(id);
     } catch (e) {
       if (e instanceof mongoose.Error.CastError) {
-        throw new NotFound('El producto que desea eliminar no existe');
+        throw new NotFound(404, 'El producto que desea eliminar no existe');
       } else {
-        throw { error: e, message: 'Hubo un problema al cargar los productos' };
+        throw { error: e, message: 'Hubo un problema al eliminar el producto' };
       }
     }
   }

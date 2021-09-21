@@ -7,13 +7,14 @@ import {
   saveProducto,
   updateProducto,
 } from '../controllers/producto';
+import asyncHandler from 'express-async-handler';
 
 const productoRouter = express.Router();
 
-productoRouter.get('/listar', getProductos);
-productoRouter.get('/listar/:id', getProducto);
-productoRouter.post('/guardar', isAdmin, saveProducto);
-productoRouter.put('/actualizar/:id', isAdmin, updateProducto);
-productoRouter.delete('/borrar/:id', isAdmin, deleteProducto);
+productoRouter.get('/listar', asyncHandler(getProductos));
+productoRouter.get('/listar/:id', asyncHandler(getProducto));
+productoRouter.post('/guardar', isAdmin, asyncHandler(saveProducto));
+productoRouter.put('/actualizar/:id', isAdmin, asyncHandler(updateProducto));
+productoRouter.delete('/borrar/:id', isAdmin, asyncHandler(deleteProducto));
 
 export default productoRouter;

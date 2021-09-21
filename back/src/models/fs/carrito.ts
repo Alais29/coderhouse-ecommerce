@@ -14,7 +14,7 @@ export class CarritoModelFs {
       if (id) return productos.find((item: IItem) => item.id === id);
       return productos;
     } catch (e) {
-      throw { error: e, message: 'Hubo un problema al cargar los producto' };
+      throw { error: e, message: 'Hubo un problema al cargar los productos' };
     }
   }
 
@@ -33,6 +33,7 @@ export class CarritoModelFs {
 
       if (productToAddInCart) {
         throw new RepeatedProductInCart(
+          400,
           'El producto que desea agregar ya se encuentra en el carrito'
         );
       } else {
@@ -44,7 +45,7 @@ export class CarritoModelFs {
           );
           return carritoJSON.productos;
         } else {
-          throw new NotFound('El producto que desea agregar no existe');
+          throw new NotFound(404, 'El producto que desea agregar no existe');
         }
       }
     } catch (e) {
@@ -76,6 +77,7 @@ export class CarritoModelFs {
         return carritoJSON.productos;
       } else {
         throw new NotFound(
+          404,
           'El producto que desea eliminar no esta en el carrito'
         );
       }

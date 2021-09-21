@@ -4,6 +4,7 @@ import cors from 'cors';
 import path from 'path';
 import routes from 'routes';
 import { unknownEndpoint } from 'middlewares/unknownEndpoint';
+import { errorHandler } from 'middlewares/errorHandler';
 
 const app: express.Application = express();
 const PORT = process.env.PORT || 8080;
@@ -20,4 +21,5 @@ app.use(cors());
 
 app.use('/api', routes);
 
+app.use(errorHandler);
 app.use(unknownEndpoint);

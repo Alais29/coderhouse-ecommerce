@@ -1,36 +1,47 @@
 import { EErrorCodes } from 'common/enums';
 
-export class ProductValidation extends Error {
-  public error: string;
-  constructor(message: string) {
+export class BaseError extends Error {
+  public name;
+  public statusCode;
+  public message;
+  constructor(statusCode: number, message: string) {
     super();
+    this.name = this.constructor.name;
+    this.statusCode = statusCode;
     this.message = message;
+    // Con esto se puede acceder al stacktrace del error con this.stack
+    Error.captureStackTrace(this);
+  }
+}
+
+export class ProductValidation extends BaseError {
+  public error: string;
+  constructor(statusCode: number, message: string) {
+    super(statusCode, message);
     this.error = `-${EErrorCodes.ProductValidation}`;
   }
 }
 
 export class MissingFieldsProduct extends ProductValidation {
-  public descripcion: string;
-  constructor(message: string, descripcion?: string) {
-    super(message);
-    this.descripcion = descripcion || '';
+  public descripcion;
+  constructor(statusCode: number, message: string, descripcion: string) {
+    super(statusCode, message);
+    this.descripcion = descripcion;
   }
 }
 
-export class NotFound extends Error {
+export class NotFound extends BaseError {
   public error: string;
-  constructor(message: string) {
-    super();
-    this.message = message;
+  constructor(statusCode: number, message: string) {
+    super(statusCode, message);
     this.error = `-${EErrorCodes.ProductNotFound}`;
   }
 }
 
-export class RepeatedProductInCart extends Error {
+export class RepeatedProductInCart extends BaseError {
   public error: string;
-  constructor(message: string) {
-    super();
-    this.message = message;
+  constructor(statusCode: number, message: string) {
+    super(statusCode, message);
     this.error = `-${EErrorCodes.ProductRepeated}`;
   }
 }

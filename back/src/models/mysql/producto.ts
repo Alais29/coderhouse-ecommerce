@@ -77,7 +77,7 @@ export class ProductosModelMySql {
       if (productUpdated) {
         return productUpdated as IItem;
       } else {
-        throw new NotFound('El producto que desea actualizar no existe');
+        throw new NotFound(404, 'El producto que desea actualizar no existe');
       }
     } catch (e) {
       if (e instanceof NotFound) {
@@ -94,7 +94,7 @@ export class ProductosModelMySql {
         .where('id', Number(id))
         .del();
       if (!productDeleted) {
-        throw new NotFound('El producto que desea eliminar no existe');
+        throw new NotFound(404, 'El producto que desea eliminar no existe');
       }
     } catch (e) {
       if (e instanceof NotFound) {

@@ -82,7 +82,7 @@ export class ProductosModelFirebase {
         const productUpdated = await this.get(id);
         return productUpdated as IItem;
       } else {
-        throw new NotFound('El producto que desea actualizar no existe');
+        throw new NotFound(404, 'El producto que desea actualizar no existe');
       }
     } catch (e) {
       if (e instanceof NotFound) {
@@ -99,7 +99,7 @@ export class ProductosModelFirebase {
       if (productToDelete) {
         await this.productosDb.doc(id).delete();
       } else {
-        throw new NotFound('El producto que desea eliminar no existe');
+        throw new NotFound(404, 'El producto que desea eliminar no existe');
       }
     } catch (e) {
       if (e instanceof NotFound) {

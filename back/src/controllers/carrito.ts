@@ -1,69 +1,37 @@
 import { Request, Response } from 'express';
-import { NotFound, RepeatedProductInCart } from 'errors';
+import { NotFound } from 'errors';
 import { carritoAPI } from 'api/carrito';
 
 export const getCarrito = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  try {
-    const productos = await carritoAPI.get();
-    if (productos.length !== 0) res.json({ data: productos });
-    else throw new NotFound('No hay productos en el carrito');
-  } catch (e) {
-    if (e instanceof NotFound) {
-      res.status(404).json({ error: e.error, message: e.message });
-    } else {
-      res.status(404).json(e);
-    }
-  }
+  const productos = await carritoAPI.get();
+  if (productos.length !== 0) res.json({ data: productos });
+  else throw new NotFound(404, 'No hay productos en el carrito');
 };
 
 export const getCarritoProduct = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  try {
-    const producto = await carritoAPI.get(req.params.id);
-    if (producto) res.json({ data: producto });
-    else throw new NotFound('El producto no está en el carrito');
-  } catch (e) {
-    if (e instanceof NotFound) {
-      res.status(404).json({ error: e.error, message: e.message });
-    } else {
-      res.status(404).json(e);
-    }
-  }
+  const producto = await carritoAPI.get(req.params.id);
+  if (producto) res.json({ data: producto });
+  else throw new NotFound(404, 'El producto no está en el carrito');
 };
 
 export const saveCarritoProduct = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  try {
-    const newProducto = await carritoAPI.save(req.params.id);
-    res.json({ data: newProducto });
-  } catch (e) {
-    if (e instanceof NotFound || e instanceof RepeatedProductInCart) {
-      res.status(400).json({ error: e.error, message: e.message });
-    } else {
-      res.status(400).json(e);
-    }
-  }
+  const newProducto = await carritoAPI.save(req.params.id);
+  res.json({ data: newProducto });
 };
 
 export const deleteCarritoProduct = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  try {
-    const newCarritoProductList = await carritoAPI.delete(req.params.id);
-    res.json({ data: newCarritoProductList });
-  } catch (e) {
-    if (e instanceof NotFound) {
-      res.status(404).json({ error: e.error, message: e.message });
-    } else {
-      res.status(404).json(e);
-    }
-  }
+  const newCarritoProductList = await carritoAPI.delete(req.params.id);
+  res.json({ data: newCarritoProductList });
 };

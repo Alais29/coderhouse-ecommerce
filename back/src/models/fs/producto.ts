@@ -62,7 +62,7 @@ export class ProductosModelFs {
         );
         return productToUpdate;
       } else {
-        throw new NotFound('El producto que desea actualizar no existe');
+        throw new NotFound(404, 'El producto que desea actualizar no existe');
       }
     } catch (e) {
       if (e instanceof NotFound) {
@@ -92,7 +92,7 @@ export class ProductosModelFs {
           JSON.stringify(newProductList, null, '\t')
         );
       } else {
-        throw new NotFound('El producto que desea eliminar no existe');
+        throw new NotFound(404, 'El producto que desea eliminar no existe');
       }
     } catch (e) {
       if (e instanceof NotFound) {
