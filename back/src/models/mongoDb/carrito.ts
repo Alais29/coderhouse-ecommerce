@@ -38,7 +38,7 @@ export class CarritoModelMongoDb {
     mongoose
       .connect(this.dbURL)
       .then(() => console.log('Base de datos Mongo conectada'))
-      .catch((e) => console.log(e));
+      .catch(e => console.log(e));
   }
 
   async get(id?: string): Promise<IItem[] | IItem> {
@@ -68,13 +68,13 @@ export class CarritoModelMongoDb {
     try {
       const productsInCart = await this.get();
       const productToAddInCart = (productsInCart as IItem[]).find(
-        (item) => item.id === id
+        item => item.id === id,
       );
 
       if (productToAddInCart) {
         throw new RepeatedProductInCart(
           400,
-          'El producto que desea agregar ya se encuentra en el carrito'
+          'El producto que desea agregar ya se encuentra en el carrito',
         );
       } else {
         const productToAdd = await this.productos.findById(id);
@@ -110,7 +110,7 @@ export class CarritoModelMongoDb {
       if (e instanceof mongoose.Error.CastError) {
         throw new NotFound(
           404,
-          'El producto que desea eliminar no está en el carrito'
+          'El producto que desea eliminar no está en el carrito',
         );
       } else {
         throw { error: e, message: 'Hubo un problema al eliminar el producto' };

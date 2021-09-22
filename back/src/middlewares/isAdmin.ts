@@ -6,7 +6,7 @@ const admin = true;
 export const isAdmin = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): void => {
   if (admin) {
     next();

@@ -4,7 +4,7 @@ import { carritoAPI } from 'api/carrito';
 
 export const getCarrito = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   const productos = await carritoAPI.get();
   if (productos.length !== 0) res.json({ data: productos });
@@ -13,7 +13,7 @@ export const getCarrito = async (
 
 export const getCarritoProduct = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   const producto = await carritoAPI.get(req.params.id);
   if (producto) res.json({ data: producto });
@@ -22,7 +22,7 @@ export const getCarritoProduct = async (
 
 export const saveCarritoProduct = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   const newProducto = await carritoAPI.save(req.params.id);
   res.json({ data: newProducto });
@@ -30,7 +30,7 @@ export const saveCarritoProduct = async (
 
 export const deleteCarritoProduct = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   const newCarritoProductList = await carritoAPI.delete(req.params.id);
   res.json({ data: newCarritoProductList });

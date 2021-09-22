@@ -30,7 +30,7 @@ export class ProductosModelFs {
       productosJSON.push(producto);
       await fsPromises.writeFile(
         productosPath,
-        JSON.stringify(productosJSON, null, '\t')
+        JSON.stringify(productosJSON, null, '\t'),
       );
       return producto;
     } catch (e) {
@@ -58,7 +58,7 @@ export class ProductosModelFs {
 
         await fsPromises.writeFile(
           productosPath,
-          JSON.stringify(productosJSON, null, '\t')
+          JSON.stringify(productosJSON, null, '\t'),
         );
         return productToUpdate;
       } else {
@@ -79,17 +79,17 @@ export class ProductosModelFs {
       const productosJSON = JSON.parse(productos);
 
       const productToDelete = productosJSON.find(
-        (item: IItem) => item.id === id
+        (item: IItem) => item.id === id,
       );
 
       if (productToDelete) {
         const newProductList = productosJSON.filter(
-          (item: IItem) => item.id !== id
+          (item: IItem) => item.id !== id,
         );
 
         await fsPromises.writeFile(
           productosPath,
-          JSON.stringify(newProductList, null, '\t')
+          JSON.stringify(newProductList, null, '\t'),
         );
       } else {
         throw new NotFound(404, 'El producto que desea eliminar no existe');
@@ -116,26 +116,26 @@ export class ProductosModelFs {
 
     if (options.minPrice)
       query.push(
-        (aProduct: IItem) => aProduct.precio >= (options.minPrice as number)
+        (aProduct: IItem) => aProduct.precio >= (options.minPrice as number),
       );
 
     if (options.maxPrice)
       query.push(
-        (aProduct: IItem) => aProduct.precio <= (options.maxPrice as number)
+        (aProduct: IItem) => aProduct.precio <= (options.maxPrice as number),
       );
 
     if (options.minStock)
       query.push(
-        (aProduct: IItem) => aProduct.stock >= (options.minStock as number)
+        (aProduct: IItem) => aProduct.stock >= (options.minStock as number),
       );
 
     if (options.maxStock)
       query.push(
-        (aProduct: IItem) => aProduct.stock <= (options.maxStock as number)
+        (aProduct: IItem) => aProduct.stock <= (options.maxStock as number),
       );
 
-    return (productos as IItem[]).filter((aProduct) =>
-      query.every((condition) => condition(aProduct))
+    return (productos as IItem[]).filter(aProduct =>
+      query.every(condition => condition(aProduct)),
     );
   }
 }

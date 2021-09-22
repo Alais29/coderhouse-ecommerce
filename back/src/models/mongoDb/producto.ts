@@ -25,7 +25,7 @@ ProductoSchema.set('toJSON', {
 
 export const productosModel = mongoose.model<IItemBase>(
   'productos',
-  ProductoSchema
+  ProductoSchema,
 );
 
 export class ProductosModelMongoDb {
@@ -43,17 +43,17 @@ export class ProductosModelMongoDb {
       .then(() => {
         console.log('Base de datos Mongo conectada');
         this.get()
-          .then((productos) => {
+          .then(productos => {
             if (productos.length === 0) {
               this.productos
                 .insertMany(productosMock)
                 .then(() => console.log('Productos agregados'))
-                .catch((e) => console.log(e));
+                .catch(e => console.log(e));
             }
           })
-          .catch((e) => console.log(e));
+          .catch(e => console.log(e));
       })
-      .catch((e) => console.log(e));
+      .catch(e => console.log(e));
   }
 
   async get(id?: string): Promise<IItem[] | IItem> {

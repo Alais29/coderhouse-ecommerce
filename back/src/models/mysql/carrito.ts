@@ -14,10 +14,10 @@ export class CarritosModelMySql {
     const options = configDb[environment];
     this.connection = knex(options);
     console.log(`BD MySQL ${environment} configurada`);
-    this.connection.schema.hasTable('carrito').then((exists) => {
+    this.connection.schema.hasTable('carrito').then(exists => {
       if (!exists) {
         this.connection.schema
-          .createTable('carrito', (carritoTable) => {
+          .createTable('carrito', carritoTable => {
             carritoTable.increments();
             carritoTable.string('nombre').notNullable();
             carritoTable.string('descripcion').notNullable();
@@ -32,7 +32,7 @@ export class CarritosModelMySql {
           .then(() => {
             console.log('Tabla carrito creada');
           })
-          .catch((e) => console.log(e));
+          .catch(e => console.log(e));
       }
     });
   }
@@ -42,7 +42,7 @@ export class CarritosModelMySql {
       if (id) {
         const producto = await this.connection('carrito').where(
           'id',
-          Number(id)
+          Number(id),
         );
         return producto[0];
       }
@@ -59,19 +59,19 @@ export class CarritosModelMySql {
       if (productToAddInCart) {
         throw new RepeatedProductInCart(
           400,
-          'El producto que desea agregar ya se encuentra en el carrito'
+          'El producto que desea agregar ya se encuentra en el carrito',
         );
       } else {
         const productToAdd = await this.connection('productos').where(
           'id',
-          Number(id)
+          Number(id),
         );
         if (productToAdd.length) {
           const productAddedId = await this.connection('carrito').insert(
-            productToAdd[0]
+            productToAdd[0],
           );
           const newProductAdded = await this.get(
-            productAddedId[0] as unknown as string
+            productAddedId[0] as unknown as string,
           );
           return newProductAdded as unknown as IItem;
         } else {
@@ -95,7 +95,7 @@ export class CarritosModelMySql {
       if (!productDeleted) {
         throw new NotFound(
           404,
-          'El producto que desea eliminar no está en el carrito'
+          'El producto que desea eliminar no está en el carrito',
         );
       } else {
         const productsInCart = await this.get();

@@ -19,6 +19,12 @@
         "prettier"
     ],
     "rules": {
-        "prettier/prettier": "error"
+        "prettier/prettier": ["error",
+            {
+                "trailingComma": "all",
+                "arrowParens": "avoid",
+                "endOfLine": "auto"
+            }
+        ]
     }
 }

@@ -7,7 +7,7 @@ import { isEmpty } from 'utils/others';
 
 export const getProductos = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   if (!isEmpty(req.query)) {
     const { nombre, codigo, minPrice, maxPrice, minStock, maxStock } =
@@ -33,7 +33,7 @@ export const getProductos = async (
 
 export const getProducto = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   const producto = await productsAPI.get(req.params.id);
   if (producto) res.json({ data: producto });
@@ -42,7 +42,7 @@ export const getProducto = async (
 
 export const saveProducto = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   const producto = req.body;
 
@@ -57,7 +57,7 @@ export const saveProducto = async (
 
 export const updateProducto = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   const dataToUpdate = req.body;
 
@@ -72,7 +72,7 @@ export const updateProducto = async (
 
 export const deleteProducto = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   await productsAPI.delete(req.params.id);
   res.json({ data: 'Producto eliminado' });

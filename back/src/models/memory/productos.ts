@@ -62,7 +62,7 @@ export class ProductosModel {
 
       if (productToDelete) {
         const newProductList = productos.filter(
-          (item: IItem) => item.id !== id
+          (item: IItem) => item.id !== id,
         );
         productos = newProductList;
       } else {
@@ -90,26 +90,26 @@ export class ProductosModel {
 
     if (options.minPrice)
       query.push(
-        (aProduct: IItem) => aProduct.precio >= (options.minPrice as number)
+        (aProduct: IItem) => aProduct.precio >= (options.minPrice as number),
       );
 
     if (options.maxPrice)
       query.push(
-        (aProduct: IItem) => aProduct.precio <= (options.maxPrice as number)
+        (aProduct: IItem) => aProduct.precio <= (options.maxPrice as number),
       );
 
     if (options.minStock)
       query.push(
-        (aProduct: IItem) => aProduct.stock >= (options.minStock as number)
+        (aProduct: IItem) => aProduct.stock >= (options.minStock as number),
       );
 
     if (options.maxStock)
       query.push(
-        (aProduct: IItem) => aProduct.stock <= (options.maxStock as number)
+        (aProduct: IItem) => aProduct.stock <= (options.maxStock as number),
       );
 
-    return (productos as IItem[]).filter((aProduct) =>
-      query.every((condition) => condition(aProduct))
+    return (productos as IItem[]).filter(aProduct =>
+      query.every(condition => condition(aProduct)),
     );
   }
 }

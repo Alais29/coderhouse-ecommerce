@@ -15,10 +15,10 @@ export class ProductosModelFirebase {
     console.log('Base de datos firebase configurada');
     this.productosDb = db.collection('productos');
     this.get()
-      .then((productos) => {
+      .then(productos => {
         if (productos.length === 0) {
           const batch = db.batch();
-          (productosMock as IItem[]).map((product) => {
+          (productosMock as IItem[]).map(product => {
             product.timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
             const docRef = this.productosDb.doc();
             batch.set(docRef, product);
@@ -26,7 +26,7 @@ export class ProductosModelFirebase {
           batch.commit().then(() => console.log('Productos agregados'));
         }
       })
-      .catch((e) => console.log(e));
+      .catch(e => console.log(e));
   }
 
   async get(id?: string): Promise<IItem[] | IItem> {
@@ -46,7 +46,7 @@ export class ProductosModelFirebase {
       } else {
         const result = await this.productosDb.get();
         const productos = result.docs;
-        output = productos.map((product) => {
+        output = productos.map(product => {
           const productData = product.data();
           return {
             id: product.id,
@@ -133,7 +133,7 @@ export class ProductosModelFirebase {
         }
 
         const productsSnapshot = await query.get();
-        productsSnapshot.forEach((doc) => {
+        productsSnapshot.forEach(doc => {
           const id = doc.id;
           const data = doc.data();
           const product = {
@@ -145,12 +145,12 @@ export class ProductosModelFirebase {
 
         if (options.minStock) {
           productos = productos.filter(
-            (product) => product.stock >= (options.minStock as number)
+            product => product.stock >= (options.minStock as number),
           );
         }
         if (options.maxStock) {
           productos = productos.filter(
-            (product) => product.stock <= (options.maxStock as number)
+            product => product.stock <= (options.maxStock as number),
           );
         }
       } else {
@@ -168,7 +168,7 @@ export class ProductosModelFirebase {
         }
 
         const productsSnapshot = await query.get();
-        productsSnapshot.forEach((doc) => {
+        productsSnapshot.forEach(doc => {
           const id = doc.id;
           const data = doc.data();
           const product = {

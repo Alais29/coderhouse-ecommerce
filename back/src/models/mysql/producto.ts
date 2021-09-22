@@ -15,10 +15,10 @@ export class ProductosModelMySql {
     const options = configDb[environment];
     this.connection = knex(options);
     console.log(`BD MySQL ${environment} configurada`);
-    this.connection.schema.hasTable('productos').then((exists) => {
+    this.connection.schema.hasTable('productos').then(exists => {
       if (!exists) {
         this.connection.schema
-          .createTable('productos', (productosTable) => {
+          .createTable('productos', productosTable => {
             productosTable.increments();
             productosTable.string('nombre').notNullable();
             productosTable.string('descripcion').notNullable();
@@ -35,9 +35,9 @@ export class ProductosModelMySql {
             this.connection('productos')
               .insert(productosMock)
               .then(() => console.log('Productos agregados'))
-              .catch((e) => console.log(e));
+              .catch(e => console.log(e));
           })
-          .catch((e) => console.log(e));
+          .catch(e => console.log(e));
       }
     });
   }
@@ -47,7 +47,7 @@ export class ProductosModelMySql {
       if (id) {
         const producto = await this.connection('productos').where(
           'id',
-          Number(id)
+          Number(id),
         );
         return producto[0];
       }
@@ -108,32 +108,32 @@ export class ProductosModelMySql {
   async query(options: IItemQuery): Promise<IItem[]> {
     try {
       const products = await this.connection('productos')
-        .modify((queryBuilder) => {
+        .modify(queryBuilder => {
           if (options.nombre) {
             queryBuilder.where('nombre', options.nombre);
           }
         })
-        .modify((queryBuilder) => {
+        .modify(queryBuilder => {
           if (options.codigo) {
             queryBuilder.where('codigo', options.codigo);
           }
         })
-        .modify((queryBuilder) => {
+        .modify(queryBuilder => {
           if (options.minPrice) {
             queryBuilder.where('precio', '>=', options.minPrice);
           }
         })
-        .modify((queryBuilder) => {
+        .modify(queryBuilder => {
           if (options.maxPrice) {
             queryBuilder.where('precio', '<=', options.maxPrice);
           }
         })
-        .modify((queryBuilder) => {
+        .modify(queryBuilder => {
           if (options.minStock) {
             queryBuilder.where('stock', '>=', options.minStock);
           }
         })
-        .modify((queryBuilder) => {
+        .modify(queryBuilder => {
           if (options.maxStock) {
             queryBuilder.where('stock', '<=', options.maxStock);
           }

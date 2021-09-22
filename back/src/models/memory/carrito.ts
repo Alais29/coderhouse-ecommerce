@@ -23,16 +23,16 @@ export class CarritoModel {
       const productsModel = new ProductosModel();
       const allProducts = await productsModel.get();
       const productToAdd = (allProducts as IItem[]).find(
-        (item: IItem) => item.id === id
+        (item: IItem) => item.id === id,
       );
       const productToAddInCart = this.carrito.find(
-        (item: IItem) => item.id === id
+        (item: IItem) => item.id === id,
       );
 
       if (productToAddInCart) {
         throw new RepeatedProductInCart(
           400,
-          'El producto que desea agregar ya se encuentra en el carrito'
+          'El producto que desea agregar ya se encuentra en el carrito',
         );
       } else {
         if (productToAdd) {
@@ -54,7 +54,7 @@ export class CarritoModel {
   async delete(id: string): Promise<IItem[]> {
     try {
       const productToDelete = this.carrito.find(
-        (item: IItem) => item.id === id
+        (item: IItem) => item.id === id,
       );
 
       if (productToDelete) {
@@ -66,7 +66,7 @@ export class CarritoModel {
       } else {
         throw new NotFound(
           404,
-          'El producto que desea eliminar no esta en el carrito'
+          'El producto que desea eliminar no esta en el carrito',
         );
       }
     } catch (e) {

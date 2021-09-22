@@ -28,7 +28,7 @@ export class CarritoModelFirebase {
       } else {
         const result = await this.carritoDb.get();
         const productos = result.docs;
-        output = productos.map((product) => {
+        output = productos.map(product => {
           const productData = product.data();
           return {
             id: product.id,
@@ -49,7 +49,7 @@ export class CarritoModelFirebase {
       if (productToAddInCart) {
         throw new RepeatedProductInCart(
           400,
-          'El producto que desea agregar ya se encuentra en el carrito'
+          'El producto que desea agregar ya se encuentra en el carrito',
         );
       } else {
         const productToAddData = await this.productosDb.doc(id).get();
