@@ -4,15 +4,11 @@ import { isEmpty } from 'utilities/others';
 import { Button, Form } from 'react-bootstrap'
 import { IMessage, IToastInfo } from 'commons/interfaces';
 import Notification from 'components/Notification/Notification';
+import defaultAvatar from 'images/default-avatar.jpg';
 import cx from 'classnames/bind'
 import styles from './styles.module.scss'
-
-// interface IMessage {
-//   id: number
-//   email: string
-//   text: string
-//   date: string
-// }
+import moment from 'moment';
+import { denormalize, schema } from 'normalizr';
 
 interface IChatChannel {
   messages: IMessage[]
@@ -21,15 +17,19 @@ interface IChatChannel {
 
 const ChatChannel = ({messages, setMessages}: IChatChannel) => {
   const [formValues, setFormValues] = useState({
+    nombre: '',
+    apellido: '',
+    edad: '',
+    alias: '',
+    avatar: '',
     email: '',
     text: ''
   });
-  // const [messages, setMessages] = useState<IMessage[]>([])
   const [showToast, setShowToast] = useState(false)
   const [toastInfo, setToastInfo] = useState<IToastInfo>({ text: '', type: '' })
   
-  const { email, text } = formValues
-  const emailRef = useRef<HTMLInputElement>(null)
+  const { nombre, apellido, edad, alias, avatar, email, text } = formValues
+  // const emailRef = useRef<HTMLInputElement>(null)
   const chatBoxRef = useRef<HTMLInputElement>(null)
 
   const handleToggleShowToast = (info?: IToastInfo) => {
@@ -54,9 +54,20 @@ const ChatChannel = ({messages, setMessages}: IChatChannel) => {
     e.preventDefault()
 
     if (isEmpty(email) || isEmpty(text)) {
-      handleToggleShowToast({type: 'warning', text: 'Ambos campos son obligatorios'})
+      handleToggleShowToast({type: 'warning', text: 'El email y el mensaje son obligatorios'})
     } else {
-      socket.emit('new message', formValues)
+      const message = {
+        author: {
+          id: email,
+          nombre,
+          apellido,
+          edad: Number(edad),
+          alias,
+          avatar
+        },
+        text
+      }
+      socket.emit('new message', message)
       socket.on('save message success', (newMessage) => {
         setFormValues({
           ...formValues,
@@ -64,10 +75,20 @@ const ChatChannel = ({messages, setMessages}: IChatChannel) => {
         })
       })
       socket.on('messages', (data) => {
-        setMessages(data)
-        if (emailRef.current) {
-          emailRef.current.disabled = true;
-        }
+        const authorSchema = new schema.Entity('authors');
+        const messageSchema = new schema.Entity(
+          'mensaje',
+          {
+            author: authorSchema,
+          }
+        );
+        const messagesSchema = new schema.Array(messageSchema);
+        const denormalizedData = denormalize(
+          data.result,
+          messagesSchema,
+          data.entities
+        );
+        setMessages(denormalizedData)
         if (chatBoxRef.current) {
           chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
         }
@@ -85,19 +106,38 @@ const ChatChannel = ({messages, setMessages}: IChatChannel) => {
     <div className={cx(styles['chat-channel'])}>
       <Notification show={showToast} handleToggleShowToast={handleToggleShowToast} toastInfo={toastInfo} />
       <div ref={chatBoxRef} className={cx(styles['chat-channel__messages'])}>
-        {messages.map((msg) => (
-          <div key={msg.id} className={cx(styles['chat-channel__message'])}>
-            <p>
-              <span className={cx(styles['chat-channel__message-email'])}>{msg.email}: </span>
-              <span className={cx(styles['chat-channel__message-text'])}>{msg.text}</span>
-            </p>
-            <small className={cx(styles['chat-channel__message-date'])}>{msg.date}</small>
-          </div>
-        ))}
+        {messages && messages.map((msg) => {
+          return (
+            <div key={msg.id} className={cx(styles['chat-channel__message'])}>
+              <div>
+                <div className={cx('d-flex', 'align-items-center')}>
+                  <img
+                    className={cx(styles['chat-channel__message-avatar'])}
+                    src={msg.author.avatar || defaultAvatar}
+                    alt={`Avatar ${msg.author.alias}`}
+                  />
+                  <span className={cx(styles['chat-channel__message-email'], 'mx-2')}>{msg.author.alias}</span>
+                  <span>{msg.author.id}: </span>
+                </div>
+                <p className={cx(styles['chat-channel__message-text'])}>
+                  {msg.text}
+                </p>
+              </div>
+              <small className={cx(styles['chat-channel__message-date'])}>{moment(msg.timestamp).format('DD/MM/YYYY HH:mm:ss')}</small>
+            </div>
+          )
+        })}
       </div>
       <Form onSubmit={handleSubmit}>
         <div className={cx(styles['chat-channel__form'])}>
-          <Form.Control value={email} onChange={handleChange} name="email" type="text" placeholder="Email" ref={emailRef} />
+          <div className={cx('d-flex')}>
+            <Form.Control value={nombre} onChange={handleChange} name="nombre" type="text" placeholder="Nombre" />
+            <Form.Control value={apellido} onChange={handleChange} name="apellido" type="text" placeholder="Apellido" />
+            <Form.Control value={edad} onChange={handleChange} name="edad" type="number" placeholder="Edad" />
+            <Form.Control value={alias} onChange={handleChange} name="alias" type="text" placeholder="Alias" />
+            <Form.Control value={avatar} onChange={handleChange} name="avatar" type="url" placeholder="Avatar" />
+            <Form.Control value={email} onChange={handleChange} name="email" type="text" placeholder="Email" />
+          </div>
           <Form.Control value={text} onChange={handleChange} name="text" type="text" placeholder="Ingresa un mensaje" />
           <Button className="w-100" variant="primary" type="submit">Enviar</Button>
         </div>

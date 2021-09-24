@@ -58,3 +58,21 @@ export interface IItemQuery {
   minStock?: number;
   maxStock?: number;
 }
+
+export interface IMessage {
+  author: {
+    id: string;
+    nombre: string;
+    apellido: string;
+    edad: number;
+    alias: string;
+    avatar: string;
+  };
+  text: string;
+  timestamp: string;
+  _id: string;
+}
+
+export interface IMesssageDoc extends Document {
+  _id: ObjectId;
+}

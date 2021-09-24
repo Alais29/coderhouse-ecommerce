@@ -18,8 +18,15 @@ export interface IToastInfo {
 }
 
 export interface IMessage {
-  id?: number;
-  date?: string;
-  email: string;
+  author: {
+    id: string;
+    nombre: string;
+    apellido: string;
+    edad: number;
+    alias: string;
+    avatar: string;
+  };
   text: string;
+  timestamp: string;
+  id: string;
 }

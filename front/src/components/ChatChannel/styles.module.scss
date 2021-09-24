@@ -17,6 +17,8 @@
     border-radius: 8px;
     padding: 0.5rem;
     color: #fff;
+    display: flex;
+    justify-content: space-between;
     p {
       margin: 0;
       padding: 0;
@@ -30,6 +32,10 @@
     }
     &-date {
       font-size: 0.75rem;
+    }
+    &-avatar {
+      height: 30px;
+      border-radius: 50%;
     }
   }
   &__form {
