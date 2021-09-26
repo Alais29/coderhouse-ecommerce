@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useHistory } from "react-router-dom";
 import { IItemAPI, IToastInfo } from 'commons/interfaces'
 import { deleteCarritoProduct, getCarritoProducts } from 'services/Carrito'
 import { isEmpty } from 'utilities/others'
@@ -6,11 +7,17 @@ import { Link } from 'react-router-dom'
 import ProductList from 'components/ProductList/ProductList'
 import Notification from 'components/Notification/Notification'
 
-const Cart = () => {
+interface ICart {
+  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const Cart = ({setLoggedIn}: ICart) => {
   const [productos, setProductos] = useState<IItemAPI[]>([])
   const [total, setTotal] = useState(0)
   const [showToast, setShowToast] = useState(false)
   const [toastInfo, setToastInfo] = useState<IToastInfo>({ text: '', type: '' })
+
+  const history = useHistory();
 
   const handleToggleShowToast = (info?: IToastInfo) => {
     setShowToast(!showToast)
@@ -33,9 +40,15 @@ const Cart = () => {
         setProductos(products)
       })
       .catch((e) => {
+        if (e.message === "No Autorizado") {
+          setLoggedIn(false)
+          history.push('/login');
+          return
+        }
         setToastInfo({ text: e.message, type: 'danger' })
+        setShowToast((prev) => !prev);
       })
-  }, [])
+  }, [history, setLoggedIn])
 
   useEffect(() => {
     const totalCost = productos.reduce((total, product) => {

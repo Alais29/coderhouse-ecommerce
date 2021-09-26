@@ -1,24 +1,36 @@
 import { Container } from 'react-bootstrap';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Navigation from 'components/Navigation/Navigation';
-import AddProduct from 'pages/AddProduct';
+// import AddProduct from 'pages/AddProduct';
 import Cart from 'pages/Cart';
 import Productos from 'pages/Productos';
+import Login from 'pages/Login';
+import { useState } from 'react';
 
 const App = () => {
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedInUser, setLoggedInUser] = useState('');
   return (
     <Router>
-      <Navigation />
+      <Navigation loggedIn={loggedIn} />
       <Container>
         <Switch>
-          <Route path="/add-product">
+          {/* <Route path="/add-product">
             <AddProduct />
-          </Route>
+          </Route> */}
           <Route path="/cart">
-            <Cart />
+            <Cart setLoggedIn={setLoggedIn} />
+          </Route>
+          <Route path="/login">
+            <Login
+              setLoggedIn={setLoggedIn}
+              loggedIn={loggedIn}
+              loggedInUser={loggedInUser}
+              setLoggedInUser={setLoggedInUser}
+            />
           </Route>
           <Route path="/">
-            <Productos />
+            <Productos setLoggedIn={setLoggedIn} />
           </Route>
         </Switch>
       </Container>

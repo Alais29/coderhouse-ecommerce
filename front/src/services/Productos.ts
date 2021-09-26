@@ -27,7 +27,7 @@ export const deleteProduct = async (id: string) => {
   } catch (e) {
     throw new Error(e.response.data.message);
   }
-}
+};
 
 export const updateProduct = async (id: string, product: IItem) => {
   try {
@@ -36,4 +36,4 @@ export const updateProduct = async (id: string, product: IItem) => {
   } catch (e) {
     throw new Error(e.response.data.message);
   }
-}
+};

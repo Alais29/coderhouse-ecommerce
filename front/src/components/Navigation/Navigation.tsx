@@ -4,7 +4,11 @@ import CartIcon from "./CartIcon";
 import cx from 'classnames/bind'
 import styles from './styles.module.scss'
 
-const Navigation = () => {
+interface INavigation {
+  loggedIn: boolean
+}
+
+const Navigation = ({loggedIn}: INavigation) => {
   return (
     <Navbar bg="dark" variant="dark" fixed="top" expand="sm">
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -12,8 +16,8 @@ const Navigation = () => {
         <Container>
           <Nav className="me-auto">
             <Link className="nav-link" to="/">Inicio</Link>
-            <Link className="nav-link" to="/add-product">Agregar Producto</Link>
-            <Link className="nav-link" to="/chat">Chat</Link>
+            {/* <Link className="nav-link" to="/add-product">Agregar Producto</Link> */}
+            <Link className="nav-link" to="/login">Login</Link>
             <Link className={cx('nav-link', 'ms-sm-auto', styles['cart-icon'])} to="/cart">
               <CartIcon />
             </Link>

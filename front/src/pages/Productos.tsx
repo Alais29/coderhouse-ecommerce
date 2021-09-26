@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Modal } from 'react-bootstrap'
+import { useHistory } from "react-router-dom";
 import { IItemAPI, IToastInfo } from 'commons/interfaces'
 import { getProducts, deleteProduct, updateProduct } from 'services/Productos'
 import { saveCarritoProduct } from 'services/Carrito'
@@ -9,13 +10,19 @@ import Notification from 'components/Notification/Notification'
 import ProductList from 'components/ProductList/ProductList'
 import EditModal from 'components/Modals/EditModal/EditModal'
 
-const Productos = () => {
+interface IProductos {
+  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const Productos = ({setLoggedIn}: IProductos) => {
   const [showModal, setShowModal] = useState(false)
   const [showToast, setShowToast] = useState(false)
   const [toastInfo, setToastInfo] = useState<IToastInfo>({ text: '', type: '' })
   const [productToDelete, setProductToDelete] = useState<IItemAPI | null>(null)
   const [productToEdit, setProductToEdit] = useState<IItemAPI | null>(null)
   const [productos, setProductos] = useState<IItemAPI[] | []>([])
+
+  const history = useHistory();
 
   const handleToggleShowToast = (info: IToastInfo = { text: '', type: '' }) => {
     if (!isEmpty(info.text)) {
@@ -102,9 +109,15 @@ const Productos = () => {
         setProductos(products)
       })
       .catch((e) => {
-        setToastInfo({ type: 'warning', text: e.message })
+        if (e.message === "No Autorizado") {
+          setLoggedIn(false);
+          history.push('/login');
+          return
+        }
+        setToastInfo({ type: 'danger', text: e.message })
+        setShowToast((prev) => !prev)
       })
-  }, [])
+  }, [history, setLoggedIn])
 
   return (
     <>
