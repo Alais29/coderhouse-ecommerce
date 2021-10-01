@@ -3,9 +3,11 @@ import express from 'express';
 import session from 'express-session';
 import cors from 'cors';
 import path from 'path';
+import MongoStore from 'connect-mongo';
 import routes from 'routes';
 import { unknownEndpoint } from 'middlewares/unknownEndpoint';
 import { errorHandler } from 'middlewares/errorHandler';
+import { clientPromise } from 'models/mongoDb/mongoConnection';
 
 const app: express.Application = express();
 const PORT = process.env.PORT || 8080;
@@ -15,18 +17,28 @@ const server = app.listen(PORT, () => {
 });
 server.on('error', error => console.log(`Error en el servidor: ${error}`));
 
-const oneMinute = 1000 * 60;
+const tenMinutes = 1000 * 60 * 10;
 
 app.use(express.static(path.resolve(__dirname, '../', 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+
 app.use(
   session({
     secret: 'b2xyddLPtfeK0ryUgbLZ',
-    cookie: { maxAge: oneMinute },
-    saveUninitialized: true,
     resave: true,
+    saveUninitialized: false,
+    rolling: true,
+    store: MongoStore.create({
+      clientPromise,
+      stringify: false,
+      autoRemove: 'interval',
+      autoRemoveInterval: 1,
+    }),
+    cookie: {
+      maxAge: tenMinutes,
+    },
   }),
 );
 
