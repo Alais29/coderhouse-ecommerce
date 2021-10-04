@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Container } from 'react-bootstrap';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Navigation from 'components/Navigation/Navigation';
@@ -5,7 +6,7 @@ import Navigation from 'components/Navigation/Navigation';
 import Cart from 'pages/Cart';
 import Productos from 'pages/Productos';
 import Login from 'pages/Login';
-import { useState } from 'react';
+import Signup from 'pages/Signup';
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -28,6 +29,9 @@ const App = () => {
               loggedInUser={loggedInUser}
               setLoggedInUser={setLoggedInUser}
             />
+          </Route>
+          <Route path="/signup">
+            <Signup />
           </Route>
           <Route path="/">
             <Productos setLoggedIn={setLoggedIn} />

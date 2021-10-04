@@ -1,57 +1,49 @@
-import { useState } from 'react'
-import { Alert, Button, Form } from 'react-bootstrap'
-import { loginUser, logoutUser } from 'services/Login'
+import React, { useState } from 'react'
+import { IUser } from 'commons/interfaces'
+import { Button, Form } from 'react-bootstrap'
 
 interface ILoginForm {
-  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>
-  loggedIn: boolean
-  setLoggedInUser: React.Dispatch<React.SetStateAction<string>>
-  loggedInUser: string
+  onSubmit: (data: IUser) => void
+  btnText: string
 }
 
-const LoginForm = ({setLoggedIn, loggedIn, loggedInUser, setLoggedInUser}: ILoginForm) => {
-  const [name, setName] = useState('')
-  const [logoutMessage, setLogoutMessage] = useState('');
+const LoginForm = ({ onSubmit, btnText }: ILoginForm) => {
+  const [formValues, setFormValues] = useState({
+    username: '',
+    password: '',
+  })
 
-  const handleSubmit = () => {
-    loginUser(name).then((res) => {
-      setLoggedIn(true);
-      setLoggedInUser(res.name)
+  const { username, password } = formValues;
+  
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormValues({
+      ...formValues,
+      [e.target.name]: e.target.value
     })
   }
 
-  const handleLogout = () => {
-    logoutUser().then(() => {
-      console.log('desloggeado')
-      setLoggedIn(false)
-      setLogoutMessage(`Hasta luego ${loggedInUser}`)
-      setTimeout(() => {
-        setLogoutMessage('')
-        setLoggedInUser('')
-      }, 2000)
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    onSubmit(formValues)
+    setFormValues({
+      username: '',
+      password: '',
     })
   }
 
   return (
     <div>
-      {loggedIn &&
-        <Alert variant='success'>
-          <span className="me-3">Bienvenido/a {loggedInUser}</span>
-          <Button onClick={handleLogout}>Logout</Button>
-        </Alert>
-      }
-      {logoutMessage &&
-        <Alert variant='primary'>
-          <span className="me-3">{logoutMessage}</span>
-        </Alert>
-      }
-      <Form>
+      <Form onSubmit={(e) => handleSubmit(e)}>
         <Form.Group className="mb-3" controlId="nombre">
           <Form.Label>Ingrese su nombre</Form.Label>
-          <Form.Control type="text" value={name} name="nombre" onChange={(e) => setName(e.target.value)} />
+          <Form.Control type="text" value={username} name="username" onChange={handleChange} />
         </Form.Group>
-        <Button className="mb-2" onClick={handleSubmit}>
-          Guardar
+        <Form.Group className="mb-3" controlId="password">
+          <Form.Label>Ingrese su contraseña</Form.Label>
+          <Form.Control type="password" value={password} name="password" onChange={handleChange} />
+        </Form.Group>
+        <Button className="mb-2" type="submit">
+          {btnText}
         </Button>
       </Form>
     </div>
