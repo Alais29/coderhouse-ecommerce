@@ -7,7 +7,8 @@ import MongoStore from 'connect-mongo';
 import routes from 'routes';
 import { unknownEndpoint } from 'middlewares/unknownEndpoint';
 import { errorHandler } from 'middlewares/errorHandler';
-import { clientPromise } from 'models/mongoDb/mongoConnection';
+import { clientPromise } from 'services/mongodb';
+import passport from 'middlewares/auth';
 
 const app: express.Application = express();
 const PORT = process.env.PORT || 8080;
@@ -41,6 +42,8 @@ app.use(
     },
   }),
 );
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/api', routes);
 

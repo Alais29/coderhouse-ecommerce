@@ -2,7 +2,7 @@ import { IItem, IItemBase } from 'common/interfaces';
 import moment from 'moment';
 import mongoose from 'mongoose';
 import { NotFound, RepeatedProductInCart } from 'errors';
-import { productosModel } from 'models/mongoDb/producto';
+import { ProductosModel } from 'models/mongoDb/producto';
 
 const ProductoSchema = new mongoose.Schema<IItemBase>({
   nombre: { type: String, require: true, max: 100 },
@@ -27,7 +27,7 @@ export class CarritoModelMongoDb {
   private productos;
   constructor() {
     this.carrito = mongoose.model<IItemBase>('carrito', ProductoSchema);
-    this.productos = productosModel;
+    this.productos = ProductosModel;
   }
 
   async get(id?: string): Promise<IItem[] | IItem> {

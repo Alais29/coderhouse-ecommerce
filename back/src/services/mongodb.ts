@@ -4,16 +4,12 @@ import { ModelType } from 'common/enums';
 import { modelTypeToUse } from 'api/modelType';
 
 const getMongoUrl = (type: number): string => {
-  let mongoUrl = '';
   switch (type) {
     case ModelType.localMongo:
-      mongoUrl = 'mongodb://0.0.0.0:27017/ecommerce';
-      break;
+      return 'mongodb://0.0.0.0:27017/ecommerce';
     default:
-      mongoUrl = `mongodb+srv://${Config.MONGO_ATLAS_USER}:${Config.MONGO_ATLAS_PASSWORD}@${Config.MONGO_ATLAS_CLUSTER}/${Config.MONGO_ATLAS_DB}?retryWrites=true&w=majority`;
-      break;
+      return `mongodb+srv://${Config.MONGO_ATLAS_USER}:${Config.MONGO_ATLAS_PASSWORD}@${Config.MONGO_ATLAS_CLUSTER}/${Config.MONGO_ATLAS_DB}?retryWrites=true&w=majority`;
   }
-  return mongoUrl;
 };
 
 const mongoUrl = getMongoUrl(modelTypeToUse);

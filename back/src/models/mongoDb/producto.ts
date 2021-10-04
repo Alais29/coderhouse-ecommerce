@@ -22,7 +22,7 @@ ProductoSchema.set('toJSON', {
   },
 });
 
-export const productosModel = mongoose.model<IItemBase>(
+export const ProductosModel = mongoose.model<IItemBase>(
   'productos',
   ProductoSchema,
 );
@@ -30,7 +30,7 @@ export const productosModel = mongoose.model<IItemBase>(
 export class ProductosModelMongoDb {
   private productos;
   constructor() {
-    this.productos = productosModel;
+    this.productos = ProductosModel;
     this.get()
       .then(productos => {
         if (productos.length === 0) {
