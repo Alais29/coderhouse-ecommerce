@@ -32,9 +32,11 @@ const loginFunc = async (
   if (!user) {
     return done(null, false, { message: 'User does not exist' });
   }
-  if (!user.isValidPassword(password)) {
+
+  if (!(await user.isValidPassword(password))) {
     return done(null, false, { message: 'Password is not valid.' });
   }
+
   console.log('Login exitoso');
   return done(null, user);
 };
@@ -85,7 +87,7 @@ passport.use('login', new LocalStrategy(strategyOptions, loginFunc));
 passport.use('signup', new LocalStrategy(strategyOptions, signUpFunc));
 
 passport.serializeUser((user: User, done) => {
-  console.log(user);
+  // console.log('serialize user', user);
   done(null, user._id);
 });
 
