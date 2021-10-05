@@ -7,7 +7,7 @@ export const getProducts = async () => {
     const response = await axios.get(`${baseUrl}/listar`);
     return response.data.data;
   } catch (e) {
-    throw new Error(e.response.data.message);
+    throw new Error(e.response.data);
   }
 };
 
@@ -27,7 +27,7 @@ export const deleteProduct = async (id: string) => {
   } catch (e) {
     throw new Error(e.response.data.message);
   }
-}
+};
 
 export const updateProduct = async (id: string, product: IItem) => {
   try {
@@ -36,4 +36,4 @@ export const updateProduct = async (id: string, product: IItem) => {
   } catch (e) {
     throw new Error(e.response.data.message);
   }
-}
+};

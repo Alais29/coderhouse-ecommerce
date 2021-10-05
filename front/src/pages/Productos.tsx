@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { Modal } from 'react-bootstrap'
 import { IItemAPI, IToastInfo } from 'commons/interfaces'
 import { getProducts, deleteProduct, updateProduct } from 'services/Productos'
@@ -9,6 +10,9 @@ import Notification from 'components/Notification/Notification'
 import ProductList from 'components/ProductList/ProductList'
 import EditModal from 'components/Modals/EditModal/EditModal'
 
+import { fetchProducts } from 'features/products/productsSlice'
+import { RootState } from 'store'
+
 const Productos = () => {
   const [showModal, setShowModal] = useState(false)
   const [showToast, setShowToast] = useState(false)
@@ -16,6 +20,15 @@ const Productos = () => {
   const [productToDelete, setProductToDelete] = useState<IItemAPI | null>(null)
   const [productToEdit, setProductToEdit] = useState<IItemAPI | null>(null)
   const [productos, setProductos] = useState<IItemAPI[] | []>([])
+  
+  const { data, status, error } = useSelector((state: RootState) => state.products);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (status === 'idle') {
+      dispatch(fetchProducts())
+    }
+  }, [status, dispatch])
 
   const handleToggleShowToast = (info: IToastInfo = { text: '', type: '' }) => {
     if (!isEmpty(info.text)) {
@@ -111,7 +124,7 @@ const Productos = () => {
       <h1 className="text-center mt-5 pt-4">Productos</h1>
       <ProductList
         location="home"
-        productos={productos}
+        productos={data as IItemAPI[]}
         handleToggleShowModal={handleToggleShowModal}
         handleAddToCart={handleAddToCart}
       />

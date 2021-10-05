@@ -1,4 +1,6 @@
 export interface IItem {
+  id?: string;
+  timestamp?: string;
   nombre: string;
   descripcion: string;
   codigo: string;
