@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react'
 import { Alert, Modal, Spinner } from 'react-bootstrap'
 import { IItemAPI, IToastInfo } from 'commons/interfaces'
-import { saveCarritoProduct } from 'services/Carrito'
 import { isEmpty } from 'utilities/others'
 import ConfirmationModal from 'components/Modals/ConfirmationModal/ConfirmationModal'
 import Notification from 'components/Notification/Notification'
 import ProductList from 'components/ProductList/ProductList'
 import EditModal from 'components/Modals/EditModal/EditModal'
 import { fetchProducts, editProduct, removeProductApi, removeProduct } from 'features/products/productsSlice'
+import { addProductToCart } from 'features/cart/cartSlice'
 import { useAppDispatch, useAppSelector } from 'hooks/redux'
 import cx from 'classnames/bind'
 import styles from './styles.module.scss'
@@ -38,7 +38,7 @@ const Productos = () => {
       setProductToEdit(producto)
       setProductToDelete(null)
     }
-    setShowModal(!showModal)
+    setShowModal((prevState) => !prevState)
   }
 
   const handleConfirmDelete = async () => {
@@ -74,14 +74,13 @@ const Productos = () => {
     }
   }
 
-  const handleAddToCart = (producto: IItemAPI) => {
-    saveCarritoProduct(producto.id)
-      .then(() => {
-        handleToggleShowToast({ text: `${producto.nombre} agregado al carrito`, type: 'success' })
-      })
-      .catch((e) => {
-        handleToggleShowToast({ text: e.message, type: 'warning' })
-      })
+  const handleAddToCart = async (producto: IItemAPI) => {
+    try {
+      await dispatch(addProductToCart(producto.id)).unwrap()
+      handleToggleShowToast({ text: `${producto.nombre} agregado al carrito`, type: 'success' })
+    } catch (e) {
+      handleToggleShowToast({ text: e.message, type: 'warning' })
+    }
   }
 
   useEffect(() => {

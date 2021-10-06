@@ -1,56 +1,56 @@
 import { useEffect, useState } from 'react'
-import { IItemAPI, IToastInfo } from 'commons/interfaces'
-import { deleteCarritoProduct, getCarritoProducts } from 'services/Carrito'
+import { IToastInfo } from 'commons/interfaces'
+import { useAppDispatch, useAppSelector } from 'hooks/redux'
+import { fetchProductsCart, removeProductCart } from 'features/cart/cartSlice'
 import { isEmpty } from 'utilities/others'
 import { Link } from 'react-router-dom'
 import ProductList from 'components/ProductList/ProductList'
 import Notification from 'components/Notification/Notification'
 
 const Cart = () => {
-  const [productos, setProductos] = useState<IItemAPI[]>([])
   const [total, setTotal] = useState(0)
   const [showToast, setShowToast] = useState(false)
   const [toastInfo, setToastInfo] = useState<IToastInfo>({ text: '', type: '' })
 
+  const { data, status, error } = useAppSelector((state) => state.cart);
+  const dispatch = useAppDispatch();
+
   const handleToggleShowToast = (info?: IToastInfo) => {
-    setShowToast(!showToast)
+    setShowToast((prevState) => !prevState)
     info && setToastInfo(info)
   }
 
-  const handleRemove = (id: string) => {
-    deleteCarritoProduct(id)
-      .then((products) => {
-        setProductos(products)
-      })
-      .catch((e) => {
-        handleToggleShowToast({ text: e.message, type: 'warning'})
-      })
+  const handleRemove = async (id: string) => {
+    try {
+      await dispatch(removeProductCart(id)).unwrap()
+    } catch (e) {
+      handleToggleShowToast({ text: e.message, type: 'warning'})
+    }
   }
 
   useEffect(() => {
-    getCarritoProducts()
-      .then(products => {
-        setProductos(products)
-      })
-      .catch((e) => {
-        setToastInfo({ text: e.message, type: 'danger' })
-      })
-  }, [])
+    if (status === 'idle') {
+      dispatch(fetchProductsCart())
+    }
+    if (status === 'failed') {
+      setToastInfo({ text: error || 'Ocurrió un error', type: 'danger' })
+    }
+  }, [dispatch, status, error])
 
   useEffect(() => {
-    const totalCost = productos.reduce((total, product) => {
+    const totalCost = data.reduce((total, product) => {
       return total += Number(product.precio)
     }, 0)
     setTotal(totalCost)
-  }, [productos])
+  }, [data])
 
 
   return (
     <>
       <h1 className="text-center mt-5 pt-3 mb-">Carrito</h1>
       <Notification show={showToast} handleToggleShowToast={handleToggleShowToast} toastInfo={toastInfo} />
-      <ProductList productos={productos} location="cart" handleRemove={handleRemove} />
-      {isEmpty(productos) ?
+      <ProductList productos={data} location="cart" handleRemove={handleRemove} />
+      {isEmpty(data) ?
         <div className="text-center">
           <h2>El carrito está vacío</h2>
           <p className="display-6">Agrega algunos productos</p>
