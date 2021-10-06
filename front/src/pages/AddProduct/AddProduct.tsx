@@ -1,12 +1,15 @@
 import { useState } from 'react'
+import { IItem, IToastInfo } from 'commons/interfaces';
+import { addNewProduct } from 'features/products/productsSlice'
+import { useAppDispatch } from 'hooks/redux'
 import ProductForm from 'components/ProductForm/ProductForm'
 import Notification from 'components/Notification/Notification';
-import { IItem, IToastInfo } from 'commons/interfaces';
-import { saveProduct } from 'services/Productos';
 
 const AddProduct = () => {
   const [showToast, setShowToast] = useState(false)
   const [toastInfo, setToastInfo] = useState<IToastInfo>({ text: '', type: '' })
+
+  const dispatch = useAppDispatch();
 
   const handleToggleShowToast = (info: IToastInfo = { text: '', type: '' }) => {
     if (info.text) {
@@ -15,15 +18,14 @@ const AddProduct = () => {
     setShowToast(!showToast)
   }
 
-  const handleSaveProduct = (formValues: IItem, callback: () => void) => {
-    saveProduct(formValues)
-      .then(() => {
-        callback()
-        handleToggleShowToast({ text: 'El producto fue agregado con éxito', type: 'success' })
-      })
-      .catch((e) => {
-        handleToggleShowToast({ text: e.message, type: 'danger' })
-      })
+  const handleSaveProduct = async (formValues: IItem, callback: () => void) => {
+    try {
+      await dispatch(addNewProduct(formValues)).unwrap()
+      callback()
+      handleToggleShowToast({ text: 'El producto fue agregado con éxito', type: 'success' })
+    } catch (e) {
+      handleToggleShowToast({ text: e.message, type: 'danger' })
+    }
   }
 
   return (

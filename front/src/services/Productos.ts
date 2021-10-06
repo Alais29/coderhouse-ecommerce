@@ -7,7 +7,8 @@ export const getProducts = async () => {
     const response = await axios.get(`${baseUrl}/listar`);
     return response.data.data;
   } catch (e) {
-    throw new Error(e.response.data);
+    console.log(e.response.data.message);
+    throw new Error(e.response.data.message);
   }
 };
 

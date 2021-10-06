@@ -52,7 +52,7 @@ const Cart = () => {
       <ProductList productos={productos} location="cart" handleRemove={handleRemove} />
       {isEmpty(productos) ?
         <div className="text-center">
-          <h2 className="">El carrito está vacío</h2>
+          <h2>El carrito está vacío</h2>
           <p className="display-6">Agrega algunos productos</p>
           <Link to='/' className="btn btn-primary">Ir a inicio</Link>
         </div>

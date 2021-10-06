@@ -17,7 +17,7 @@ const ProductList = ({ handleToggleShowModal, productos, location, handleRemove,
   return (
     <>
       <div className={cx(styles['product-list'], 'my-4', 'd-flex', 'flex-wrap', 'justify-content-center', {'flex-column': location === 'cart'})}>
-        {!isEmpty(productos) && handleToggleShowModal && handleAddToCart && location === 'home' && productos.map((producto: IItemAPI) => (
+        {!isEmpty(productos) && location === 'home' && handleToggleShowModal && handleAddToCart && productos.map((producto: IItemAPI) => (
           <Product
             key={producto.id}
             product={producto}
