@@ -1,40 +1,35 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Alert, Button } from 'react-bootstrap'
-import { loginUser, logoutUser } from 'services/Login';
-import { Link } from 'react-router-dom';
-import { IUser } from 'commons/interfaces';
-import LoginForm from 'components/LoginForm/LoginForm'
+import { getUserData, logoutUser } from 'services/Login';
+import { IUserInfo } from 'commons/interfaces';
 
 interface ILogin {
   setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>
   loggedIn: boolean
-  setLoggedInUser: React.Dispatch<React.SetStateAction<string>>
-  loggedInUser: string
+  setLoggedInUser: React.Dispatch<React.SetStateAction<IUserInfo | null>>
+  loggedInUser: IUserInfo | null
 }
 
 const Login = ({ setLoggedIn, loggedIn, loggedInUser, setLoggedInUser }: ILogin) => {
   const [logoutMessage, setLogoutMessage] = useState('');
-  const [loginError, setLoginError] = useState(false);
 
-  const handleSubmit = (data: IUser) => {
-    loginUser(data).then((res) => {
-      setLoggedIn(true);
-      setLoggedInUser(res.user.username)
-    }).catch((e) => {
-      setLoginError(true)
-      setTimeout(() => {
-        setLoginError(false)
-      }, 3000)
+  useEffect(() => {
+    getUserData()
+      .then((res) => {
+        if (!res.error) {
+          setLoggedIn(true);
+          setLoggedInUser(res);
+        }
     })
-  }
+  }, [setLoggedIn, setLoggedInUser])
 
   const handleLogout = () => {
     logoutUser().then(() => {
       setLoggedIn(false)
-      setLogoutMessage(`Hasta luego ${loggedInUser}`)
+      setLogoutMessage(`Hasta luego ${loggedInUser?.name}`)
       setTimeout(() => {
         setLogoutMessage('')
-        setLoggedInUser('')
+        setLoggedInUser(null)
       }, 2000)
     })
   }
@@ -42,11 +37,6 @@ const Login = ({ setLoggedIn, loggedIn, loggedInUser, setLoggedInUser }: ILogin)
   return (
     <>
       <h1 className="text-center mt-5 pt-3">Login de Usuario</h1>
-      {loginError && 
-        <Alert variant='danger'>
-          <span className="me-3">Hubo un error, por favor verifique su usuario y contraseña</span>
-        </Alert>
-      }
       {logoutMessage &&
         <Alert variant='primary'>
           <span className="me-3">{logoutMessage}</span>
@@ -54,17 +44,17 @@ const Login = ({ setLoggedIn, loggedIn, loggedInUser, setLoggedInUser }: ILogin)
       }
       {loggedIn
         ? <Alert variant='success'>
-          <span className="me-3">Bienvenido/a {loggedInUser}</span>
-          <Button onClick={handleLogout}>Logout</Button>
-        </Alert>
-        : <>
-          <LoginForm onSubmit={handleSubmit} btnText='Login' />
-          <hr />
-          <div>
-            <span>¿No tienes cuenta?</span>
-            <Link className="btn btn-primary ms-2" to="/signup">Regístrate</Link>
+          <div className="text-center">
+            <p>Bienvenido/a</p>
+            <img src={loggedInUser?.photo} alt="Profile" />
+            <p className="mb-0">{loggedInUser?.name}</p>
+            <p>{loggedInUser?.email}</p>
+            <Button onClick={handleLogout}>Logout</Button>
           </div>
-        </>
+        </Alert>
+        : <Button className="mb-2" type="submit" as="a" href="http://localhost:8080/api/auth/login">
+          Login con Facebook
+        </Button>
       }
     </>
   )

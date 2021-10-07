@@ -7,10 +7,11 @@ import Cart from 'pages/Cart';
 import Productos from 'pages/Productos';
 import Login from 'pages/Login';
 import Signup from 'pages/Signup';
+import { IUserInfo } from 'commons/interfaces';
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [loggedInUser, setLoggedInUser] = useState('');
+  const [loggedInUser, setLoggedInUser] = useState<IUserInfo | null>(null);
   return (
     <Router>
       <Navigation loggedIn={loggedIn} />

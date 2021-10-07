@@ -1,5 +1,10 @@
 import passport from 'passport';
-import passportLocal, { IStrategyOptionsWithRequest } from 'passport-local';
+import {
+  Strategy as FaceBookStrategy,
+  VerifyFunction,
+  StrategyOption,
+} from 'passport-facebook';
+import Config from 'config';
 import { UserModel } from 'models/mongoDb/user';
 import { NextFunction, Request, Response } from 'express';
 import { IUser } from 'common/interfaces';
@@ -9,92 +14,30 @@ interface User {
   _id?: string;
 }
 
-const LocalStrategy = passportLocal.Strategy;
-
-const strategyOptions: IStrategyOptionsWithRequest = {
-  usernameField: 'username',
-  passwordField: 'password',
-  passReqToCallback: true,
+const strategyOptions: StrategyOption = {
+  clientID: Config.FACEBOOK_APP_ID,
+  clientSecret: Config.FACEBOOK_APP_SECRET,
+  callbackURL: 'http://localhost:8080/api/auth/facebook/callback',
+  profileFields: ['id', 'displayName', 'photos', 'emails'],
 };
 
-const loginFunc = async (
-  req: Request,
-  username: string,
-  password: string,
-  done: (
-    err: unknown,
-    user?: Express.User | false | null,
-    msg?: { message: string },
-  ) => void,
+const loginFunc: VerifyFunction = async (
+  accessToken,
+  refreshToken,
+  profile,
+  done,
 ) => {
-  const user = (await UserModel.findOne({ username })) as IUser;
-
-  if (!user) {
-    return done(null, false, { message: 'User does not exist' });
-  }
-
-  if (!(await user.isValidPassword(password))) {
-    return done(null, false, { message: 'Password is not valid.' });
-  }
-
-  console.log('Login exitoso');
-  return done(null, user);
+  return done(null, profile);
 };
 
-const signUpFunc = async (
-  req: Request,
-  username: string,
-  password: string,
-  done: (
-    err: unknown,
-    user?: Express.User | false | null,
-    msg?: { message: string },
-  ) => void,
-) => {
-  try {
-    const { username, password } = req.body;
+passport.use(new FaceBookStrategy(strategyOptions, loginFunc));
 
-    if (!username || !password) {
-      console.log('Invalid body fields');
-      return done(null, false);
-    }
-
-    const user = await UserModel.findOne({ username });
-
-    if (user) {
-      console.log('User already exists');
-      console.log(user);
-      return done(null, false, { message: 'User already exists' });
-    } else {
-      const userData = {
-        username,
-        password,
-      };
-
-      const newUser = new UserModel(userData);
-
-      await newUser.save();
-      console.log('Registro exitoso');
-
-      return done(null, newUser);
-    }
-  } catch (error) {
-    done(error);
-  }
-};
-
-passport.use('login', new LocalStrategy(strategyOptions, loginFunc));
-passport.use('signup', new LocalStrategy(strategyOptions, signUpFunc));
-
-passport.serializeUser((user: User, done) => {
-  // console.log('serialize user', user);
-  done(null, user._id);
+passport.serializeUser(function (user, cb) {
+  cb(null, user);
 });
 
-passport.deserializeUser((userId, done) => {
-  UserModel.findById(userId, function (err: unknown, user: IUser) {
-    done(err, user);
-  });
+passport.deserializeUser(function (obj: string, cb) {
+  cb(null, obj);
 });
 
 export const isLoggedIn = (

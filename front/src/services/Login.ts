@@ -1,12 +1,13 @@
 import axios from "axios";
 import { IUser } from "commons/interfaces";
 
-const baseUrl = "/api";
+const baseUrl = "/api/auth";
 
-export const loginUser = async (data: IUser) => {
+export const loginUser = async () => {
   try {
-    const response = await axios.post(`${baseUrl}/login`, data);
-    return response.data.data;
+    const response = await axios.get(`${baseUrl}/login`);
+    console.log(response);
+    return response;
   } catch (e) {
     console.log(e.response);
     throw new Error(e.response);
@@ -30,5 +31,14 @@ export const logoutUser = async () => {
     return response.data.data;
   } catch (e) {
     throw new Error(e.response.data.message);
+  }
+};
+
+export const getUserData = async () => {
+  try {
+    const response = await axios.get(`${baseUrl}/userdata`);
+    return response.data.data;
+  } catch (e) {
+    throw new Error(e);
   }
 };

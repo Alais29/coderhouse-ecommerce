@@ -28,3 +28,9 @@ export interface IUser {
   username: string;
   password: string;
 }
+
+export interface IUserInfo {
+  name: string;
+  photo: string;
+  email: string;
+}
