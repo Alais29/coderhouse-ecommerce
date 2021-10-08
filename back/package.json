@@ -1,5 +1,5 @@
 {
-  "name": "desafio-clase-8",
+  "name": "coderhouse-ecommerce",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,6 +7,7 @@
     "build:ui": "rm -rf public && rm -rf build/public && cd ../front/ && npm run build --prod && cp -r build ../back/public && cp -r build ../back/build/public",
     "dev": "nodemon -L -r tsconfig-paths/register ./src/index.ts",
     "start": "npx tsc && node -r ts-node/register/transpile-only -r tsconfig-paths/register ./build/src/index.js",
+    "server:client": "concurrently --n \"SERVER,CLIENT\" -c \"blue.bold,green.bold\" \"npm run dev\" \"cd ../front && npm run start\"",
     "build": "npx tsc",
     "lint": "eslint . --ext .ts",
     "prettier": "prettier --config .prettierrc 'src/**/*.ts' --write",
@@ -39,6 +40,7 @@
     "@types/uuid": "^8.3.1",
     "@typescript-eslint/eslint-plugin": "^4.22.1",
     "@typescript-eslint/parser": "^4.22.1",
+    "concurrently": "^6.3.0",
     "eslint": "^7.26.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
