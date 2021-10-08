@@ -52,9 +52,14 @@ const Login = ({ setLoggedIn, loggedIn, loggedInUser, setLoggedInUser }: ILogin)
             <Button onClick={handleLogout}>Logout</Button>
           </div>
         </Alert>
-        : <Button className="mb-2" type="submit" as="a" href="http://localhost:8080/api/auth/login">
-          Login con Facebook
-        </Button>
+        :
+        <Alert variant='primary'>
+          <div className="my-5 text-center">
+            <Button className="mb-2" type="submit" as="a" href="http://localhost:8080/api/auth/login">
+              Login con Facebook
+            </Button>
+          </div>
+        </Alert>
       }
     </>
   )

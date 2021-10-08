@@ -11,8 +11,8 @@ loginRouter.get(
 loginRouter.get(
   '/facebook/callback',
   passport.authenticate('facebook', {
-    successRedirect: 'http://localhost:8080',
-    failureRedirect: 'http://localhost:8080',
+    successRedirect: '/#/login',
+    failureRedirect: '/#/login',
   }),
 );
 loginRouter.get('/userdata', userData);

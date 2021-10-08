@@ -5,19 +5,13 @@ import {
   StrategyOption,
 } from 'passport-facebook';
 import Config from 'config';
-import { UserModel } from 'models/mongoDb/user';
 import { NextFunction, Request, Response } from 'express';
-import { IUser } from 'common/interfaces';
 import { UnauthorizedRoute } from 'errors';
-
-interface User {
-  _id?: string;
-}
 
 const strategyOptions: StrategyOption = {
   clientID: Config.FACEBOOK_APP_ID,
   clientSecret: Config.FACEBOOK_APP_SECRET,
-  callbackURL: 'http://localhost:8080/api/auth/facebook/callback',
+  callbackURL: '/api/auth/facebook/callback',
   profileFields: ['id', 'displayName', 'photos', 'emails'],
 };
 

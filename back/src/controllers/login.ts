@@ -44,7 +44,6 @@ export const userData = (req: Request, res: Response): void => {
 };
 
 export const logoutUser = (req: Request, res: Response): void => {
-  req.logout();
   req.session.destroy(err => {
     if (err) res.status(500).json({ message: 'Ocurrió un error' });
     else {

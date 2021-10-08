@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Container } from 'react-bootstrap';
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import Navigation from 'components/Navigation/Navigation';
 // import AddProduct from 'pages/AddProduct';
 import Cart from 'pages/Cart';
