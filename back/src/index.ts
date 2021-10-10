@@ -4,6 +4,7 @@ import session from 'express-session';
 import cors from 'cors';
 import path from 'path';
 import MongoStore from 'connect-mongo';
+import Config from 'config';
 import routes from 'routes';
 import { unknownEndpoint } from 'middlewares/unknownEndpoint';
 import { errorHandler } from 'middlewares/errorHandler';
@@ -11,7 +12,7 @@ import { clientPromise } from 'services/mongodb';
 import passport from 'middlewares/auth';
 
 const app: express.Application = express();
-const PORT = process.env.PORT || 8080;
+const PORT = Config.PORT;
 
 const server = app.listen(PORT, () => {
   console.log(`Servidor inicializado en http://localhost:${PORT}`);
