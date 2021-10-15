@@ -13,11 +13,20 @@ const options = [
     name: 'faceSecret',
     description: 'Facebook app secret',
   },
+  {
+    name: 'mode',
+    description: 'run in fork or cluster mode',
+  },
+  {
+    name: 'run',
+    description: 'forever or pm2',
+  },
 ];
 
 args.options(options);
 
 const flags = args.parse(process.argv);
+console.log('flags', flags);
 const env = {
   PORT: flags.port || process.env.PORT || 8080,
   MONGO_ATLAS_USER: process.env.MONGO_ATLAS_USER || 'user',
@@ -28,7 +37,5 @@ const env = {
   FACEBOOK_APP_SECRET:
     flags.faceSecret || process.env.FACEBOOK_APP_SECRET || 'faceSecret',
 };
-
-console.log('ID del proceso =>', process.pid);
 
 export default env;

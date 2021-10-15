@@ -1,8 +1,9 @@
 import { IObject } from 'common/interfaces';
 
-export const getRandomNums = (): IObject => {
+export const getRandomNums = (numberQty?: number): IObject => {
   const numberObject: IObject = {};
-  for (let i = 0; i < Number(process.argv[2]); i++) {
+  const numberQtyToUse = numberQty || Number(process.argv[2]);
+  for (let i = 0; i < numberQtyToUse; i++) {
     const randomNum = String(Math.floor(Math.random() * (1000 - 1 + 1) + 1));
     if (!numberObject[randomNum]) {
       numberObject[randomNum] = 1;
