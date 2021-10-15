@@ -47,6 +47,7 @@ router.use('/randoms', (req: Request, res: Response) => {
     numData.on('message', result => {
       res.json({
         data: {
+          args: flags,
           processId: process.pid,
           result,
         },
@@ -57,6 +58,7 @@ router.use('/randoms', (req: Request, res: Response) => {
     const result = getRandomNums(Number(numberQty));
     res.json({
       data: {
+        args: flags,
         processId: process.pid,
         result,
       },

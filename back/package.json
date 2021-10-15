@@ -9,6 +9,7 @@
     "start": "npm run build && node ./build/src/index.js",
     "build": "ttsc -P ./tsconfig.json",
     "prod": "npm run build && node_modules/.bin/forever -w start ./build/src/index.js",
+    "prod:pm2": "npm run build && node_modules/.bin/pm2 start ecosystem.config.js",
     "prod:pm2:fork": "npm run build && node_modules/.bin/pm2 start ecosystem.config.js --only app-fork",
     "prod:pm2:cluster": "npm run build && node_modules/.bin/pm2 start ecosystem.config.js --only app-cluster",
     "lint": "eslint . --ext .ts",

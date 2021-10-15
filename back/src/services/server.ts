@@ -13,7 +13,7 @@ const app: express.Application = express();
 
 const tenMinutes = 1000 * 60 * 10;
 
-app.use(express.static(path.resolve(__dirname, '../', 'public')));
+app.use(express.static(path.resolve(__dirname, '../../', 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
