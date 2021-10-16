@@ -23,3 +23,8 @@ export interface IMessage {
   email: string;
   text: string;
 }
+
+export interface IUser {
+  username: string;
+  password: string;
+}

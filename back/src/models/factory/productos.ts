@@ -27,10 +27,8 @@ export class ProductosModelFactory {
         return new ProductosModelMySql('sqlite');
 
       case ModelType.localMongo:
-        return new ProductosModelMongoDb('local');
-
       case ModelType.mongoAtlas:
-        return new ProductosModelMongoDb('atlas');
+        return new ProductosModelMongoDb();
 
       case ModelType.firebase:
         return new ProductosModelFirebase();

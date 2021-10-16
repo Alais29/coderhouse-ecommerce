@@ -1,4 +1,3 @@
-import Config from 'config';
 import { IItem, IItemBase, IItemQuery } from 'common/interfaces';
 import moment from 'moment';
 import mongoose, { FilterQuery } from 'mongoose';
@@ -23,35 +22,23 @@ ProductoSchema.set('toJSON', {
   },
 });
 
-export const productosModel = mongoose.model<IItemBase>(
+export const ProductosModel = mongoose.model<IItemBase>(
   'productos',
   ProductoSchema,
 );
 
 export class ProductosModelMongoDb {
-  private dbURL: string;
   private productos;
-  constructor(type: 'local' | 'atlas') {
-    this.productos = productosModel;
-    if (type === 'local') {
-      this.dbURL = 'mongodb://0.0.0.0:27017/ecommerce';
-    } else {
-      this.dbURL = `mongodb+srv://${Config.MONGO_ATLAS_USER}:${Config.MONGO_ATLAS_PASSWORD}@${Config.MONGO_ATLAS_CLUSTER}/${Config.MONGO_ATLAS_DB}?retryWrites=true&w=majority`;
-    }
-    mongoose
-      .connect(this.dbURL)
-      .then(() => {
-        console.log('Base de datos Mongo conectada');
-        this.get()
-          .then(productos => {
-            if (productos.length === 0) {
-              this.productos
-                .insertMany(productosMock)
-                .then(() => console.log('Productos agregados'))
-                .catch(e => console.log(e));
-            }
-          })
-          .catch(e => console.log(e));
+  constructor() {
+    this.productos = ProductosModel;
+    this.get()
+      .then(productos => {
+        if (productos.length === 0) {
+          this.productos
+            .insertMany(productosMock)
+            .then(() => console.log('Productos agregados'))
+            .catch(e => console.log(e));
+        }
       })
       .catch(e => console.log(e));
   }

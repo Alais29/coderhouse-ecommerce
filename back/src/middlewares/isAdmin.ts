@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { EErrorCodes } from 'common/enums';
+import { UnauthorizedRoute } from 'errors';
 
 const admin = true;
 
@@ -11,10 +11,10 @@ export const isAdmin = (
   if (admin) {
     next();
   } else {
-    res.status(401).send({
-      error: `-${EErrorCodes.UnauthorizedRoute}`,
-      descripcion: `Ruta ${req.originalUrl} método ${req.method} no autorizada`,
-      message: 'No tienes permisos para realizar esa acción',
-    });
+    throw new UnauthorizedRoute(
+      401,
+      'No tienes permisos para realizar esa acción',
+      `Ruta ${req.originalUrl} método ${req.method} no autorizada`,
+    );
   }
 };

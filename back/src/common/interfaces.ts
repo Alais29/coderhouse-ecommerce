@@ -58,3 +58,10 @@ export interface IItemQuery {
   minStock?: number;
   maxStock?: number;
 }
+
+export interface IUser {
+  id: string;
+  username: string;
+  password: string;
+  isValidPassword: (password: string) => Promise<boolean>;
+}

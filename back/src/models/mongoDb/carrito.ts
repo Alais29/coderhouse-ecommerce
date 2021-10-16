@@ -1,9 +1,8 @@
-import Config from 'config';
 import { IItem, IItemBase } from 'common/interfaces';
 import moment from 'moment';
 import mongoose from 'mongoose';
 import { NotFound, RepeatedProductInCart } from 'errors';
-import { productosModel } from 'models/mongoDb/producto';
+import { ProductosModel } from 'models/mongoDb/producto';
 
 const ProductoSchema = new mongoose.Schema<IItemBase>({
   nombre: { type: String, require: true, max: 100 },
@@ -24,21 +23,11 @@ ProductoSchema.set('toJSON', {
 });
 
 export class CarritoModelMongoDb {
-  private dbURL: string;
   private carrito;
   private productos;
-  constructor(type: 'local' | 'atlas') {
+  constructor() {
     this.carrito = mongoose.model<IItemBase>('carrito', ProductoSchema);
-    this.productos = productosModel;
-    if (type === 'local') {
-      this.dbURL = 'mongodb://0.0.0.0:27017/ecommerce';
-    } else {
-      this.dbURL = `mongodb+srv://${Config.MONGO_ATLAS_USER}:${Config.MONGO_ATLAS_PASSWORD}@${Config.MONGO_ATLAS_CLUSTER}/${Config.MONGO_ATLAS_DB}?retryWrites=true&w=majority`;
-    }
-    mongoose
-      .connect(this.dbURL)
-      .then(() => console.log('Base de datos Mongo conectada'))
-      .catch(e => console.log(e));
+    this.productos = ProductosModel;
   }
 
   async get(id?: string): Promise<IItem[] | IItem> {

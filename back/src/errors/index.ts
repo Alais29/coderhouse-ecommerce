@@ -45,3 +45,14 @@ export class RepeatedProductInCart extends BaseError {
     this.error = `-${EErrorCodes.ProductRepeated}`;
   }
 }
+
+export class UnauthorizedRoute extends BaseError {
+  public error: string;
+  public descripcion: string;
+  constructor(statusCode: number, message: string, descripcion?: string) {
+    super(statusCode, message);
+    this.error = `-${EErrorCodes.UnauthorizedRoute}`;
+    this.descripcion =
+      descripcion || 'No tienes permisos para realizar esa acción';
+  }
+}

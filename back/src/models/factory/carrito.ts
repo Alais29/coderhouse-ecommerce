@@ -25,10 +25,8 @@ export class CarritoModelFactory {
         return new CarritosModelMySql('sqlite');
 
       case ModelType.localMongo:
-        return new CarritoModelMongoDb('local');
-
       case ModelType.mongoAtlas:
-        return new CarritoModelMongoDb('atlas');
+        return new CarritoModelMongoDb();
 
       case ModelType.firebase:
         return new CarritoModelFirebase();
