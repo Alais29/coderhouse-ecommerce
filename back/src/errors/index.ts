@@ -56,3 +56,27 @@ export class UnauthorizedRoute extends BaseError {
       descripcion || 'No tienes permisos para realizar esa acción';
   }
 }
+
+export class UserValidation extends BaseError {
+  public error: string;
+  constructor(statusCode: number, message: string) {
+    super(statusCode, message);
+    this.error = `-${EErrorCodes.UserSignUpValidation}`;
+  }
+}
+
+export class MissingFieldsUser extends UserValidation {
+  public descripcion;
+  constructor(statusCode: number, message: string, descripcion: string) {
+    super(statusCode, message);
+    this.descripcion = descripcion;
+  }
+}
+
+export class UserExists extends BaseError {
+  public error: string;
+  constructor(statusCode: number, message: string) {
+    super(statusCode, message);
+    this.error = `-${EErrorCodes.UserAlreadyExists}`;
+  }
+}

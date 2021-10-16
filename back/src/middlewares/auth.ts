@@ -4,6 +4,7 @@ import { UserModel } from 'models/mongoDb/user';
 import { NextFunction, Request, Response } from 'express';
 import { IUser } from 'common/interfaces';
 import { UnauthorizedRoute } from 'errors';
+import { isValidUser } from 'utils/validations';
 
 interface User {
   _id?: string;
@@ -12,14 +13,14 @@ interface User {
 const LocalStrategy = passportLocal.Strategy;
 
 const strategyOptions: IStrategyOptionsWithRequest = {
-  usernameField: 'username',
+  usernameField: 'email',
   passwordField: 'password',
   passReqToCallback: true,
 };
 
 const loginFunc = async (
   req: Request,
-  username: string,
+  email: string,
   password: string,
   done: (
     err: unknown,
@@ -27,14 +28,14 @@ const loginFunc = async (
     msg?: { message: string },
   ) => void,
 ) => {
-  const user = (await UserModel.findOne({ username })) as IUser;
+  const user = (await UserModel.findOne({ email })) as IUser;
 
   if (!user) {
-    return done(null, false, { message: 'User does not exist' });
+    return done(null, false);
   }
 
   if (!(await user.isValidPassword(password))) {
-    return done(null, false, { message: 'Password is not valid.' });
+    return done(null, false);
   }
 
   console.log('Login exitoso');
@@ -43,7 +44,7 @@ const loginFunc = async (
 
 const signUpFunc = async (
   req: Request,
-  username: string,
+  email: string,
   password: string,
   done: (
     err: unknown,
@@ -52,25 +53,28 @@ const signUpFunc = async (
   ) => void,
 ) => {
   try {
-    const { username, password } = req.body;
+    const { email, password, nombre, direccion, edad, telefono } = req.body;
+    const userData = {
+      email,
+      password,
+      nombre,
+      direccion,
+      edad: Number(edad),
+      telefono,
+    };
 
-    if (!username || !password) {
-      console.log('Invalid body fields');
-      return done(null, false);
-    }
+    isValidUser(userData);
 
-    const user = await UserModel.findOne({ username });
+    const user = await UserModel.findOne({ email });
 
     if (user) {
-      console.log('User already exists');
+      console.log('El usuario ya existe');
       console.log(user);
-      return done(null, false, { message: 'User already exists' });
+      return done(null, false, {
+        message:
+          'Ya existe un usuario registrado con ese email, por favor intenta con otro',
+      });
     } else {
-      const userData = {
-        username,
-        password,
-      };
-
       const newUser = new UserModel(userData);
 
       await newUser.save();
@@ -87,7 +91,6 @@ passport.use('login', new LocalStrategy(strategyOptions, loginFunc));
 passport.use('signup', new LocalStrategy(strategyOptions, signUpFunc));
 
 passport.serializeUser((user: User, done) => {
-  // console.log('serialize user', user);
   done(null, user._id);
 });
 

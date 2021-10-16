@@ -9,11 +9,11 @@ interface ILoginForm {
 
 const LoginForm = ({ onSubmit, btnText }: ILoginForm) => {
   const [formValues, setFormValues] = useState({
-    username: '',
+    email: '',
     password: '',
   })
 
-  const { username, password } = formValues;
+  const { email, password } = formValues;
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormValues({
@@ -26,7 +26,7 @@ const LoginForm = ({ onSubmit, btnText }: ILoginForm) => {
     e.preventDefault();
     onSubmit(formValues)
     setFormValues({
-      username: '',
+      email: '',
       password: '',
     })
   }
@@ -35,8 +35,8 @@ const LoginForm = ({ onSubmit, btnText }: ILoginForm) => {
     <div>
       <Form onSubmit={(e) => handleSubmit(e)}>
         <Form.Group className="mb-3" controlId="nombre">
-          <Form.Label>Ingrese su nombre</Form.Label>
-          <Form.Control type="text" value={username} name="username" onChange={handleChange} />
+          <Form.Label>Ingrese su email</Form.Label>
+          <Form.Control type="text" value={email} name="email" onChange={handleChange} />
         </Form.Group>
         <Form.Group className="mb-3" controlId="password">
           <Form.Label>Ingrese su contraseña</Form.Label>

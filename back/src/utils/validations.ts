@@ -1,7 +1,12 @@
 import { isUrl, isValidCode } from './strings';
-import { IItem } from 'common/interfaces';
+import { IItem, IUserBase } from 'common/interfaces';
 import { getEmptyFields } from './objects';
-import { MissingFieldsProduct, ProductValidation } from 'errors';
+import {
+  MissingFieldsProduct,
+  MissingFieldsUser,
+  ProductValidation,
+  UserValidation,
+} from 'errors';
 
 /**
  *
@@ -44,6 +49,33 @@ export const isValidProduct = (producto: IItem): boolean | Error => {
     throw new ProductValidation(
       400,
       'Verifica los datos, el stock debe ser un número',
+    );
+  }
+
+  return true;
+};
+
+/**
+ *
+ * @param user user data to sign up
+ * @returns checks if the user data has empty fields or if 'edad' is not a number, if so throws a proper error
+ */
+
+export const isValidUser = (user: IUserBase): boolean | Error => {
+  const emptyFields = getEmptyFields(user);
+
+  if (emptyFields.length !== 0) {
+    throw new MissingFieldsUser(
+      400,
+      'Todos los campos son obligatorios',
+      `Faltan los siguientes campos: ${emptyFields.join(', ')}`,
+    );
+  }
+
+  if (isNaN(user.edad) || user.edad === 0) {
+    throw new UserValidation(
+      400,
+      'Verifica los datos, la edad debe ser un número y no debe ser 0.',
     );
   }
 

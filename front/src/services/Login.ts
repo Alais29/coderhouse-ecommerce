@@ -1,7 +1,7 @@
 import axios from "axios";
 import { IUser } from "commons/interfaces";
 
-const baseUrl = "/api";
+const baseUrl = "/api/auth";
 
 export const loginUser = async (data: IUser) => {
   try {

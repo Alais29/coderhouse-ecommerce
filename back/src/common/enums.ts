@@ -4,6 +4,8 @@ export enum EErrorCodes {
   ProductValidation,
   ProductNotFound,
   ProductRepeated,
+  UserSignUpValidation,
+  UserAlreadyExists,
 }
 
 export enum ModelType {

@@ -59,9 +59,17 @@ export interface IItemQuery {
   maxStock?: number;
 }
 
-export interface IUser {
-  id: string;
-  username: string;
+export interface IUserBase extends IObject {
+  email: string;
   password: string;
+  nombre: string;
+  direccion: string;
+  edad: number;
+  telefono: string;
+  // foto: File;
+}
+
+export interface IUser extends IUserBase {
+  id: string;
   isValidPassword: (password: string) => Promise<boolean>;
 }
