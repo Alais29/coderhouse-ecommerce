@@ -4,10 +4,9 @@ import { Button, Form } from 'react-bootstrap'
 
 interface ILoginForm {
   onSubmit: (data: IUser) => void
-  btnText: string
 }
 
-const LoginForm = ({ onSubmit, btnText }: ILoginForm) => {
+const LoginForm = ({ onSubmit }: ILoginForm) => {
   const [formValues, setFormValues] = useState({
     email: '',
     password: '',
@@ -35,15 +34,15 @@ const LoginForm = ({ onSubmit, btnText }: ILoginForm) => {
     <div>
       <Form onSubmit={(e) => handleSubmit(e)}>
         <Form.Group className="mb-3" controlId="nombre">
-          <Form.Label>Ingrese su email</Form.Label>
+          <Form.Label>Email</Form.Label>
           <Form.Control type="text" value={email} name="email" onChange={handleChange} />
         </Form.Group>
         <Form.Group className="mb-3" controlId="password">
-          <Form.Label>Ingrese su contraseña</Form.Label>
+          <Form.Label>Contraseña</Form.Label>
           <Form.Control type="password" value={password} name="password" onChange={handleChange} />
         </Form.Group>
         <Button className="mb-2" type="submit">
-          {btnText}
+          Login
         </Button>
       </Form>
     </div>

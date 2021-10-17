@@ -27,4 +27,8 @@ export interface IMessage {
 export interface IUser {
   email: string;
   password: string;
+  nombre?: string;
+  direccion?: string;
+  edad?: string;
+  telefono?: string;
 }

@@ -58,7 +58,7 @@ const Login = ({ setLoggedIn, loggedIn, loggedInUser, setLoggedInUser }: ILogin)
           <Button onClick={handleLogout}>Logout</Button>
         </Alert>
         : <>
-          <LoginForm onSubmit={handleSubmit} btnText='Login' />
+          <LoginForm onSubmit={handleSubmit} />
           <hr />
           <div>
             <span>¿No tienes cuenta?</span>

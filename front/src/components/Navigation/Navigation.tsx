@@ -16,7 +16,7 @@ const Navigation = ({loggedIn}: INavigation) => {
         <Container>
           <Nav className="me-auto">
             <Link className="nav-link" to="/">Inicio</Link>
-            {/* <Link className="nav-link" to="/add-product">Agregar Producto</Link> */}
+            <Link className="nav-link" to="/add-product">Agregar Producto</Link>
             <Link className="nav-link" to="/login">Login</Link>
             <Link className={cx('nav-link', 'ms-sm-auto', styles['cart-icon'])} to="/cart">
               <CartIcon />

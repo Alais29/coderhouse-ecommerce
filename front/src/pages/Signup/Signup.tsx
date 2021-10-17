@@ -1,26 +1,42 @@
 import { IUser } from 'commons/interfaces';
-import LoginForm from 'components/LoginForm/LoginForm';
+import SignupForm from 'components/SignupForm/SignupForm';
 import { useState } from 'react';
 import { Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { signupUser } from 'services/Login';
+import { userSignUp } from 'features/user/userSlice'
+import { useAppDispatch, useAppSelector } from 'hooks/redux'
 
 const Signup = () => {
   const [signedUp, setSignedUp] = useState(false);
-  const [signInError, setSignInError] = useState(false);
+  const [signInError, setSignInError] = useState({
+    error: false,
+    message: ''
+  });
 
-  const handleSubmit = (data: IUser) => {
-    signupUser(data).then((res) => {
+  const dispatch = useAppDispatch();
+
+  const handleSubmit = async (data: IUser, callback: () => void) => {
+    try {
+      await dispatch(userSignUp(data)).unwrap()
+      callback()
       setSignedUp(true);
       setTimeout(() => {
         setSignedUp(false);
       }, 2000)
-    }).catch((e) => {
-      setSignInError(true);
+    } catch (e) {
+      const message = e.message === 'Missing credentials' ? 'Todos los campos son obligatorios' : e.message
+      setSignInError({
+        error: true,
+        message
+      });
       setTimeout(() => {
-        setSignInError(false);
-      }, 2000)
-    })
+        setSignInError({
+        error: false,
+        message: ''
+      });
+      }, 3000)
+    }
   }
 
   return (
@@ -31,12 +47,12 @@ const Signup = () => {
           <span className="me-3">¡Registro exitoso!</span>
         </Alert>
       }
-      {signInError &&
+      {signInError.error &&
         <Alert variant='danger'>
-          <span className="me-3">Hubo un error, por favor intente con otro nombre de usuario</span>
+          <span className="me-3">{signInError.message}</span>
         </Alert>
       }
-      <LoginForm onSubmit={handleSubmit} btnText='Registrar' />
+      <SignupForm onSubmit={handleSubmit} />
       <hr />
       <div>
         <span>¿Ya tienes cuenta?</span>
