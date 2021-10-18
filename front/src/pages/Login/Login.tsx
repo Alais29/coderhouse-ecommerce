@@ -1,50 +1,52 @@
 import React, { useState } from 'react'
 import { Alert, Button } from 'react-bootstrap'
-import { loginUser, logoutUser } from 'services/Login';
 import { Link } from 'react-router-dom';
 import { IUser } from 'commons/interfaces';
 import LoginForm from 'components/LoginForm/LoginForm'
+import { userLogin, setStatus, userLogout, setData } from 'features/user/userSlice'
+import { useAppDispatch, useAppSelector } from 'hooks/redux'
 
-interface ILogin {
-  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>
-  loggedIn: boolean
-  setLoggedInUser: React.Dispatch<React.SetStateAction<string>>
-  loggedInUser: string
-}
-
-const Login = ({ setLoggedIn, loggedIn, loggedInUser, setLoggedInUser }: ILogin) => {
+const Login = () => {
   const [logoutMessage, setLogoutMessage] = useState('');
-  const [loginError, setLoginError] = useState(false);
+  const [loginError, setLoginError] = useState('');
 
-  const handleSubmit = (data: IUser) => {
-    loginUser(data).then((res) => {
-      setLoggedIn(true);
-      setLoggedInUser(res.user.username)
-    }).catch((e) => {
-      setLoginError(true)
+  const { data, status, error, isLoggedIn } = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
+
+  const handleSubmit = async (data: IUser) => {
+    try {
+      await dispatch(userLogin(data)).unwrap()
+    } catch (e) {
+      setLoginError('Hubo un error, por favor verifique su usuario y/o contraseña')
       setTimeout(() => {
-        setLoginError(false)
+        dispatch(setStatus("iddle"));
+        setLoginError('')
       }, 3000)
-    })
+    }
   }
 
-  const handleLogout = () => {
-    logoutUser().then(() => {
-      setLoggedIn(false)
-      setLogoutMessage(`Hasta luego ${loggedInUser}`)
+  const handleLogout = async () => {
+    try {
+      await dispatch(userLogout()).unwrap()
+      setLogoutMessage(`Hasta luego ${data?.nombre}`)
       setTimeout(() => {
         setLogoutMessage('')
-        setLoggedInUser('')
+        dispatch(setData(null))
       }, 2000)
-    })
+    } catch (e) {
+      setLoginError('Hubo un error, por favor intente de nuevo.')
+      setTimeout(() => {
+        setLoginError('')
+      }, 3000)
+    }
   }
 
   return (
     <>
       <h1 className="text-center mt-5 pt-3">Login de Usuario</h1>
-      {loginError && 
+      {error && 
         <Alert variant='danger'>
-          <span className="me-3">Hubo un error, por favor verifique su usuario y contraseña</span>
+          <span className="me-3">{loginError}</span>
         </Alert>
       }
       {logoutMessage &&
@@ -52,10 +54,15 @@ const Login = ({ setLoggedIn, loggedIn, loggedInUser, setLoggedInUser }: ILogin)
           <span className="me-3">{logoutMessage}</span>
         </Alert>
       }
-      {loggedIn
+      {isLoggedIn
         ? <Alert variant='success'>
-          <span className="me-3">Bienvenido/a {loggedInUser}</span>
-          <Button onClick={handleLogout}>Logout</Button>
+          <span className="me-3">Bienvenido/a {data?.nombre}</span>
+          <Button
+            onClick={status === "loading" ? undefined : handleLogout}
+            disabled={status === "loading"}
+          >
+            {status === "loading" ? 'Procesando...' : 'Logout'}
+          </Button>
         </Alert>
         : <>
           <LoginForm onSubmit={handleSubmit} />

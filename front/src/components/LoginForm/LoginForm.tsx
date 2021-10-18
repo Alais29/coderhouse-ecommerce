@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { IUser } from 'commons/interfaces'
 import { Button, Form } from 'react-bootstrap'
+import { useAppSelector } from 'hooks/redux'
 
 interface ILoginForm {
   onSubmit: (data: IUser) => void
@@ -11,6 +12,8 @@ const LoginForm = ({ onSubmit }: ILoginForm) => {
     email: '',
     password: '',
   })
+
+  const { status } = useAppSelector((state) => state.user);
 
   const { email, password } = formValues;
   
@@ -24,10 +27,6 @@ const LoginForm = ({ onSubmit }: ILoginForm) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onSubmit(formValues)
-    setFormValues({
-      email: '',
-      password: '',
-    })
   }
 
   return (
@@ -41,8 +40,12 @@ const LoginForm = ({ onSubmit }: ILoginForm) => {
           <Form.Label>Contraseña</Form.Label>
           <Form.Control type="password" value={password} name="password" onChange={handleChange} />
         </Form.Group>
-        <Button className="mb-2" type="submit">
-          Login
+        <Button
+          className="mb-2"
+          type="submit"
+          disabled={status === "loading"}
+        >
+          {status === "loading" ? 'Procesando...' : 'Login'}
         </Button>
       </Form>
     </div>

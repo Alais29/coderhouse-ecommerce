@@ -24,9 +24,17 @@ export const signupUser = async (data: IUser) => {
 export const logoutUser = async () => {
   try {
     const response = await axios.get(`${baseUrl}/logout`);
-    console.log(response.data.data);
     return response.data.data;
   } catch (e) {
     throw new Error(e.response.data.message);
+  }
+};
+
+export const userData = async () => {
+  try {
+    const response = await axios.get(`${baseUrl}/userdata`);
+    return response.data;
+  } catch (e) {
+    throw e.response.data;
   }
 };

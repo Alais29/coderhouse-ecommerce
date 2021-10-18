@@ -1,3 +1,7 @@
+export interface IObject {
+  [key: string]: string | number | boolean | unknown;
+}
+
 export interface IItem {
   nombre: string;
   descripcion: string;

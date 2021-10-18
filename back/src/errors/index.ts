@@ -80,3 +80,11 @@ export class UserExists extends BaseError {
     this.error = `-${EErrorCodes.UserAlreadyExists}`;
   }
 }
+
+export class UserNotLoggedIn extends BaseError {
+  public error: string;
+  constructor(statusCode: number, message: string) {
+    super(statusCode, message);
+    this.error = `-${EErrorCodes.UserNotLoggedIn}`;
+  }
+}

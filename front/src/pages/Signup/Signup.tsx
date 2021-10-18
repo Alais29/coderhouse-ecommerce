@@ -3,9 +3,8 @@ import SignupForm from 'components/SignupForm/SignupForm';
 import { useState } from 'react';
 import { Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { signupUser } from 'services/Login';
 import { userSignUp } from 'features/user/userSlice'
-import { useAppDispatch, useAppSelector } from 'hooks/redux'
+import { useAppDispatch } from 'hooks/redux'
 
 const Signup = () => {
   const [signedUp, setSignedUp] = useState(false);

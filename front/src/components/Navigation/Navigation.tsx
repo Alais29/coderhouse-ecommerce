@@ -4,11 +4,7 @@ import CartIcon from "./CartIcon";
 import cx from 'classnames/bind'
 import styles from './styles.module.scss'
 
-interface INavigation {
-  loggedIn: boolean
-}
-
-const Navigation = ({loggedIn}: INavigation) => {
+const Navigation = () => {
   return (
     <Navbar bg="dark" variant="dark" fixed="top" expand="sm">
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />

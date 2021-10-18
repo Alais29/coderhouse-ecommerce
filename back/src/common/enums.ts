@@ -6,6 +6,7 @@ export enum EErrorCodes {
   ProductRepeated,
   UserSignUpValidation,
   UserAlreadyExists,
+  UserNotLoggedIn,
 }
 
 export enum ModelType {
