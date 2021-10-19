@@ -1,0 +1,11 @@
+.loading-screen {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  :global(.spinner-grow) {
+    width: 4rem;
+    height: 4rem;
+  }
+}
