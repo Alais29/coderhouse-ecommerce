@@ -6,6 +6,7 @@ import { Provider } from 'react-redux'
 // import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-phone-number-input/style.css'
+import 'react-toastify/dist/ReactToastify.css';
 
 ReactDOM.render(
   <React.StrictMode>

@@ -1,18 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
 import { socket } from 'services/Socket'
 import { isEmpty } from 'utilities/others';
 import { Button, Form } from 'react-bootstrap'
-import { IMessage, IToastInfo } from 'commons/interfaces';
-import Notification from 'components/Notification/Notification';
+import { IMessage } from 'commons/interfaces';
 import cx from 'classnames/bind'
 import styles from './styles.module.scss'
-
-// interface IMessage {
-//   id: number
-//   email: string
-//   text: string
-//   date: string
-// }
 
 interface IChatChannel {
   messages: IMessage[]
@@ -25,17 +18,10 @@ const ChatChannel = ({messages, setMessages}: IChatChannel) => {
     text: ''
   });
   // const [messages, setMessages] = useState<IMessage[]>([])
-  const [showToast, setShowToast] = useState(false)
-  const [toastInfo, setToastInfo] = useState<IToastInfo>({ text: '', type: '' })
   
   const { email, text } = formValues
   const emailRef = useRef<HTMLInputElement>(null)
   const chatBoxRef = useRef<HTMLInputElement>(null)
-
-  const handleToggleShowToast = (info?: IToastInfo) => {
-    setShowToast(!showToast)
-    info && setToastInfo(info)
-  }
 
   useEffect(() => {
     if (chatBoxRef.current && !isEmpty(messages)) {
@@ -54,7 +40,7 @@ const ChatChannel = ({messages, setMessages}: IChatChannel) => {
     e.preventDefault()
 
     if (isEmpty(email) || isEmpty(text)) {
-      handleToggleShowToast({type: 'warning', text: 'Ambos campos son obligatorios'})
+      toast.warning('Ambos campos son obligatorios')
     } else {
       socket.emit('new message', formValues)
       socket.on('save message success', (newMessage) => {
@@ -73,17 +59,17 @@ const ChatChannel = ({messages, setMessages}: IChatChannel) => {
         }
       })
       socket.on('messages error', (data) => {
-        handleToggleShowToast({type: 'warning', text:  data.message})
+        toast.warning(data.message)
       })
       socket.on('save message error', (data) => {
-        handleToggleShowToast({type: 'warning', text:  data.message})
+        toast.warning(data.message)
       })
     }
   }
 
   return (
     <div className={cx(styles['chat-channel'])}>
-      <Notification show={showToast} handleToggleShowToast={handleToggleShowToast} toastInfo={toastInfo} />
+      <ToastContainer />
       <div ref={chatBoxRef} className={cx(styles['chat-channel__messages'])}>
         {messages.map((msg) => (
           <div key={msg.id} className={cx(styles['chat-channel__message'])}>

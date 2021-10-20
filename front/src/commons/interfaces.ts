@@ -16,11 +16,6 @@ export interface IItemAPI extends IItem {
   timestamp: string;
 }
 
-export interface IToastInfo {
-  type: "" | "success" | "warning" | "danger";
-  text: string;
-}
-
 export interface IMessage {
   id?: number;
   date?: string;

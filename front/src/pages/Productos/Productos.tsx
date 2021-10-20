@@ -1,33 +1,23 @@
 import { useState, useEffect } from 'react'
 import { Alert, Modal, Spinner } from 'react-bootstrap'
-import { IItemAPI, IToastInfo } from 'commons/interfaces'
-import { isEmpty } from 'utilities/others'
-import ConfirmationModal from 'components/Modals/ConfirmationModal/ConfirmationModal'
-import Notification from 'components/Notification/Notification'
-import ProductList from 'components/ProductList/ProductList'
-import EditModal from 'components/Modals/EditModal/EditModal'
+import { ToastContainer, toast } from 'react-toastify';
+import { IItemAPI } from 'commons/interfaces'
+import { useAppDispatch, useAppSelector } from 'hooks/redux'
 import { fetchProducts, editProduct, removeProductApi, removeProduct } from 'features/products/productsSlice'
 import { addProductToCart } from 'features/cart/cartSlice'
-import { useAppDispatch, useAppSelector } from 'hooks/redux'
+import ConfirmationModal from 'components/Modals/ConfirmationModal/ConfirmationModal'
+import ProductList from 'components/ProductList/ProductList'
+import EditModal from 'components/Modals/EditModal/EditModal'
 import cx from 'classnames/bind'
 import styles from './styles.module.scss'
 
 const Productos = () => {
   const [showModal, setShowModal] = useState(false)
-  const [showToast, setShowToast] = useState(false)
-  const [toastInfo, setToastInfo] = useState<IToastInfo>({ text: '', type: '' })
   const [productToDelete, setProductToDelete] = useState<IItemAPI | null>(null)
   const [productToEdit, setProductToEdit] = useState<IItemAPI | null>(null)
   
   const { data, status, error } = useAppSelector((state) => state.products);
   const dispatch = useAppDispatch();
-
-  const handleToggleShowToast = (info: IToastInfo = { text: '', type: '' }) => {
-    if (!isEmpty(info.text)) {
-      setToastInfo(info)
-    }
-    setShowToast((prevState) => !prevState);
-  }
   
   const handleToggleShowModal = (producto?: IItemAPI, action?: 'edit' | 'delete') => {
     if (producto && action === 'delete') {
@@ -47,12 +37,15 @@ const Productos = () => {
         await dispatch(removeProductApi(productToDelete.id)).unwrap()
         dispatch(removeProduct(productToDelete.id))
         handleToggleShowModal()
-        handleToggleShowToast({ text: 'Producto eliminado con éxito', type: 'success' })
+        toast.success(`${productToDelete.nombre} eliminado con éxito`)
         setTimeout(() => {
+          // since the modal only shows if there's a product to edit in productToDelete state, 
+          // this setTimeout is to wait for the modal to do the closing animation before setting
+          // the productToDelete state to null, otherwise the modal will dissappear abruptly
           setProductToDelete(null)
         }, 1000)
       } catch (e) {
-        handleToggleShowToast({ type: 'warning', text: e.message })
+        toast.error(e.message)
       }
     }
   }
@@ -64,12 +57,13 @@ const Productos = () => {
         await dispatch(editProduct({ id, product: formValues })).unwrap()
         callback()
         handleToggleShowModal()
-        handleToggleShowToast({ text: 'Producto editado con éxito', type: 'success' })
+        toast.success('Producto editado con éxito')
         setTimeout(() => {
+          // same case than for productToDelete
           setProductToEdit(null)
         }, 1000)
       } catch (e) {
-        handleToggleShowToast({ type: 'warning', text: e.message })
+        toast.error(e.message)
       }
     }
   }
@@ -77,9 +71,9 @@ const Productos = () => {
   const handleAddToCart = async (producto: IItemAPI) => {
     try {
       await dispatch(addProductToCart(producto.id)).unwrap()
-      handleToggleShowToast({ text: `${producto.nombre} agregado al carrito`, type: 'success' })
+      toast.success(`${producto.nombre} agregado al carrito`)
     } catch (e) {
-      handleToggleShowToast({ text: e.message, type: 'warning' })
+      toast.error(e.message)
     }
   }
 
@@ -110,11 +104,7 @@ const Productos = () => {
           handleAddToCart={handleAddToCart}
         />
       }
-      <Notification
-        show={showToast}
-        handleToggleShowToast={handleToggleShowToast}
-        toastInfo={toastInfo}
-      />
+      <ToastContainer />
       <Modal show={showModal} onHide={() => handleToggleShowModal()} >
         {productToDelete &&
           <ConfirmationModal
