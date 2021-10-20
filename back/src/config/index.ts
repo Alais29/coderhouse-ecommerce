@@ -1,3 +1,5 @@
+import 'dotenv/config.js';
+
 const env = {
   PORT: process.env.PORT || 8080,
   MONGO_ATLAS_USER: process.env.MONGO_ATLAS_USER || 'user',

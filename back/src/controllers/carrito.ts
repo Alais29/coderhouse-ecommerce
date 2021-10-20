@@ -7,8 +7,7 @@ export const getCarrito = async (
   res: Response,
 ): Promise<void> => {
   const productos = await carritoAPI.get();
-  if (productos.length !== 0) res.json({ data: productos });
-  else throw new NotFound(404, 'No hay productos en el carrito');
+  res.json({ data: productos });
 };
 
 export const getCarritoProduct = async (

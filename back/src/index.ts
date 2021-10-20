@@ -1,4 +1,3 @@
-import 'dotenv/config.js';
 import Config from 'config';
 import Server from 'services/server';
 

@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
-import { Button, Form } from 'react-bootstrap'
+import { Button, Form, Spinner } from 'react-bootstrap'
 import { IItem, IItemAPI } from 'commons/interfaces';
 
 interface IProductForm {
-  handleSaveProduct: (formValues: IItem | IItemAPI, callback: () => void) => void
+  handleSaveProduct: (formValues: IItem | IItemAPI, callback: () => void) => void;
+  addRequestStatus: 'idle' | 'loading';
 }
 
-const ProductForm = ({ handleSaveProduct }: IProductForm) => {
+const ProductForm = ({ handleSaveProduct, addRequestStatus }: IProductForm) => {
   const [formValues, setFormValues] = useState({
     codigo: '',
     nombre: '',
@@ -64,8 +65,12 @@ const ProductForm = ({ handleSaveProduct }: IProductForm) => {
           <Form.Label>URL de imagen</Form.Label>
           <Form.Control type="url" value={foto} name="foto" onChange={handleChange} />
         </Form.Group>
-        <Button className="mb-2" onClick={handleSubmit}>
-          Guardar
+        <Button
+          className="mb-2"
+          onClick={handleSubmit}
+          disabled={addRequestStatus === 'loading'}
+        >
+          Guardar {addRequestStatus === 'loading' && <Spinner animation="border" size="sm" variant="light" />}
         </Button>
       </Form>
     </>

@@ -1,14 +1,15 @@
 import { useState } from 'react'
 import { IItemAPI } from 'commons/interfaces'
-import { Button, Form, Modal } from 'react-bootstrap'
+import { Button, Form, Modal, Spinner } from 'react-bootstrap'
 
 interface IEditModal {
   handleConfirmEdit: (formValues: IItemAPI, callback: () => void) => void
   productToEdit: IItemAPI
   handleToggleShowModal: () => void
+  editRequestStatus: 'idle' | 'loading'
 }
 
-const EditModal = ({ handleToggleShowModal, productToEdit, handleConfirmEdit }: IEditModal) => {
+const EditModal = ({ handleToggleShowModal, productToEdit, handleConfirmEdit, editRequestStatus }: IEditModal) => {
 
   const [formValues, setFormValues] = useState({
     codigo: productToEdit.codigo,
@@ -78,11 +79,21 @@ const EditModal = ({ handleToggleShowModal, productToEdit, handleConfirmEdit }: 
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={() => handleToggleShowModal()}>
+        <Button
+          variant="secondary"
+          onClick={() => handleToggleShowModal()}
+          disabled={editRequestStatus === 'loading'}
+        >
           Cancelar
         </Button>
-        <Button variant="primary" onClick={handleSubmit}>
-          Editar
+        <Button
+          variant="primary"
+          onClick={handleSubmit}
+          disabled={editRequestStatus === 'loading'}
+        >
+          Editar {editRequestStatus === 'loading'
+            && <Spinner animation="border" size="sm" variant="light" />
+          }
         </Button>
       </Modal.Footer>
     </>
