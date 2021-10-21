@@ -1,25 +1,34 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Spinner } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
+import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { useAppDispatch, useAppSelector } from 'hooks/redux'
 import { fetchProductsCart, removeProductCart } from 'features/cart/cartSlice'
 import { isEmpty } from 'utilities/others'
-import { Link } from 'react-router-dom'
 import ProductList from 'components/ProductList/ProductList'
+import LoadingScreen from 'components/LoadingScreen/LoadingScreen';
 import cx from 'classnames/bind'
 import styles from './styles.module.scss'
 
 const Cart = () => {
   const [total, setTotal] = useState(0)
+  const [deleteProductRequestStatus, setDeleteProductRequestStatus] = useState<"idle" | "loading">('idle')
 
   const { data, status, error } = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
 
   const handleRemove = async (id: string) => {
     try {
+      setDeleteProductRequestStatus('loading')
+      disableBodyScroll(document.body)
       await dispatch(removeProductCart(id)).unwrap()
+      toast.success('Producto eliminado del carrito')
     } catch (e) {
       toast.error(e.message)
+    } finally {
+      setDeleteProductRequestStatus('idle')
+      enableBodyScroll(document.body)
     }
   }
 
@@ -59,6 +68,11 @@ const Cart = () => {
             <span className="fw-bold">Total:</span> ${total.toFixed(2)}
           </p>
         </div>
+      }
+      {deleteProductRequestStatus === 'loading' &&
+        <LoadingScreen
+          style={{backgroundColor: 'rgba(255, 255, 255, 0.8)', zIndex: 2000}}
+        />
       }
     </>
   )
