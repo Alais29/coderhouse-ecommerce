@@ -4,7 +4,7 @@ import { IUser } from 'common/interfaces';
 
 const Schema = mongoose.Schema;
 
-//TODO: Add photo to schema
+//TODO: Add photo to schema, Add unique validation for email
 const UserSchema = new Schema<IUser>({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },

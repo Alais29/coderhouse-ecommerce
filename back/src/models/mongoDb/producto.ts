@@ -2,13 +2,31 @@ import { IItem, IItemBase, IItemQuery } from 'common/interfaces';
 import moment from 'moment';
 import mongoose, { FilterQuery } from 'mongoose';
 import { productosMock } from 'mocks/products';
-import { NotFound } from 'errors';
+import { NotFound, ProductValidation } from 'errors';
+import uniqueValidator from 'mongoose-unique-validator';
 
 const ProductoSchema = new mongoose.Schema<IItemBase>({
-  nombre: { type: String, require: true, max: 100 },
-  descripcion: { type: String, require: true, max: 500 },
-  codigo: { type: String, require: true, max: 14 },
-  precio: { type: Number, require: true, max: 5000 },
+  nombre: {
+    type: String,
+    require: true,
+    maxLength: [100, 'El nombre debe tener un máximo de 100 caracteres'],
+  },
+  descripcion: {
+    type: String,
+    require: true,
+    maxLength: [500, 'La descripción debe tener un máximo de 500 caracteres'],
+  },
+  codigo: {
+    type: String,
+    require: true,
+    maxLength: [14, 'El código debe tener un máximo de 14 caracteres'],
+    unique: true,
+  },
+  precio: {
+    type: Number,
+    require: true,
+    max: [5000, 'El precio no puede ser mayor a 5000'],
+  },
   foto: { type: String, require: true },
   timestamp: { type: String, default: moment().format('DD/MM/YYYY HH:mm:ss') },
   stock: { type: Number, default: 0 },
@@ -20,6 +38,10 @@ ProductoSchema.set('toJSON', {
     delete returnedObject._id;
     delete returnedObject.__v;
   },
+});
+
+ProductoSchema.plugin(uniqueValidator, {
+  message: 'El campo ya existe, ingrese uno diferente.',
 });
 
 export const ProductosModel = mongoose.model<IItemBase>(
@@ -64,9 +86,21 @@ export class ProductosModelMongoDb {
   }
 
   async save(data: IItem): Promise<IItem> {
-    const newProduct = await new this.productos(data);
-    await newProduct.save();
-    return newProduct as unknown as IItem;
+    try {
+      const newProduct = await new this.productos(data);
+      await newProduct.save();
+      return newProduct as unknown as IItem;
+    } catch (e) {
+      if (e instanceof mongoose.Error.ValidationError) {
+        const messages = Object.values(e.errors).map(prop => prop.message);
+        throw new ProductValidation(400, messages.join('. '));
+      } else {
+        throw {
+          error: e,
+          message: 'Hubo un problema al guardar el producto',
+        };
+      }
+    }
   }
 
   async update(id: string, data: IItem): Promise<IItem> {
@@ -80,6 +114,9 @@ export class ProductosModelMongoDb {
     } catch (e) {
       if (e instanceof mongoose.Error.CastError) {
         throw new NotFound(404, 'El producto que desea actualizar no existe');
+      } else if (e instanceof mongoose.Error.ValidationError) {
+        const messages = Object.values(e.errors).map(prop => prop.message);
+        throw new ProductValidation(400, messages.join('. '));
       } else {
         throw {
           error: e,
