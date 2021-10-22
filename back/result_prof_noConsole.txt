@@ -1,0 +1,556 @@
+Statistical profiling result from prof_noConsole.log, (3471 ticks, 2 unaccounted, 0 excluded).
+
+ [Shared libraries]:
+   ticks  total  nonlib   name
+   2228   64.2%          /home/alizardo/.nvm/versions/node/v14.15.4/bin/node
+     59    1.7%          /usr/lib/x86_64-linux-gnu/libc-2.31.so
+      1    0.0%          [vdso]
+
+ [JavaScript]:
+   ticks  total  nonlib   name
+     34    1.0%    2.9%  LazyCompile: *isDefined /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/args/lib/utils.js:396:12
+     13    0.4%    1.1%  LazyCompile: *getOptions /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/args/lib/utils.js:108:13
+      6    0.2%    0.5%  LazyCompile: *resolve path.js:973:10
+      6    0.2%    0.5%  LazyCompile: *processTicksAndRejections internal/process/task_queues.js:65:35
+      4    0.1%    0.3%  LazyCompile: *next /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:176:16
+      3    0.1%    0.3%  LazyCompile: *normalizeString path.js:52:25
+      3    0.1%    0.3%  LazyCompile: *deserializeObject /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/bson/lib/parser/deserializer.js:53:27
+      2    0.1%    0.2%  LazyCompile: *hidden internal/errors.js:286:25
+      1    0.0%    0.1%  RegExp: ^\/carrito\/?(?=\/|$)
+      1    0.0%    0.1%  RegExp: ^[!#$%&'*+.^_`|~0-9A-Za-z-]+\/[!#$%&'*+.^_`|~0-9A-Za-z-]+$
+      1    0.0%    0.1%  RegExp: ^((?:@[^/\\%]+\/)?[^./\\%][^/\\%]*)(\/.*)?$
+      1    0.0%    0.1%  RegExp: [^\t\x20-\x7e\x80-\xff]
+      1    0.0%    0.1%  RegExp: ;\s*charset\s*=
+      1    0.0%    0.1%  LazyCompile: *nextTick internal/process/task_queues.js:101:18
+      1    0.0%    0.1%  LazyCompile: *emit events.js:264:44
+      1    0.0%    0.1%  LazyCompile: *basename path.js:1153:11
+      1    0.0%    0.1%  LazyCompile: *_storeHeader _http_outgoing.js:360:22
+
+ [C++]:
+   ticks  total  nonlib   name
+    476   13.7%   40.2%  epoll_pwait
+    201    5.8%   17.0%  __lll_lock_wait
+    169    4.9%   14.3%  __write
+    128    3.7%   10.8%  __read
+     18    0.5%    1.5%  __GI___pthread_mutex_unlock
+     14    0.4%    1.2%  do_futex_wait.constprop.0
+     13    0.4%    1.1%  __libc_read
+     11    0.3%    0.9%  __pthread_cond_timedwait
+      8    0.2%    0.7%  __mprotect
+      7    0.2%    0.6%  __libc_open
+      6    0.2%    0.5%  __pthread_cond_signal
+      4    0.1%    0.3%  std::_Rb_tree_insert_and_rebalance(bool, std::_Rb_tree_node_base*, std::_Rb_tree_node_base*, std::_Rb_tree_node_base&)
+      4    0.1%    0.3%  __mmap
+      4    0.1%    0.3%  __libc_malloc
+      4    0.1%    0.3%  __fxstat
+      4    0.1%    0.3%  _IO_fwrite
+      3    0.1%    0.3%  epoll_ctl
+      2    0.1%    0.2%  std::basic_ostream<char, std::char_traits<char> >& std::__ostream_insert<char, std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*, long)
+      2    0.1%    0.2%  operator new(unsigned long)
+      2    0.1%    0.2%  __lseek
+      2    0.1%    0.2%  __close_nocancel
+      2    0.1%    0.2%  __GI___pthread_mutex_lock
+      2    0.1%    0.2%  __GI___pthread_getspecific
+      1    0.0%    0.1%  syscall
+      1    0.0%    0.1%  std::ostream::put(char)
+      1    0.0%    0.1%  std::locale::id::_M_id() const
+      1    0.0%    0.1%  posix_memalign
+      1    0.0%    0.1%  operator new[](unsigned long)
+      1    0.0%    0.1%  fputc
+      1    0.0%    0.1%  fmod
+      1    0.0%    0.1%  accept4
+      1    0.0%    0.1%  __pthread_enable_asynccancel
+      1    0.0%    0.1%  __pthread_cond_broadcast
+      1    0.0%    0.1%  __munmap
+      1    0.0%    0.1%  __libc_write
+      1    0.0%    0.1%  __libc_free
+      1    0.0%    0.1%  __clock_gettime
+      1    0.0%    0.1%  _IO_file_xsputn
+
+ [Summary]:
+   ticks  total  nonlib   name
+     80    2.3%    6.8%  JavaScript
+   1101   31.7%   93.1%  C++
+    379   10.9%   32.0%  GC
+   2288   65.9%          Shared libraries
+      2    0.1%          Unaccounted
+
+ [C++ entry points]:
+   ticks    cpp   total   name
+    128   44.1%    3.7%  __read
+    117   40.3%    3.4%  __write
+      7    2.4%    0.2%  __libc_open
+      4    1.4%    0.1%  std::_Rb_tree_insert_and_rebalance(bool, std::_Rb_tree_node_base*, std::_Rb_tree_node_base*, std::_Rb_tree_node_base&)
+      4    1.4%    0.1%  __libc_malloc
+      4    1.4%    0.1%  __fxstat
+      3    1.0%    0.1%  _IO_fwrite
+      2    0.7%    0.1%  std::basic_ostream<char, std::char_traits<char> >& std::__ostream_insert<char, std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*, long)
+      2    0.7%    0.1%  operator new(unsigned long)
+      2    0.7%    0.1%  __mprotect
+      2    0.7%    0.1%  __lseek
+      2    0.7%    0.1%  __close_nocancel
+      2    0.7%    0.1%  __GI___pthread_mutex_lock
+      1    0.3%    0.0%  syscall
+      1    0.3%    0.0%  std::ostream::put(char)
+      1    0.3%    0.0%  std::locale::id::_M_id() const
+      1    0.3%    0.0%  posix_memalign
+      1    0.3%    0.0%  operator new[](unsigned long)
+      1    0.3%    0.0%  fputc
+      1    0.3%    0.0%  fmod
+      1    0.3%    0.0%  __lll_lock_wait
+      1    0.3%    0.0%  __libc_free
+      1    0.3%    0.0%  __clock_gettime
+      1    0.3%    0.0%  _IO_file_xsputn
+
+ [Bottom up (heavy) profile]:
+  Note: percentage shows a share of a particular caller in the total
+  amount of its parent calls.
+  Callers occupying less than 1.0% are not shown.
+
+   ticks parent  name
+   2228   64.2%  /home/alizardo/.nvm/versions/node/v14.15.4/bin/node
+   1251   56.1%    /home/alizardo/.nvm/versions/node/v14.15.4/bin/node
+    238   19.0%      LazyCompile: ~wrapSafe internal/modules/cjs/loader.js:964:18
+    238  100.0%        LazyCompile: ~Module._compile internal/modules/cjs/loader.js:1017:37
+    238  100.0%          LazyCompile: ~Module._extensions..js internal/modules/cjs/loader.js:1072:37
+    238  100.0%            LazyCompile: ~Module.load internal/modules/cjs/loader.js:916:33
+    109    8.7%      LazyCompile: ~memoryUsage internal/process/per_thread.js:152:23
+    109  100.0%        LazyCompile: ~<anonymous> /home/alizardo/Projects/coderhouse-ecommerce/back/build/src/routes/index.js:20:21
+     97   89.0%          LazyCompile: ~handle /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/layer.js:86:49
+     94   96.9%            LazyCompile: *next /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:176:16
+      3    3.1%            LazyCompile: ~trim_prefix /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:288:23
+     12   11.0%          LazyCompile: *handle /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/layer.js:86:49
+     12  100.0%            LazyCompile: *next /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:176:16
+     57    4.6%      LazyCompile: ~compileForInternalLoader internal/bootstrap/loaders.js:270:27
+     53   93.0%        LazyCompile: ~nativeModuleRequire internal/bootstrap/loaders.js:303:29
+      4    7.5%          Eval: ~<anonymous> internal/modules/esm/loader.js:1:1
+      4  100.0%            LazyCompile: ~compileForInternalLoader internal/bootstrap/loaders.js:270:27
+      4    7.5%          Eval: ~<anonymous> crypto.js:1:1
+      4  100.0%            LazyCompile: ~compileForInternalLoader internal/bootstrap/loaders.js:270:27
+      3    5.7%          Eval: ~<anonymous> tls.js:1:1
+      3  100.0%            LazyCompile: ~compileForInternalLoader internal/bootstrap/loaders.js:270:27
+      3    5.7%          Eval: ~<anonymous> stream.js:1:1
+      3  100.0%            LazyCompile: ~compileForInternalLoader internal/bootstrap/loaders.js:270:27
+      3    5.7%          Eval: ~<anonymous> internal/child_process.js:1:1
+      3  100.0%            LazyCompile: ~compileForInternalLoader internal/bootstrap/loaders.js:270:27
+      2    3.8%          LazyCompile: ~setupPrepareStackTrace internal/bootstrap/node.js:252:32
+      2  100.0%            Eval: ~<anonymous> internal/bootstrap/node.js:1:1
+      2    3.8%          Eval: ~<anonymous> internal/source_map/source_map_cache.js:1:1
+      2  100.0%            LazyCompile: ~compileForInternalLoader internal/bootstrap/loaders.js:270:27
+      2    3.8%          Eval: ~<anonymous> internal/modules/cjs/loader.js:1:1
+      2  100.0%            LazyCompile: ~compileForInternalLoader internal/bootstrap/loaders.js:270:27
+      2    3.8%          Eval: ~<anonymous> internal/bootstrap/node.js:1:1
+      2    3.8%          Eval: ~<anonymous> http.js:1:1
+      2  100.0%            LazyCompile: ~compileForInternalLoader internal/bootstrap/loaders.js:270:27
+      2    3.8%          Eval: ~<anonymous> fs.js:1:1
+      2  100.0%            LazyCompile: ~compileForInternalLoader internal/bootstrap/loaders.js:270:27
+      2    3.8%          Eval: ~<anonymous> _http_client.js:1:1
+      2  100.0%            LazyCompile: ~compileForInternalLoader internal/bootstrap/loaders.js:270:27
+      1    1.9%          LazyCompile: ~setupProcessObject internal/bootstrap/node.js:271:28
+      1  100.0%            Eval: ~<anonymous> internal/bootstrap/node.js:1:1
+      1    1.9%          LazyCompile: ~setupInspectorHooks internal/bootstrap/pre_execution.js:218:29
+      1  100.0%            LazyCompile: ~prepareMainThreadExecution internal/bootstrap/pre_execution.js:19:36
+      1    1.9%          LazyCompile: ~setupBuffer internal/bootstrap/node.js:300:21
+      1  100.0%            Eval: ~<anonymous> internal/bootstrap/node.js:1:1
+      1    1.9%          LazyCompile: ~initializeCJSLoader internal/bootstrap/pre_execution.js:407:29
+      1  100.0%            LazyCompile: ~prepareMainThreadExecution internal/bootstrap/pre_execution.js:19:36
+      1    1.9%          Eval: ~<anonymous> tty.js:1:1
+      1  100.0%            LazyCompile: ~compileForInternalLoader internal/bootstrap/loaders.js:270:27
+      1    1.9%          Eval: ~<anonymous> timers.js:1:1
+      1  100.0%            LazyCompile: ~compileForInternalLoader internal/bootstrap/loaders.js:270:27
+      1    1.9%          Eval: ~<anonymous> net.js:1:1
+      1  100.0%            LazyCompile: ~compileForInternalLoader internal/bootstrap/loaders.js:270:27
+      1    1.9%          Eval: ~<anonymous> internal/util/inspect.js:1:1
+      1  100.0%            LazyCompile: ~compileForInternalLoader internal/bootstrap/loaders.js:270:27
+      1    1.9%          Eval: ~<anonymous> internal/url.js:1:1
+      1  100.0%            LazyCompile: ~compileForInternalLoader internal/bootstrap/loaders.js:270:27
+      1    1.9%          Eval: ~<anonymous> internal/streams/readable.js:1:1
+      1  100.0%            LazyCompile: ~compileForInternalLoader internal/bootstrap/loaders.js:270:27
+      1    1.9%          Eval: ~<anonymous> internal/process/task_queues.js:1:1
+      1  100.0%            LazyCompile: ~compileForInternalLoader internal/bootstrap/loaders.js:270:27
+      1    1.9%          Eval: ~<anonymous> internal/process/esm_loader.js:1:1
+      1  100.0%            LazyCompile: ~compileForInternalLoader internal/bootstrap/loaders.js:270:27
+      1    1.9%          Eval: ~<anonymous> internal/modules/esm/get_source.js:1:1
+      1  100.0%            LazyCompile: ~compileForInternalLoader internal/bootstrap/loaders.js:270:27
+      1    1.9%          Eval: ~<anonymous> internal/modules/cjs/helpers.js:1:1
+      1  100.0%            LazyCompile: ~compileForInternalLoader internal/bootstrap/loaders.js:270:27
+      1    1.9%          Eval: ~<anonymous> internal/fs/promises.js:1:1
+      1  100.0%            LazyCompile: ~compileForInternalLoader internal/bootstrap/loaders.js:270:27
+      1    1.9%          Eval: ~<anonymous> internal/console/global.js:1:1
+      1  100.0%            LazyCompile: ~compileForInternalLoader internal/bootstrap/loaders.js:270:27
+      1    1.9%          Eval: ~<anonymous> internal/cluster/master.js:1:1
+      1  100.0%            LazyCompile: ~compileForInternalLoader internal/bootstrap/loaders.js:270:27
+      1    1.9%          Eval: ~<anonymous> internal/bootstrap/pre_execution.js:1:1
+      1  100.0%            LazyCompile: ~compileForInternalLoader internal/bootstrap/loaders.js:270:27
+      1    1.9%          Eval: ~<anonymous> events.js:1:1
+      1  100.0%            LazyCompile: ~compileForInternalLoader internal/bootstrap/loaders.js:270:27
+      1    1.9%          Eval: ~<anonymous> dns.js:1:1
+      1  100.0%            LazyCompile: ~compileForInternalLoader internal/bootstrap/loaders.js:270:27
+      1    1.9%          Eval: ~<anonymous> child_process.js:1:1
+      1  100.0%            LazyCompile: ~compileForInternalLoader internal/bootstrap/loaders.js:270:27
+      1    1.9%          Eval: ~<anonymous> buffer.js:1:1
+      1  100.0%            LazyCompile: ~compileForInternalLoader internal/bootstrap/loaders.js:270:27
+      4    7.0%        LazyCompile: ~compileForPublicLoader internal/bootstrap/loaders.js:219:25
+      4  100.0%          LazyCompile: ~loadNativeModule internal/modules/cjs/helpers.js:31:26
+      4  100.0%            LazyCompile: ~Module._load internal/modules/cjs/loader.js:704:24
+     53    4.2%      LazyCompile: ~writevGeneric internal/stream_base_commons.js:118:23
+     53  100.0%        LazyCompile: ~Socket._writeGeneric net.js:759:42
+     53  100.0%          LazyCompile: ~Socket._writev net.js:791:36
+     53  100.0%            LazyCompile: ~doWrite internal/streams/writable.js:367:17
+     45    3.6%      /home/alizardo/.nvm/versions/node/v14.15.4/bin/node
+      5   11.1%        LazyCompile: ~checkInvalidHeaderChar _http_common.js:230:32
+      5  100.0%          LazyCompile: ~<anonymous> _http_outgoing.js:546:45
+      5  100.0%            LazyCompile: *hidden internal/errors.js:286:25
+      3    6.7%        LazyCompile: ~pipe /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/send/index.js:510:43
+      3  100.0%          LazyCompile: ~serveStatic /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/serve-static/index.js:72:31
+      2   66.7%            LazyCompile: ~handle /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/layer.js:86:49
+      1   33.3%            LazyCompile: *handle /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/layer.js:86:49
+      3    6.7%        LazyCompile: ~expressInit /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/middleware/init.js:29:30
+      3  100.0%          LazyCompile: ~handle /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/layer.js:86:49
+      3  100.0%            LazyCompile: *next /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:176:16
+      2    4.4%        LazyCompile: ~stat internal/modules/cjs/loader.js:132:14
+      1   50.0%          LazyCompile: ~tryFile internal/modules/cjs/loader.js:334:17
+      1  100.0%            LazyCompile: ~tryExtensions internal/modules/cjs/loader.js:350:23
+      1   50.0%          LazyCompile: ~Module._findPath internal/modules/cjs/loader.js:444:28
+      1  100.0%            LazyCompile: ~Module._resolveFilename internal/modules/cjs/loader.js:796:35
+      2    4.4%        LazyCompile: ~pathtoRegexp /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/path-to-regexp/index.js:28:22
+      2  100.0%          LazyCompile: ~Layer /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/layer.js:33:15
+      1   50.0%            LazyCompile: ~route /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:491:29
+      1   50.0%            LazyCompile: ~Layer /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/layer.js:33:15
+      2    4.4%        LazyCompile: ~isIPv6 internal/net.js:34:16
+      2  100.0%          LazyCompile: ~isIP internal/net.js:38:14
+      1   50.0%            LazyCompile: ~parseSslOptions /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/cmap/connect.js:211:25
+      1   50.0%            LazyCompile: ~lookupAndConnect net.js:982:26
+      2    4.4%        LazyCompile: ~format /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/content-type/index.js:65:17
+      2  100.0%          LazyCompile: ~setCharset /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/utils.js:250:41
+      2  100.0%            LazyCompile: ~send /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/response.js:107:25
+      2    4.4%        LazyCompile: ~Module._findPath internal/modules/cjs/loader.js:444:28
+      2  100.0%          LazyCompile: ~Module._resolveFilename internal/modules/cjs/loader.js:796:35
+      2  100.0%            LazyCompile: ~Module._load internal/modules/cjs/loader.js:704:24
+      1    2.2%        LazyCompile: ~setHeader _http_outgoing.js:556:57
+      1  100.0%          LazyCompile: ~applyHeaders /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/cors/lib/index.js:144:24
+      1  100.0%            LazyCompile: ~applyHeaders /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/cors/lib/index.js:144:24
+      1    2.2%        LazyCompile: ~resolve path.js:973:10
+      1  100.0%          LazyCompile: ~readPackage internal/modules/cjs/loader.js:240:21
+      1  100.0%            LazyCompile: ~readPackageScope internal/modules/cjs/loader.js:271:26
+      1    2.2%        LazyCompile: ~realpathSync fs.js:1650:22
+      1  100.0%          LazyCompile: ~toRealPath internal/modules/cjs/loader.js:343:20
+      1  100.0%            LazyCompile: ~tryFile internal/modules/cjs/loader.js:334:17
+      1    2.2%        LazyCompile: ~readPackage internal/modules/cjs/loader.js:240:21
+      1  100.0%          LazyCompile: ~readPackageScope internal/modules/cjs/loader.js:271:26
+      1  100.0%            LazyCompile: ~trySelf internal/modules/cjs/loader.js:391:17
+      1    2.2%        LazyCompile: ~processTicksAndRejections internal/process/task_queues.js:65:35
+      1    2.2%        LazyCompile: ~populateMaps /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mime-types/index.js:154:23
+      1  100.0%          Eval: ~<anonymous> /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mime-types/index.js:1:1
+      1  100.0%            LazyCompile: ~Module._compile internal/modules/cjs/loader.js:1017:37
+      1    2.2%        LazyCompile: ~normalize path.js:1004:12
+      1  100.0%          LazyCompile: ~join path.js:1033:7
+      1  100.0%            LazyCompile: ~pipe /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/send/index.js:510:43
+      1    2.2%        LazyCompile: ~header /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/response.js:754:29
+      1  100.0%          LazyCompile: ~json /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/response.js:239:25
+      1  100.0%            LazyCompile: ~<anonymous> /home/alizardo/Projects/coderhouse-ecommerce/back/build/src/routes/index.js:20:21
+      1    2.2%        LazyCompile: ~fromString /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/utils.js:478:22
+      1  100.0%          LazyCompile: ~ns /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/utils.js:456:12
+      1  100.0%            LazyCompile: ~measureRoundTripTime /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/sdam/monitor.js:280:30
+      1    2.2%        LazyCompile: ~format /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/fecha/lib/fecha.umd.js:246:25
+      1  100.0%          LazyCompile: ~<anonymous> /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/logform/timestamp.js:14:25
+      1  100.0%            LazyCompile: ~<anonymous> /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/logform/combine.js:17:10
+      1    2.2%        LazyCompile: ~deriveBFS /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/color/node_modules/color-convert/route.js:32:19
+      1  100.0%          LazyCompile: ~module.exports /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/color/node_modules/color-convert/route.js:78:27
+      1  100.0%            LazyCompile: ~<anonymous> /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/color/node_modules/color-convert/index.js:61:25
+      1    2.2%        LazyCompile: ~checkServerIdentity tls.js:221:59
+      1  100.0%          LazyCompile: ~onConnectSecure _tls_wrap.js:1483:25
+      1  100.0%            LazyCompile: ~emit events.js:264:44
+      1    2.2%        LazyCompile: ~checkCollectionName /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/utils.js:34:29
+      1  100.0%          LazyCompile: ~Collection /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/collection.js:65:16
+      1  100.0%            LazyCompile: ~collection /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/db.js:182:15
+      1    2.2%        LazyCompile: ~_pathToPositionalSyntax /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongoose/lib/schema.js:826:33
+      1  100.0%          LazyCompile: ~Schema.path /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongoose/lib/schema.js:610:33
+      1  100.0%            LazyCompile: ~add /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongoose/lib/schema.js:445:36
+      1    2.2%        LazyCompile: ~Schema.pathType /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongoose/lib/schema.js:1157:37
+      1  100.0%          LazyCompile: ~Schema.virtual /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongoose/lib/schema.js:1714:36
+      1  100.0%            LazyCompile: ~addIdGetter /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongoose/lib/plugins/idGetter.js:7:38
+      1    2.2%        LazyCompile: ~MongoCredentials /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/cmap/auth/mongo_credentials.js:30:16
+      1  100.0%          LazyCompile: ~merge /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/cmap/auth/mongo_credentials.js:112:17
+      1  100.0%            LazyCompile: ~transform /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/connection_string.js:409:18
+      1    2.2%        LazyCompile: ~<anonymous> internal/per_context/primordials.js:23:10
+      1  100.0%          LazyCompile: ~Module._findPath internal/modules/cjs/loader.js:444:28
+      1  100.0%            LazyCompile: ~resolveMainPath internal/modules/run_main.js:8:25
+      1    2.2%        LazyCompile: ~<anonymous> /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/webidl-conversions/lib/index.js:425:11
+      1  100.0%          /home/alizardo/.nvm/versions/node/v14.15.4/bin/node
+      1  100.0%            Eval: ~<anonymous> /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/webidl-conversions/lib/index.js:1:1
+      1    2.2%        LazyCompile: ~<anonymous> /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/dotenv/lib/cli-options.js:6:31
+      1  100.0%          /home/alizardo/.nvm/versions/node/v14.15.4/bin/node
+      1  100.0%            LazyCompile: ~optionMatcher /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/dotenv/lib/cli-options.js:5:41
+      1    2.2%        LazyCompile: ~<anonymous> /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/args/node_modules/color-convert/index.js:61:25
+      1  100.0%          /home/alizardo/.nvm/versions/node/v14.15.4/bin/node
+      1  100.0%            Eval: ~<anonymous> /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/args/node_modules/color-convert/index.js:1:1
+      1    2.2%        LazyCompile: *<anonymous> internal/per_context/primordials.js:23:10
+      1  100.0%          LazyCompile: ~readPackageScope internal/modules/cjs/loader.js:271:26
+      1  100.0%            LazyCompile: ~Module._extensions..js internal/modules/cjs/loader.js:1072:37
+      1    2.2%        Eval: ~<anonymous> internal/encoding.js:1:1
+      1  100.0%          LazyCompile: ~compileForInternalLoader internal/bootstrap/loaders.js:270:27
+      1  100.0%            LazyCompile: ~nativeModuleRequire internal/bootstrap/loaders.js:303:29
+      1    2.2%        Eval: ~<anonymous> /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:1:1
+      1  100.0%          LazyCompile: ~Module._compile internal/modules/cjs/loader.js:1017:37
+      1  100.0%            LazyCompile: ~Module._extensions..js internal/modules/cjs/loader.js:1072:37
+      1    2.2%        Eval: ~<anonymous> /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/node_modules/debug/src/node.js:1:1
+      1  100.0%          LazyCompile: ~Module._compile internal/modules/cjs/loader.js:1017:37
+      1  100.0%            LazyCompile: ~Module._extensions..js internal/modules/cjs/loader.js:1072:37
+     36    2.9%      LazyCompile: ~stat fs.js:1051:14
+     36  100.0%        LazyCompile: ~sendFile /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/send/index.js:716:51
+     36  100.0%          LazyCompile: ~pipe /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/send/index.js:510:43
+     36  100.0%            LazyCompile: ~serveStatic /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/serve-static/index.js:72:31
+     32    2.6%      LazyCompile: ~cpus os.js:101:14
+     32  100.0%        LazyCompile: ~<anonymous> /home/alizardo/Projects/coderhouse-ecommerce/back/build/src/routes/index.js:20:21
+     32  100.0%          LazyCompile: ~handle /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/layer.js:86:49
+     23   71.9%            LazyCompile: ~trim_prefix /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:288:23
+      9   28.1%            LazyCompile: *next /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:176:16
+     25    2.0%      LazyCompile: ~randomBytes internal/crypto/random.js:52:21
+     25  100.0%        LazyCompile: ~randomBytesSync /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/random-bytes/index.js:72:25
+     25  100.0%          LazyCompile: ~uidSync /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/uid-safe/index.js:75:18
+     25  100.0%            LazyCompile: ~generateSessionId /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express-session/index.js:518:27
+     25    2.0%      LazyCompile: ~Hash internal/crypto/hash.js:37:14
+     25  100.0%        LazyCompile: ~createHash crypto.js:114:20
+     16   64.0%          LazyCompile: ~entitytag /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/etag/index.js:39:20
+     16  100.0%            LazyCompile: ~etag /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/etag/index.js:70:15
+      9   36.0%          LazyCompile: ~hash /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express-session/index.js:596:14
+      6   66.7%            LazyCompile: ~generate /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express-session/index.js:363:22
+      3   33.3%            LazyCompile: ~isModified /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express-session/index.js:425:24
+     21    1.7%      LazyCompile: ~slice buffer.js:608:12
+     11   52.4%        LazyCompile: *deserializeObject /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/bson/lib/parser/deserializer.js:53:27
+      6   54.5%          LazyCompile: ~deserialize /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/bson/lib/parser/deserializer.js:24:21
+      6  100.0%            LazyCompile: ~deserialize /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/bson/lib/bson.js:156:21
+      5   45.5%          LazyCompile: *deserializeObject /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/bson/lib/parser/deserializer.js:53:27
+      4   80.0%            LazyCompile: ~deserialize /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/bson/lib/parser/deserializer.js:24:21
+      1   20.0%            LazyCompile: *deserializeObject /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/bson/lib/parser/deserializer.js:53:27
+     10   47.6%        LazyCompile: ~toString buffer.js:776:46
+      8   80.0%          LazyCompile: ~readFileSync fs.js:374:22
+      6   75.0%            LazyCompile: ~Module._extensions..js internal/modules/cjs/loader.js:1072:37
+      2   25.0%            LazyCompile: ~Module._extensions..json internal/modules/cjs/loader.js:1097:39
+      2   20.0%          LazyCompile: ~deserializeObject /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/bson/lib/parser/deserializer.js:53:27
+      2  100.0%            LazyCompile: ~deserialize /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/bson/lib/parser/deserializer.js:24:21
+     16    1.3%      LazyCompile: ~get /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/args/node_modules/chalk/index.js:59:6
+     16  100.0%        LazyCompile: ~module.exports /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/args/lib/parse.js:6:26
+     16  100.0%          LazyCompile: ~<anonymous> /home/alizardo/Projects/coderhouse-ecommerce/back/build/src/routes/index.js:20:21
+     16  100.0%            LazyCompile: ~handle /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/layer.js:86:49
+     15    1.2%      LazyCompile: ~initialize /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/passport/lib/middleware/initialize.js:51:29
+     14   93.3%        LazyCompile: ~handle /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/layer.js:86:49
+     10   71.4%          LazyCompile: *next /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:176:16
+     10  100.0%            LazyCompile: ~session /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express-session/index.js:179:26
+      4   28.6%          LazyCompile: ~trim_prefix /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:288:23
+      4  100.0%            LazyCompile: ~<anonymous> /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:275:64
+      1    6.7%        LazyCompile: *handle /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/layer.js:86:49
+      1  100.0%          LazyCompile: *next /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:176:16
+      1  100.0%            LazyCompile: ~session /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express-session/index.js:179:26
+     14    1.1%      LazyCompile: ~compression /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/compression/index.js:59:31
+     14  100.0%        LazyCompile: ~handle /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/layer.js:86:49
+     13   92.9%          LazyCompile: *next /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:176:16
+     13  100.0%            LazyCompile: ~expressInit /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/middleware/init.js:29:30
+      1    7.1%          LazyCompile: ~trim_prefix /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:288:23
+      1  100.0%            LazyCompile: ~<anonymous> /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:275:64
+     14    1.1%      LazyCompile: *deserializeObject /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/bson/lib/parser/deserializer.js:53:27
+      8   57.1%        LazyCompile: *deserializeObject /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/bson/lib/parser/deserializer.js:53:27
+      8  100.0%          LazyCompile: ~deserialize /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/bson/lib/parser/deserializer.js:24:21
+      8  100.0%            LazyCompile: ~deserialize /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/bson/lib/bson.js:156:21
+      6   42.9%        LazyCompile: ~deserialize /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/bson/lib/parser/deserializer.js:24:21
+      6  100.0%          LazyCompile: ~deserialize /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/bson/lib/bson.js:156:21
+      6  100.0%            LazyCompile: ~parse /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/cmap/commands.js:577:10
+     13    1.0%      LazyCompile: ~readPackage internal/modules/cjs/loader.js:240:21
+     12   92.3%        LazyCompile: ~resolveExports internal/modules/cjs/loader.js:422:24
+     12  100.0%          LazyCompile: ~Module._findPath internal/modules/cjs/loader.js:444:28
+     12  100.0%            LazyCompile: ~Module._resolveFilename internal/modules/cjs/loader.js:796:35
+      1    7.7%        LazyCompile: ~readPackageScope internal/modules/cjs/loader.js:271:26
+      1  100.0%          LazyCompile: ~trySelf internal/modules/cjs/loader.js:391:17
+      1  100.0%            LazyCompile: ~Module._resolveFilename internal/modules/cjs/loader.js:796:35
+
+    476   13.7%  epoll_pwait
+
+    201    5.8%  __lll_lock_wait
+
+    169    4.9%  __write
+    117   69.2%    /home/alizardo/.nvm/versions/node/v14.15.4/bin/node
+     18   15.4%      /home/alizardo/.nvm/versions/node/v14.15.4/bin/node
+      1    5.6%        LazyCompile: ~tagsStrictEqual /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/sdam/server_description.js:173:25
+      1  100.0%          LazyCompile: ~equals /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/sdam/server_description.js:118:11
+      1  100.0%            LazyCompile: ~serverUpdateHandler /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/sdam/topology.js:379:24
+      1    5.6%        LazyCompile: ~shouldUseNative /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/object-assign/index.js:21:25
+      1  100.0%          Eval: ~<anonymous> /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/object-assign/index.js:1:1
+      1  100.0%            LazyCompile: ~Module._compile internal/modules/cjs/loader.js:1017:37
+      1    5.6%        LazyCompile: ~setWriteHeadHeaders /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/on-headers/index.js:105:30
+      1  100.0%          LazyCompile: ~writeHead /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/on-headers/index.js:28:29
+      1  100.0%            LazyCompile: ~_implicitHeader _http_server.js:245:68
+      1    5.6%        LazyCompile: ~next /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/whatwg-url/dist/URLSearchParams.js:14:25
+      1  100.0%          LazyCompile: ~_normalizeKey /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb-connection-string-url/lib/index.js:20:18
+      1  100.0%            LazyCompile: ~_normalizeKey /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb-connection-string-url/lib/index.js:50:18
+      1    5.6%        LazyCompile: ~module.exports /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/args/node_modules/escape-string-regexp/index.js:5:27
+      1  100.0%          Eval: ~<anonymous> /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/args/node_modules/chalk/index.js:1:1
+      1  100.0%            LazyCompile: ~Module._compile internal/modules/cjs/loader.js:1017:37
+      1    5.6%        LazyCompile: ~getset /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/color/index.js:431:16
+      1  100.0%          Eval: ~<anonymous> /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/color/index.js:1:1
+      1  100.0%            LazyCompile: ~Module._compile internal/modules/cjs/loader.js:1017:37
+      1    5.6%        LazyCompile: ~getOwn internal/bootstrap/loaders.js:153:16
+      1  100.0%          LazyCompile: ~syncExports internal/bootstrap/loaders.js:258:14
+      1  100.0%            LazyCompile: ~<anonymous> internal/bootstrap/loaders.js:244:15
+      1    5.6%        LazyCompile: ~createClientErrorConstructor /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/http-errors/index.js:132:39
+      1  100.0%          LazyCompile: ~forEachCode /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/http-errors/index.js:243:38
+      1  100.0%            /home/alizardo/.nvm/versions/node/v14.15.4/bin/node
+      1    5.6%        LazyCompile: ~connectHandler /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/cmap/connect.js:270:28
+      1  100.0%          LazyCompile: ~onceWrapper events.js:416:21
+      1  100.0%            LazyCompile: ~emit events.js:264:44
+      1    5.6%        LazyCompile: ~config /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/dotenv/lib/main.js:82:17
+      1  100.0%          Eval: ~<anonymous> /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/dotenv/config.js:3:11
+      1  100.0%            Eval: ~<anonymous> /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/dotenv/config.js:1:1
+      1    5.6%        LazyCompile: ~checkInvalidHeaderChar _http_common.js:230:32
+      1  100.0%          LazyCompile: ~<anonymous> _http_outgoing.js:546:45
+      1  100.0%            LazyCompile: *hidden internal/errors.js:286:25
+      1    5.6%        LazyCompile: ~bindDefaultResolver internal/dns/utils.js:145:29
+      1  100.0%          Eval: ~<anonymous> dns.js:1:1
+      1  100.0%            LazyCompile: ~compileForInternalLoader internal/bootstrap/loaders.js:270:27
+      1    5.6%        LazyCompile: ~applyQueryMiddleware /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongoose/lib/helpers/query/applyQueryMiddleware.js:26:30
+      1  100.0%          LazyCompile: ~compile /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongoose/lib/model.js:4725:33
+      1  100.0%            LazyCompile: ~Mongoose._model /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongoose/lib/index.js:523:37
+      1    5.6%        LazyCompile: ~URL internal/url.js:327:14
+      1  100.0%          LazyCompile: ~pathToFileURL internal/url.js:1388:23
+      1  100.0%            LazyCompile: ~resolveExports internal/modules/cjs/loader.js:422:24
+      1    5.6%        LazyCompile: ~Kareem.filter /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/kareem/index.js:324:35
+      1  100.0%          LazyCompile: ~applyHooks /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongoose/lib/helpers/model/applyHooks.js:32:20
+      1  100.0%            LazyCompile: ~compile /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongoose/lib/model.js:4725:33
+      1    5.6%        LazyCompile: ~<anonymous> /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/connection_string.js:55:54
+      1  100.0%          LazyCompile: ~onresolve dns.js:198:19
+      1    5.6%        LazyCompile: ~<anonymous> /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/color/node_modules/color-convert/index.js:61:25
+      1  100.0%          /home/alizardo/.nvm/versions/node/v14.15.4/bin/node
+      1  100.0%            Eval: ~<anonymous> /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/color/node_modules/color-convert/index.js:1:1
+      1    5.6%        Eval: ~<anonymous> /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/knex/lib/schema/columnbuilder.js:1:1
+      1  100.0%          LazyCompile: ~Module._compile internal/modules/cjs/loader.js:1017:37
+      1  100.0%            LazyCompile: ~Module._extensions..js internal/modules/cjs/loader.js:1072:37
+      3    2.6%      LazyCompile: ~processTicksAndRejections internal/process/task_queues.js:65:35
+      2    1.7%      LazyCompile: ~openSync fs.js:467:18
+      2  100.0%        LazyCompile: ~readFileSync fs.js:374:22
+      2  100.0%          LazyCompile: ~Module._extensions..js internal/modules/cjs/loader.js:1072:37
+      2  100.0%            LazyCompile: ~Module.load internal/modules/cjs/loader.js:916:33
+      2    1.7%      LazyCompile: ~hidden internal/errors.js:286:25
+      1   50.0%        LazyCompile: ~readSync fs.js:555:18
+      1  100.0%          LazyCompile: ~tryReadSync fs.js:362:21
+      1  100.0%            LazyCompile: ~readFileSync fs.js:374:22
+      1   50.0%        LazyCompile: ~<anonymous> internal/fs/utils.js:618:38
+      1  100.0%          LazyCompile: ~hidden internal/errors.js:286:25
+      1  100.0%            LazyCompile: ~realpathSync fs.js:1650:22
+      2    1.7%      LazyCompile: ~fromStringFast buffer.js:425:24
+      2  100.0%        LazyCompile: ~fromString buffer.js:444:20
+      2  100.0%          LazyCompile: ~from buffer.js:306:28
+      1   50.0%            Eval: ~<anonymous> internal/fs/utils.js:1:1
+      1   50.0%            Eval: ~<anonymous> _http_server.js:1:1
+      2    1.7%      LazyCompile: ~compareObjectId /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/sdam/topology_description.js:238:25
+      2  100.0%        LazyCompile: ~updateRsFromPrimary /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/sdam/topology_description.js:254:29
+      2  100.0%          LazyCompile: ~update /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/sdam/topology_description.js:120:11
+      2  100.0%            LazyCompile: ~serverUpdateHandler /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/sdam/topology.js:379:24
+      2    1.7%      LazyCompile: ~command /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/cmap/connection.js:161:12
+      1   50.0%        LazyCompile: ~measureRoundTripTime /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/sdam/monitor.js:280:30
+      1  100.0%          LazyCompile: ~<anonymous> /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/sdam/monitor.js:296:44
+      1  100.0%            LazyCompile: ~listOnTimeout internal/timers.js:502:25
+      1   50.0%        LazyCompile: ~checkServer /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/sdam/monitor.js:138:21
+      1  100.0%          LazyCompile: ~<anonymous> /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/sdam/monitor.js:222:12
+      1  100.0%            LazyCompile: ~executeAndReschedule /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/utils.js:815:34
+
+    128    3.7%  __read
+    128  100.0%    LazyCompile: *cpus os.js:101:14
+    128  100.0%      LazyCompile: ~<anonymous> /home/alizardo/Projects/coderhouse-ecommerce/back/build/src/routes/index.js:20:21
+    119   93.0%        LazyCompile: ~handle /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/layer.js:86:49
+    119  100.0%          LazyCompile: *next /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:176:16
+    119  100.0%            LazyCompile: ~handle /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:136:31
+      9    7.0%        LazyCompile: *handle /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/layer.js:86:49
+      9  100.0%          LazyCompile: *next /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:176:16
+      9  100.0%            LazyCompile: *handle /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:136:31
+
+     59    1.7%  /usr/lib/x86_64-linux-gnu/libc-2.31.so
+     26   44.1%    /home/alizardo/.nvm/versions/node/v14.15.4/bin/node
+      5   19.2%      /home/alizardo/.nvm/versions/node/v14.15.4/bin/node
+      2   40.0%        LazyCompile: ~FastBuffer internal/buffer.js:951:1
+      2  100.0%          LazyCompile: ~alloc buffer.js:372:30
+      2  100.0%            LazyCompile: ~serialize /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/bson/lib/bson.js:105:19
+      1   20.0%        LazyCompile: ~unfqdn tls.js:140:16
+      1  100.0%          LazyCompile: ~splitHost tls.js:150:19
+      1  100.0%            LazyCompile: ~checkServerIdentity tls.js:221:59
+      1   20.0%        LazyCompile: ~toString /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/uid-safe/index.js:102:19
+      1  100.0%          LazyCompile: ~uidSync /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/uid-safe/index.js:75:18
+      1  100.0%            LazyCompile: ~generateSessionId /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express-session/index.js:518:27
+      1   20.0%        Eval: ~<anonymous> /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/knex/lib/schema/tablebuilder.js:1:1
+      1  100.0%          LazyCompile: ~Module._compile internal/modules/cjs/loader.js:1017:37
+      1  100.0%            LazyCompile: ~Module._extensions..js internal/modules/cjs/loader.js:1072:37
+      3   11.5%      LazyCompile: ~onHeaders /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/on-headers/index.js:56:20
+      3  100.0%        LazyCompile: ~session /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express-session/index.js:179:26
+      3  100.0%          LazyCompile: ~handle /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/layer.js:86:49
+      3  100.0%            LazyCompile: *next /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:176:16
+      3   11.5%      LazyCompile: ~Module._findPath internal/modules/cjs/loader.js:444:28
+      3  100.0%        LazyCompile: ~Module._resolveFilename internal/modules/cjs/loader.js:796:35
+      3  100.0%          LazyCompile: ~Module._load internal/modules/cjs/loader.js:704:24
+      3  100.0%            LazyCompile: ~Module.require internal/modules/cjs/loader.js:944:36
+      2    7.7%      LazyCompile: ~toRealPath internal/modules/cjs/loader.js:343:20
+      2  100.0%        LazyCompile: ~tryFile internal/modules/cjs/loader.js:334:17
+      2  100.0%          LazyCompile: ~tryExtensions internal/modules/cjs/loader.js:350:23
+      2  100.0%            LazyCompile: ~Module._findPath internal/modules/cjs/loader.js:444:28
+      1    3.8%      LazyCompile: ~serialize /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/bson/lib/bson.js:105:19
+      1  100.0%        LazyCompile: ~toBin /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/cmap/commands.js:82:10
+      1  100.0%          LazyCompile: ~writeCommand /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/cmap/message_stream.js:35:17
+      1  100.0%            LazyCompile: ~write /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/cmap/connection.js:488:15
+      1    3.8%      LazyCompile: ~removeListener events.js:451:28
+      1  100.0%        LazyCompile: ~Readable.removeListener internal/streams/readable.js:887:45
+      1  100.0%          LazyCompile: ~detachSocket _http_server.js:229:62
+      1  100.0%            LazyCompile: ~resOnFinish _http_server.js:756:21
+      1    3.8%      LazyCompile: ~processWaitQueue /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/cmap/connection_pool.js:417:26
+      1  100.0%        LazyCompile: ~processTicksAndRejections internal/process/task_queues.js:65:35
+      1    3.8%      LazyCompile: ~logger internal/util/debuglog.js:89:18
+      1  100.0%        LazyCompile: ~Module._resolveLookupPaths internal/modules/cjs/loader.js:610:38
+      1  100.0%          LazyCompile: ~Module._resolveFilename internal/modules/cjs/loader.js:796:35
+      1  100.0%            LazyCompile: ~Module._load internal/modules/cjs/loader.js:704:24
+      1    3.8%      LazyCompile: ~hrtime internal/process/per_thread.js:120:18
+      1  100.0%        LazyCompile: ~now /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/utils.js:737:13
+      1  100.0%          LazyCompile: ~measureRoundTripTime /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/sdam/monitor.js:280:30
+      1  100.0%            LazyCompile: ~<anonymous> /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/sdam/monitor.js:296:44
+      1    3.8%      LazyCompile: ~format /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/content-type/index.js:65:17
+      1  100.0%        LazyCompile: ~setCharset /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/utils.js:250:41
+      1  100.0%          LazyCompile: ~send /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/response.js:107:25
+      1  100.0%            LazyCompile: ~json /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/response.js:239:25
+      1    3.8%      LazyCompile: ~ensureBuffer /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/bson/lib/ensure_buffer.js:14:22
+      1  100.0%        LazyCompile: ~ObjectId /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/bson/lib/objectid.js:22:22
+      1  100.0%          LazyCompile: *deserializeObject /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/bson/lib/parser/deserializer.js:53:27
+      1  100.0%            LazyCompile: *deserializeObject /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/bson/lib/parser/deserializer.js:53:27
+      1    3.8%      LazyCompile: ~deserializeObject /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/bson/lib/parser/deserializer.js:53:27
+      1  100.0%        LazyCompile: ~deserialize /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/bson/lib/parser/deserializer.js:24:21
+      1  100.0%          LazyCompile: ~deserialize /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/bson/lib/bson.js:156:21
+      1  100.0%            LazyCompile: ~parse /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/cmap/commands.js:577:10
+      1    3.8%      LazyCompile: ~addChunk internal/streams/readable.js:299:18
+      1  100.0%        LazyCompile: ~readableAddChunk internal/streams/readable.js:231:26
+      1  100.0%          LazyCompile: ~Readable.push internal/streams/readable.js:222:35
+      1  100.0%            LazyCompile: ~writeCommand /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/cmap/message_stream.js:35:17
+      1    3.8%      LazyCompile: ~Timeout.refresh internal/timers.js:205:37
+      1  100.0%        LazyCompile: ~_unrefTimer net.js:393:52
+      1  100.0%          LazyCompile: ~emitLookup net.js:1041:46
+      1  100.0%            LazyCompile: ~onlookup dns.js:65:18
+      1    3.8%      LazyCompile: ~Db /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/db.js:80:16
+      1  100.0%        LazyCompile: ~db /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/mongo_client.js:165:7
+      1  100.0%          LazyCompile: ~_setClient /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongoose/lib/connection.js:825:20
+      1  100.0%            LazyCompile: ~<anonymous> /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongoose/lib/connection.js:785:20
+      1    3.8%      LazyCompile: *resolve path.js:973:10
+      1  100.0%        LazyCompile: *readPackageScope internal/modules/cjs/loader.js:271:26
+      1  100.0%          LazyCompile: ~trySelf internal/modules/cjs/loader.js:391:17
+      1  100.0%            LazyCompile: ~Module._resolveFilename internal/modules/cjs/loader.js:796:35
+      1    3.8%      Eval: ~<anonymous> /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/mongodb/lib/promise_provider.js:1:1
+      1  100.0%        LazyCompile: ~Module._compile internal/modules/cjs/loader.js:1017:37
+      1  100.0%          LazyCompile: ~Module._extensions..js internal/modules/cjs/loader.js:1072:37
+      1  100.0%            LazyCompile: ~Module.load internal/modules/cjs/loader.js:916:33
+     11   18.6%    LazyCompile: *cpus os.js:101:14
+     11  100.0%      LazyCompile: ~<anonymous> /home/alizardo/Projects/coderhouse-ecommerce/back/build/src/routes/index.js:20:21
+      9   81.8%        LazyCompile: ~handle /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/layer.js:86:49
+      9  100.0%          LazyCompile: *next /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:176:16
+      9  100.0%            LazyCompile: ~handle /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:136:31
+      2   18.2%        LazyCompile: *handle /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/layer.js:86:49
+      2  100.0%          LazyCompile: *next /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:176:16
+      2  100.0%            LazyCompile: *handle /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:136:31
+      1    1.7%    LazyCompile: *realpathSync fs.js:1650:22
+      1  100.0%      LazyCompile: ~toRealPath internal/modules/cjs/loader.js:343:20
+      1  100.0%        LazyCompile: ~tryFile internal/modules/cjs/loader.js:334:17
+      1  100.0%          LazyCompile: ~tryExtensions internal/modules/cjs/loader.js:350:23
+      1  100.0%            LazyCompile: ~Module._findPath internal/modules/cjs/loader.js:444:28
+

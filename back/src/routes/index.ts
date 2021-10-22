@@ -27,7 +27,7 @@ router.use('/info', (req: Request, res: Response) => {
     folder: process.cwd(),
     numCPUs: os.cpus().length,
   };
-
+  console.log(info);
   res.json({ data: info });
 });
 
@@ -41,30 +41,30 @@ router.use('/randoms', (req: Request, res: Response) => {
 
   const flags = args.parse(process.argv);
 
-  if (flags.mode !== 'cluster') {
-    logger.warn('on fork mode');
-    const numData = fork(scriptPath, [numberQty as string]);
-    numData.send('start');
-    numData.on('message', result => {
-      res.json({
-        data: {
-          args: flags,
-          processId: process.pid,
-          result,
-        },
-      });
-    });
-  } else {
-    logger.warn('on cluster mode');
-    const result = getRandomNums(Number(numberQty));
-    res.json({
-      data: {
-        args: flags,
-        processId: process.pid,
-        result,
-      },
-    });
-  }
+  // if (flags.mode !== 'cluster') {
+  //   logger.warn('on fork mode');
+  //   const numData = fork(scriptPath, [numberQty as string]);
+  //   numData.send('start');
+  //   numData.on('message', result => {
+  //     res.json({
+  //       data: {
+  //         args: flags,
+  //         processId: process.pid,
+  //         result,
+  //       },
+  //     });
+  //   });
+  // } else {
+  // logger.warn('on cluster mode');
+  const result = getRandomNums(Number(numberQty));
+  res.json({
+    data: {
+      args: flags,
+      processId: process.pid,
+      result,
+    },
+  });
+  // }
 });
 
 router.use('/muerte', (req, res) => {

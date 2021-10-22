@@ -1,0 +1,34 @@
+  Telemetry is on. Learn more: https://artillery.io/docs/resources/core/telemetry.html
+Started phase 0, duration: 1s @ 16:48:05(-0300) 2021-10-22
+Report @ 16:48:07(-0300) 2021-10-22
+Elapsed time: 2 seconds
+  Scenarios launched:  20
+  Scenarios completed: 20
+  Requests completed:  1000
+  Mean response/sec: 512.82
+  Response time (msec):
+    min: 1
+    max: 48
+    median: 13
+    p95: 24.5
+    p99: 31
+  Codes:
+    200: 1000
+
+All virtual users finished
+Summary report @ 16:48:07(-0300) 2021-10-22
+  Scenarios launched:  20
+  Scenarios completed: 20
+  Requests completed:  1000
+  Mean response/sec: 510.2
+  Response time (msec):
+    min: 1
+    max: 48
+    median: 13
+    p95: 24.5
+    p99: 31
+  Scenario counts:
+    0: 20 (100%)
+  Codes:
+    200: 1000
+
