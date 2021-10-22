@@ -8,6 +8,7 @@ import loginRouter from './login';
 import { isLoggedIn } from 'middlewares/auth';
 import path from 'path';
 import { getRandomNums } from 'utils/getRandomNums';
+import { logger } from 'utils/logger';
 
 const router = express.Router();
 
@@ -35,13 +36,13 @@ router.use('/randoms', (req: Request, res: Response) => {
   const numberQty = cant || String(100000000);
   const scriptPath = path.resolve(
     __dirname,
-    '../../src/utils/getRandomNums.js',
+    '../../build/src/utils/getRandomNums.js',
   );
 
   const flags = args.parse(process.argv);
 
   if (flags.mode !== 'cluster') {
-    console.log('on fork mode');
+    logger.warn('on fork mode');
     const numData = fork(scriptPath, [numberQty as string]);
     numData.send('start');
     numData.on('message', result => {
@@ -54,7 +55,7 @@ router.use('/randoms', (req: Request, res: Response) => {
       });
     });
   } else {
-    console.log('on cluster mode');
+    logger.warn('on cluster mode');
     const result = getRandomNums(Number(numberQty));
     res.json({
       data: {
@@ -68,7 +69,7 @@ router.use('/randoms', (req: Request, res: Response) => {
 
 router.use('/muerte', (req, res) => {
   res.json({ msg: 'OK' });
-  console.log(`PID => ${process.pid} will die`);
+  logger.error(`PID => ${process.pid} will die`);
   process.exit(0);
 });
 

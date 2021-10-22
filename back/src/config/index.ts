@@ -26,7 +26,7 @@ const options = [
 args.options(options);
 
 const flags = args.parse(process.argv);
-console.log('flags', flags);
+
 const env = {
   PORT: flags.port || process.env.PORT || 8080,
   MONGO_ATLAS_USER: process.env.MONGO_ATLAS_USER || 'user',

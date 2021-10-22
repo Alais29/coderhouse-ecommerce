@@ -1,4 +1,5 @@
 import { ErrorRequestHandler } from 'express';
+import { logger } from 'utils/logger';
 
 interface IErrorInfo {
   error: string;
@@ -19,6 +20,6 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
   if (descripcion) {
     errorInfo.descripcion = descripcion;
   }
-
+  logger.error(errorInfo.message);
   res.status(statusCode || 500).json(errorInfo);
 };
