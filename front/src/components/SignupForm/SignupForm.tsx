@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
-import { IUser } from 'commons/interfaces'
+import React, { useState, useRef } from 'react'
+import { IUserFormData } from 'commons/interfaces'
 import { Button, Form } from 'react-bootstrap'
 import PhoneInput from 'react-phone-number-input'
 import cx from 'classnames/bind'
 import styles from './styles.module.scss'
 
 interface ISignupForm {
-  onSubmit: (data: IUser, callback: () => void) => void
+  onSubmit: (data: IUserFormData, callback: () => void) => void
 }
 
 const SignupForm = ({ onSubmit }: ISignupForm) => {
@@ -17,8 +17,10 @@ const SignupForm = ({ onSubmit }: ISignupForm) => {
     direccion: '',
     edad: '',
   })
-  const [telefono, setTelefono] = useState();
+  const [ telefono, setTelefono ] = useState();
   const { email, password, nombre, direccion, edad } = formValues;
+
+  const fotoRef = useRef<HTMLInputElement>(null)
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormValues({
@@ -29,12 +31,20 @@ const SignupForm = ({ onSubmit }: ISignupForm) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const userData = {
-      ...formValues,
-      telefono
+    
+    let fotoToUpload = null;
+    if (fotoRef.current) {
+      fotoToUpload = fotoRef.current.files
     }
-    console.log('userData',userData);
-    onSubmit(userData, () => {
+
+    const formData = new FormData() as IUserFormData;
+    Object.entries(formValues).forEach(formElement => {
+      formData.append(formElement[0], formElement[1])
+    })
+    formData.append('foto', fotoToUpload ? fotoToUpload[0] : '')
+    formData.append('telefono', telefono || '')
+
+    onSubmit(formData, () => {
       setFormValues({
         email: '',
         password: '',
@@ -43,6 +53,9 @@ const SignupForm = ({ onSubmit }: ISignupForm) => {
         edad: '',
       })
       setTelefono(undefined);
+      if (fotoRef.current) {
+        fotoRef.current.value = '';
+      }
     })
   }
 
@@ -77,6 +90,10 @@ const SignupForm = ({ onSubmit }: ISignupForm) => {
             name="telefono"
             onChange={setTelefono as (value?: unknown) => void}
           />
+        </Form.Group>
+        <Form.Group controlId="foto" className="mb-3">
+          <Form.Label>Foto</Form.Label>
+          <Form.Control type="file" ref={fotoRef} name="foto" />
         </Form.Group>
         <Button className="mb-2" type="submit">
           Registrarse

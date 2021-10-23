@@ -30,4 +30,7 @@ export interface IUser {
   direccion?: string;
   edad?: string;
   telefono?: string;
+  foto?: string;
 }
+
+export interface IUserFormData extends FormData, IUser {}

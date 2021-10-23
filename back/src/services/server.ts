@@ -14,6 +14,10 @@ const app: express.Application = express();
 const oneDay = 1000 * 60 * 60 * 24;
 
 app.use(express.static(path.resolve(__dirname, '../../', 'public')));
+app.use(
+  '/uploads',
+  express.static(path.resolve(__dirname, '../../', 'uploads')),
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());

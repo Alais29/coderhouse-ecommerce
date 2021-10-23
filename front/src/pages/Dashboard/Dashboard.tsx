@@ -41,6 +41,7 @@ const Dashboard = () => {
       <p>Direccion: {data?.direccion}</p>
       <p>Edad: {data?.edad}</p>
       <p>Teléfono: {data?.telefono}</p>
+      <img src={data?.foto} alt="" />
     </div>
   )
 }

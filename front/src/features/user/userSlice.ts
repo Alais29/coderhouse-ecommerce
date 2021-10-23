@@ -46,6 +46,7 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setStatus: (state, action) => {
+      state.error = null;
       state.status = action.payload;
     },
   },

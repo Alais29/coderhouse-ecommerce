@@ -66,7 +66,7 @@ export interface IUserBase extends IObject {
   direccion: string;
   edad: number;
   telefono: string;
-  // foto: File;
+  foto: string;
 }
 
 export interface IUser extends IUserBase {

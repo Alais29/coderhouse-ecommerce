@@ -5,6 +5,7 @@ import { NextFunction, Request, Response } from 'express';
 import { IUser } from 'common/interfaces';
 import { UnauthorizedRoute } from 'errors';
 import { isValidUser } from 'utils/validations';
+import path from 'path';
 
 interface User {
   _id?: string;
@@ -61,6 +62,7 @@ const signUpFunc = async (
       direccion,
       edad: Number(edad),
       telefono,
+      foto: req.file?.path || '',
     };
 
     isValidUser(userData);

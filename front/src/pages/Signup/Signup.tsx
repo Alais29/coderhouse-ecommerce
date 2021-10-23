@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
-import { IUser } from 'commons/interfaces';
+import { IUserFormData } from 'commons/interfaces';
 import SignupForm from 'components/SignupForm/SignupForm';
 import { userSignUp } from 'features/user/userSlice'
 import { useAppDispatch } from 'hooks/redux'
@@ -8,7 +8,7 @@ import { useAppDispatch } from 'hooks/redux'
 const Signup = () => {
   const dispatch = useAppDispatch();
 
-  const handleSubmit = async (data: IUser, callback: () => void) => {
+  const handleSubmit = async (data: IUserFormData, callback: () => void) => {
     try {
       await dispatch(userSignUp(data)).unwrap()
       callback()
