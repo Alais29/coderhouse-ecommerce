@@ -1,56 +1,28 @@
+import { Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 import { IUser } from 'commons/interfaces';
 import SignupForm from 'components/SignupForm/SignupForm';
-import { useState } from 'react';
-import { Alert } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 import { userSignUp } from 'features/user/userSlice'
 import { useAppDispatch } from 'hooks/redux'
 
 const Signup = () => {
-  const [signedUp, setSignedUp] = useState(false);
-  const [signInError, setSignInError] = useState({
-    error: false,
-    message: ''
-  });
-
   const dispatch = useAppDispatch();
 
   const handleSubmit = async (data: IUser, callback: () => void) => {
     try {
       await dispatch(userSignUp(data)).unwrap()
       callback()
-      setSignedUp(true);
-      setTimeout(() => {
-        setSignedUp(false);
-      }, 2000)
+      toast.success('¡Registro Exitoso!')
     } catch (e) {
       const message = e.message === 'Missing credentials' ? 'Todos los campos son obligatorios' : e.message
-      setSignInError({
-        error: true,
-        message
-      });
-      setTimeout(() => {
-        setSignInError({
-        error: false,
-        message: ''
-      });
-      }, 3000)
+      toast.error(message);
     }
   }
 
   return (
     <div>
       <h1 className="text-center mt-5 pt-3">Registro de Usuario</h1>
-      {signedUp &&
-        <Alert variant='success'>
-          <span className="me-3">¡Registro exitoso!</span>
-        </Alert>
-      }
-      {signInError.error &&
-        <Alert variant='danger'>
-          <span className="me-3">{signInError.message}</span>
-        </Alert>
-      }
+      <ToastContainer />
       <SignupForm onSubmit={handleSubmit} />
       <hr />
       <div>
