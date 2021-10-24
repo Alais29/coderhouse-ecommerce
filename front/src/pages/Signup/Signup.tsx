@@ -1,18 +1,31 @@
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
-import { IUserFormData } from 'commons/interfaces';
+import { IUserFormData, IObject } from 'commons/interfaces';
 import SignupForm from 'components/SignupForm/SignupForm';
-import { userSignUp } from 'features/user/userSlice'
+import { userLogin, userSignUp } from 'features/user/userSlice'
 import { useAppDispatch } from 'hooks/redux'
 
 const Signup = () => {
   const dispatch = useAppDispatch();
+
+  const history = useHistory();
 
   const handleSubmit = async (data: IUserFormData, callback: () => void) => {
     try {
       await dispatch(userSignUp(data)).unwrap()
       callback()
       toast.success('¡Registro Exitoso!')
+
+      const dataObj: IObject = {};
+      data.forEach((value, key) => dataObj[key] = value);
+
+      const loginData = {
+        email: dataObj.email as string,
+        password: dataObj.password as string,
+      }
+
+      await dispatch(userLogin(loginData)).unwrap()
+      history.push("/dashboard");      
     } catch (e) {
       const message = e.message === 'Missing credentials' ? 'Todos los campos son obligatorios' : e.message
       toast.error(message);
