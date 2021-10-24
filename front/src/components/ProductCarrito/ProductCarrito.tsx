@@ -11,9 +11,9 @@ interface IProductCarrito {
 const ProductCarrito = ({ product, handleRemove }: IProductCarrito) => {
   return (
     <div className={cx('border', 'rounded', 'd-flex', styles['product-carrito'])}>
-      <img src={product.foto} alt={product.nombre} className={styles['product-carrito__img']} />
-      <div className="d-flex justify-content-between align-items-center flex-grow-1">
-        <div>
+      <img src={product.foto} alt={product.nombre} className={cx(styles['product-carrito__img'])} />
+      <div className={cx(styles['product-carrito__info-container'])}>
+        <div className={cx(styles['product-carrito__info'])}>
           <h3>{product.nombre}</h3>
           <p>{product.descripcion}</p>
           <p className={styles['product-carrito__price']}>${product.precio}</p>

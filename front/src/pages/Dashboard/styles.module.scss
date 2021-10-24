@@ -1,0 +1,23 @@
+.user-data-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 430px;
+  margin: 0 auto;
+}
+.user-data {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  &__img {
+    flex-basis: 100px;
+    max-width: 200px;
+    border-radius: 50%;
+  }
+  &__info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}

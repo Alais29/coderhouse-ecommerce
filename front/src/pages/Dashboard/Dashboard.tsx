@@ -3,8 +3,11 @@ import { Alert, Button } from "react-bootstrap"
 import { userLogout } from 'features/user/userSlice'
 import { useAppDispatch, useAppSelector } from 'hooks/redux'
 
+import cx from 'classnames/bind'
+import styles from './styles.module.scss'
+
 const Dashboard = () => {
-  const [logoutError, setLogoutError] = useState('');
+  const [ logoutError, setLogoutError ] = useState('');
 
   const { data, status, error } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
@@ -29,19 +32,39 @@ const Dashboard = () => {
         </Alert>
       }
       <Alert variant='success'>
-        <span className="me-3">Bienvenido/a {data?.nombre}</span>
+        <div className="text-center">
+          <span className="me-3 fw-bold">Bienvenido/a {data?.nombre}</span>
+        </div>
+      </Alert>
+      <div className={cx(styles['user-data-container'])}>
+        <div className={cx(styles['user-data'])}>
+          <img
+            src={data?.foto}
+            alt={`foto ${data?.nombre}`}
+            className={cx(styles['user-data__img'])}
+          />
+          <div className={cx(styles['user-data__info'])}>
+            <span>
+              <span className="fw-bold">Email:</span> {data?.email}
+            </span>
+            <span>
+              <span className="fw-bold">Direccion:</span> {data?.direccion}
+            </span>
+            <span>
+              <span className="fw-bold">Edad:</span> {data?.edad}
+            </span>
+            <span>
+              <span className="fw-bold">Teléfono:</span> {data?.telefono}
+            </span>
+          </div>
+        </div>
         <Button
           onClick={status === "loading" ? undefined : handleLogout}
           disabled={status === "loading"}
         >
           {status === "loading" ? 'Procesando...' : 'Logout'}
         </Button>
-      </Alert>
-      <p>Email: {data?.email}</p>
-      <p>Direccion: {data?.direccion}</p>
-      <p>Edad: {data?.edad}</p>
-      <p>Teléfono: {data?.telefono}</p>
-      <img src={data?.foto} alt="" />
+      </div>
     </div>
   )
 }
