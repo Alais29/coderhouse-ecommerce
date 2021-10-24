@@ -5,7 +5,6 @@ import { NextFunction, Request, Response } from 'express';
 import { IUser } from 'common/interfaces';
 import { UnauthorizedRoute } from 'errors';
 import { isValidUser } from 'utils/validations';
-import path from 'path';
 
 interface User {
   _id?: string;
