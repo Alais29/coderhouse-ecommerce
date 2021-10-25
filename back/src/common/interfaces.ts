@@ -1,4 +1,4 @@
-import { Document, ObjectId, Model } from 'mongoose';
+import { Types } from 'mongoose';
 
 export interface IObject {
   [key: string]: string | number | boolean | unknown;
@@ -42,12 +42,10 @@ export interface IItem extends IItemBase, IObject {
   id: string;
 }
 
-export interface IItemMongoDoc extends IItemBase, Document {
-  _id: ObjectId;
-}
-
-export interface IItemMongoModel extends Model<IItemMongoDoc> {
-  get: (id?: string) => Promise<IItemMongoDoc[]>;
+export interface ICarrito extends IObject {
+  id: string;
+  user: Types.ObjectId;
+  productos: Types.ObjectId[];
 }
 
 export interface IItemQuery {
@@ -71,5 +69,6 @@ export interface IUserBase extends IObject {
 
 export interface IUser extends IUserBase {
   id: string;
+  cart?: Types.ObjectId;
   isValidPassword: (password: string) => Promise<boolean>;
 }

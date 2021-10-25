@@ -12,6 +12,10 @@ const UserSchema = new Schema<IUser>({
   edad: { type: Number, required: true },
   telefono: { type: String, required: true },
   foto: { type: String, required: true },
+  cart: {
+    type: 'ObjectId',
+    ref: 'Carrito',
+  },
 });
 
 UserSchema.pre('save', async function (next) {
@@ -33,4 +37,4 @@ UserSchema.set('toJSON', {
   },
 });
 
-export const UserModel = mongoose.model<IUser>('user', UserSchema);
+export const UserModel = mongoose.model<IUser>('User', UserSchema);

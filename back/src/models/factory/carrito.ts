@@ -11,9 +11,16 @@ interface IModel {
   save: (id: string) => Promise<IItem>;
   delete: (id: string) => Promise<IItem[]>;
 }
+interface IModelMongo {
+  get: (id?: string) => Promise<IItem | IItem[]>;
+  save: (id: string, userEmail: string) => Promise<IItem>;
+  delete: (id: string) => Promise<IItem[]>;
+}
+
+type IModelType = IModel | IModelMongo;
 
 export class CarritoModelFactory {
-  static model(type: number): IModel {
+  static model(type: number): IModelType {
     switch (type) {
       case ModelType.fs:
         return new CarritoModelFs();

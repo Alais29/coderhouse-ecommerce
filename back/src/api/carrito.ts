@@ -13,8 +13,8 @@ class CarritoAPI {
     return this.factory.get();
   }
 
-  async save(id: string) {
-    const newProduct = await this.factory.save(id);
+  async save(id: string, userEmail: string) {
+    const newProduct = await this.factory.save(id, userEmail);
     return newProduct;
   }
 

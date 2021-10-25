@@ -45,7 +45,7 @@ ProductoSchema.plugin(uniqueValidator, {
 });
 
 export const ProductosModel = mongoose.model<IItemBase>(
-  'productos',
+  'Producto',
   ProductoSchema,
 );
 
