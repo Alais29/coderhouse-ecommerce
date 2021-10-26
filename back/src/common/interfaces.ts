@@ -1,4 +1,4 @@
-import { Types } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
 export interface IObject {
   [key: string]: string | number | boolean | unknown;
@@ -42,7 +42,7 @@ export interface IItem extends IItemBase, IObject {
   id: string;
 }
 
-export interface ICarrito extends IObject {
+export interface ICarrito extends IObject, Document {
   id: string;
   user: Types.ObjectId;
   productos: Types.ObjectId[];

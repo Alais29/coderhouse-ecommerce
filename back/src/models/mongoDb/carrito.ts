@@ -61,69 +61,53 @@ export class CarritoModelMongoDb {
     }
   }
 
-  //TODO: try to improve method to avoid so many if else's
   async save(id: string, userEmail: string): Promise<IItem> {
     try {
-      // get user by userEmail from user collection
+      // get user and product from respective collections
       const user = (
         await this.userModel.find({
           email: userEmail,
         })
       )[0];
-      // get product to add from productos collection
       const product = await this.productosModel.findById(id);
 
-      if (product) {
-        // if product exists
-        if (!user.cart) {
-          // and user doesn't have a cart yet
-          // create the cart with the user id and the product to add
-          const cartToSave = new this.carritoModel({
-            user: user._id,
-            productos: [product._id],
-          });
-          const savedCart = await cartToSave.save();
+      if (product && !user.cart) {
+        // if product exists but user does not have a car
+        // create the cart with the user id and the product to add and save it
+        const cartToSave = new this.carritoModel({
+          user: user._id,
+          productos: [product._id],
+        });
+        const savedCart = await cartToSave.save();
 
-          // add the cart to the user and save it
-          user.cart = savedCart._id;
-          await user.save();
-
-          //return the product added
-          return product as IItem;
-        } else {
-          // is user already has a cart
-          // get that cart from the carritos collection
-          const cart = await this.carritoModel.findById(user.cart);
-
-          if (cart) {
-            // if the cart exists
-            // check if the product to add is already in the cart
-            const isProductToAddInCart = cart?.productos.find(
-              item => item.toString() === id,
-            );
-
-            if (isProductToAddInCart) {
-              // if it's already in the cart, throw an error
-              throw new RepeatedProductInCart(
-                400,
-                'El producto que desea agregar ya se encuentra en el carrito',
-              );
-            } else {
-              // if it's not in the cart
-              // add it, save it and return the product added
-              cart.productos = cart.productos.concat(product._id);
-              await cart.save();
-              return product as IItem;
-            }
-          } else {
-            // if cart doesn't exists throw an error
-            throw new NotFound(404, 'El carrito no existe');
-          }
-        }
-      } else {
-        // if product doesn't exists throw an error
-        throw new NotFound(404, 'El producto que deseas agregar no existe');
+        // add the cart to the user, save it and return the product added
+        user.cart = savedCart._id;
+        await user.save();
+        return product as IItem;
       }
+
+      if (product && user.cart) {
+        // if user exists and user already has a cart, get the cart from the collection
+        // and check if the product is already in the cart
+        const cart = (await this.carritoModel.findById(user.cart)) as ICarrito;
+        const isProductToAddInCart = cart?.productos.find(
+          item => item.toString() === id,
+        );
+
+        if (!isProductToAddInCart) {
+          // if the product is not in the cart, add it, save it and return the product added
+          cart.productos = cart.productos.concat(product._id);
+          await cart.save();
+          return product as IItem;
+        }
+        // if the product is already in the cart, throw an error
+        throw new RepeatedProductInCart(
+          400,
+          'El producto que desea agregar ya se encuentra en el carrito',
+        );
+      }
+      // if the product does not exists throw an error
+      throw new NotFound(404, 'El producto que deseas agregar no existe');
     } catch (e) {
       if (e instanceof RepeatedProductInCart || e instanceof NotFound) {
         throw e;
