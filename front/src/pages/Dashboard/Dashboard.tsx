@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Alert, Button } from "react-bootstrap"
 import { userLogout } from 'features/user/userSlice'
+import { emptyCart } from "features/cart/cartSlice";
 import { useAppDispatch, useAppSelector } from 'hooks/redux'
 
 import cx from 'classnames/bind'
@@ -15,6 +16,7 @@ const Dashboard = () => {
   const handleLogout = async () => {
     try {
       await dispatch(userLogout()).unwrap()
+      dispatch(emptyCart())
     } catch (e) {
       setLogoutError('Hubo un error, por favor intente de nuevo.')
       setTimeout(() => {

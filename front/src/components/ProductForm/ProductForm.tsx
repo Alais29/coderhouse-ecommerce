@@ -44,6 +44,9 @@ const ProductForm = ({ handleSaveProduct, addRequestStatus }: IProductForm) => {
         <Form.Group className="mb-3" controlId="codigo">
           <Form.Label>Código</Form.Label>
           <Form.Control type="text" value={codigo} name="codigo" onChange={handleChange} />
+          <Form.Text className="text-muted">
+            Debe tener el siguiente formato: ECOM-xxxx-xxx, donde 'x' corresponde a números
+          </Form.Text>
         </Form.Group>
         <Form.Group className="mb-3" controlId="nombre">
           <Form.Label>Nombre</Form.Label>
