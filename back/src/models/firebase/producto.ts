@@ -1,6 +1,6 @@
 import { IItem, IItemQuery } from 'common/interfaces';
 import { NotFound } from 'errors';
-import admin, { firestore, ServiceAccount } from 'firebase-admin';
+import admin, { firestore } from 'firebase-admin';
 import { productosMock } from 'mocks/products';
 import moment from 'moment';
 import Config from 'config';
