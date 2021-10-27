@@ -3,7 +3,6 @@ import { NotFound } from 'errors';
 import admin, { firestore, ServiceAccount } from 'firebase-admin';
 import { productosMock } from 'mocks/products';
 import moment from 'moment';
-import serviceAccount from './../../../firebase.json';
 import Config from 'config';
 
 export class ProductosModelFirebase {
