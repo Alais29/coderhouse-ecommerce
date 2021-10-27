@@ -5,6 +5,7 @@ import { NextFunction, Request, Response } from 'express';
 import { IUser } from 'common/interfaces';
 import { UnauthorizedRoute } from 'errors';
 import { isValidUser } from 'utils/validations';
+import { CarritoModel } from 'models/mongoDb/carrito';
 
 interface User {
   _id?: string;
@@ -77,8 +78,15 @@ const signUpFunc = async (
       });
     } else {
       const newUser = new UserModel(userData);
+      const userCart = new CarritoModel({
+        user: newUser._id,
+        productos: [],
+      });
+
+      newUser.cart = userCart._id;
 
       await newUser.save();
+      await userCart.save();
       console.log('Registro exitoso');
 
       return done(null, newUser);

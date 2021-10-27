@@ -12,9 +12,9 @@ interface IModel {
   delete: (id: string) => Promise<IItem[]>;
 }
 interface IModelMongo {
-  get: (id?: string) => Promise<IItem | IItem[]>;
+  get: (userEmail: string, id?: string) => Promise<IItem | IItem[]>;
   save: (id: string, userEmail: string) => Promise<IItem>;
-  delete: (id: string) => Promise<IItem[]>;
+  delete: (id: string, userEmail: string) => Promise<IItem[]>;
 }
 
 type IModelType = IModel | IModelMongo;

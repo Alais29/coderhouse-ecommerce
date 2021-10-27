@@ -25,7 +25,7 @@ CarritoSchema.set('toJSON', {
   },
 });
 
-const CarritoModel = mongoose.model<ICarrito>('Carrito', CarritoSchema);
+export const CarritoModel = mongoose.model<ICarrito>('Carrito', CarritoSchema);
 
 export class CarritoModelMongoDb {
   private carritoModel;
@@ -37,16 +37,27 @@ export class CarritoModelMongoDb {
     this.userModel = UserModel;
   }
 
-  //TODO: implement get method with the new cart structure
-  async get(id?: string): Promise<IItem[] | IItem> {
+  async get(userEmail: string, id?: string): Promise<IItem[] | IItem> {
     try {
       let output: IItem[] | IItem = [];
-      if (id) {
-        const document = await this.carritoModel.findById(id);
-        if (document) output = document as unknown as IItem;
+      // get user and his cart
+      const user = (
+        await this.userModel.find({
+          email: userEmail,
+        })
+      )[0];
+      const cart = await this.carritoModel
+        .findById(user.cart)
+        .populate('productos');
+      if (cart && id) {
+        // if there's a product id in the request, search for that product in the cart
+        const product = cart.productos.find(item => item._id.toString() === id);
+        // if the product is in the cart return that product, if it's not throw an error
+        if (product) output = product as unknown as IItem;
         else throw new NotFound(404, 'El producto no está en el carrito');
-      } else {
-        const products = await this.carritoModel.find();
+      } else if (cart) {
+        // if there's no id in the request return all the products in the cart
+        const products = cart.productos;
         output = products as unknown as IItem[];
       }
       return output;
@@ -54,7 +65,10 @@ export class CarritoModelMongoDb {
       if (e instanceof NotFound) {
         throw e;
       } else if (e instanceof mongoose.Error.CastError) {
-        throw new NotFound(404, 'El producto no está en el carrito');
+        throw new NotFound(
+          404,
+          'El carrito no existe o el producto no está en el carrito',
+        );
       } else {
         throw { error: e, message: 'Hubo un problema al cargar los productos' };
       }
@@ -63,7 +77,7 @@ export class CarritoModelMongoDb {
 
   async save(id: string, userEmail: string): Promise<IItem> {
     try {
-      // get user and product from respective collections
+      // get user and product
       const user = (
         await this.userModel.find({
           email: userEmail,
@@ -71,31 +85,15 @@ export class CarritoModelMongoDb {
       )[0];
       const product = await this.productosModel.findById(id);
 
-      if (product && !user.cart) {
-        // if product exists but user does not have a car
-        // create the cart with the user id and the product to add and save it
-        const cartToSave = new this.carritoModel({
-          user: user._id,
-          productos: [product._id],
-        });
-        const savedCart = await cartToSave.save();
-
-        // add the cart to the user, save it and return the product added
-        user.cart = savedCart._id;
-        await user.save();
-        return product as IItem;
-      }
-
-      if (product && user.cart) {
-        // if user exists and user already has a cart, get the cart from the collection
-        // and check if the product is already in the cart
+      if (product) {
+        // if product exists, get the cart from the collection and check if the product is already in the cart
         const cart = (await this.carritoModel.findById(user.cart)) as ICarrito;
-        const isProductToAddInCart = cart?.productos.find(
+        const isProductToAddInCart = cart.productos.find(
           item => item.toString() === id,
         );
 
         if (!isProductToAddInCart) {
-          // if the product is not in the cart, add it, save it and return the product added
+          // if it's not in the cart, add it, save it and return the product added
           cart.productos = cart.productos.concat(product._id);
           await cart.save();
           return product as IItem;
@@ -119,18 +117,44 @@ export class CarritoModelMongoDb {
     }
   }
 
-  //TODO: implement delete method with the new cart structure
-  async delete(id: string): Promise<IItem[]> {
+  async delete(id: string, userEmail: string): Promise<IItem[]> {
     try {
-      await this.carritoModel.findByIdAndRemove(id);
-      const carritoProducts = await this.get();
-      return carritoProducts as IItem[];
-    } catch (e) {
-      if (e instanceof mongoose.Error.CastError) {
+      // get user and his cart
+      const user = (
+        await this.userModel.find({
+          email: userEmail,
+        })
+      )[0];
+      const cart = await this.carritoModel
+        .findById(user.cart)
+        .populate('productos');
+
+      if (cart) {
+        // check that the product to be deleted is in the cart
+        const productToDelete = cart.productos.find(
+          item => item._id.toString() === id,
+        );
+        if (productToDelete) {
+          // if so, remove it, save the cart and return the new list of products in the cart
+          const newProductsInCart = cart.productos.filter(
+            item => item._id.toString() !== id,
+          );
+          cart.productos = newProductsInCart;
+          await cart.save();
+          return newProductsInCart as unknown as IItem[];
+        }
+        // if not, throw an error
         throw new NotFound(
           404,
           'El producto que desea eliminar no está en el carrito',
         );
+      }
+      throw new NotFound(404, 'El carrito no existe');
+    } catch (e) {
+      if (e instanceof NotFound) {
+        throw e;
+      } else if (e instanceof mongoose.Error.CastError) {
+        throw new NotFound(404, 'El carrito no existe');
       } else {
         throw { error: e, message: 'Hubo un problema al eliminar el producto' };
       }

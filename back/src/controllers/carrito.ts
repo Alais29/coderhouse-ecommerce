@@ -10,7 +10,8 @@ export const getCarrito = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
-  const productos = await carritoAPI.get();
+  const { email } = req.user as User;
+  const productos = await carritoAPI.get(email);
   res.json({ data: productos });
 };
 
@@ -18,7 +19,8 @@ export const getCarritoProduct = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
-  const producto = await carritoAPI.get(req.params.id);
+  const { email } = req.user as User;
+  const producto = await carritoAPI.get(email, req.params.id);
   if (producto) res.json({ data: producto });
   else throw new NotFound(404, 'El producto no está en el carrito');
 };
@@ -40,6 +42,7 @@ export const deleteCarritoProduct = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
-  const newCarritoProductList = await carritoAPI.delete(req.params.id);
+  const { email } = req.user as User;
+  const newCarritoProductList = await carritoAPI.delete(req.params.id, email);
   res.json({ data: newCarritoProductList });
 };

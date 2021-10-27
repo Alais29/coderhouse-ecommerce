@@ -8,9 +8,9 @@ class CarritoAPI {
     this.factory = CarritoModelFactory.model(modelTypeToUse);
   }
 
-  get(id?: string) {
-    if (id) return this.factory.get(id);
-    return this.factory.get();
+  get(userEmail: string, id?: string) {
+    if (id) return this.factory.get(userEmail, id);
+    return this.factory.get(userEmail);
   }
 
   async save(id: string, userEmail: string) {
@@ -18,8 +18,8 @@ class CarritoAPI {
     return newProduct;
   }
 
-  delete(id: string) {
-    return this.factory.delete(id);
+  delete(id: string, userEmail: string) {
+    return this.factory.delete(id, userEmail);
   }
 }
 

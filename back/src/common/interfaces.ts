@@ -69,6 +69,6 @@ export interface IUserBase extends IObject {
 
 export interface IUser extends IUserBase {
   id: string;
-  cart?: Types.ObjectId;
+  cart: Types.ObjectId;
   isValidPassword: (password: string) => Promise<boolean>;
 }
