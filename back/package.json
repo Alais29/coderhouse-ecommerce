@@ -6,7 +6,8 @@
   "scripts": {
     "build:ui": "rm -rf public && rm -rf build/public && cd ../front/ && npm run build --prod && cp -r build ../back/public && cp -r build ../back/build/public",
     "dev": "nodemon -L -r tsconfig-paths/register ./src/index.ts",
-    "start": "npm run build && node ./build/src/index.js",
+    "start": "node ./build/src/index.js",
+    "build:start": "npm run build && node ./build/src/index.js",
     "build": "ttsc -P ./tsconfig.json",
     "prod": "npm run build && node_modules/.bin/forever -w start ./build/src/index.js",
     "prod:pm2": "npm run build && node_modules/.bin/pm2 start ecosystem.config.js",
