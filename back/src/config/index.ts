@@ -36,6 +36,11 @@ const env = {
   FACEBOOK_APP_ID: flags.faceId || process.env.FACEBOOK_APP_ID || 'faceId',
   FACEBOOK_APP_SECRET:
     flags.faceSecret || process.env.FACEBOOK_APP_SECRET || 'faceSecret',
+  FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID || 'firebaseProjectId',
+  FIREBASE_CLIENT_EMAIL:
+    process.env.FIREBASE_CLIENT_EMAIL || 'firebaseClientEmail',
+  FIREBASE_PRIVATE_KEY:
+    process.env.FIREBASE_PRIVATE_KEY || 'firebasePrivateKey',
 };
 
 export default env;
