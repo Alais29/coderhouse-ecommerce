@@ -1,0 +1,21 @@
+{
+  "name": "coderhouse-ecommerce",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "cd back && npm run start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alais29/coderhouse-ecommerce.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Alais29/coderhouse-ecommerce/issues"
+  },
+  "homepage": "https://github.com/Alais29/coderhouse-ecommerce#readme"
+}
