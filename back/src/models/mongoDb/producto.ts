@@ -4,6 +4,7 @@ import mongoose, { FilterQuery } from 'mongoose';
 import { productosMock } from 'mocks/products';
 import { NotFound, ProductValidation } from 'errors';
 import uniqueValidator from 'mongoose-unique-validator';
+import { logger } from 'utils/logger';
 
 const ProductoSchema = new mongoose.Schema<IItemBase>({
   nombre: {
@@ -58,11 +59,11 @@ export class ProductosModelMongoDb {
         if (productos.length === 0) {
           this.productos
             .insertMany(productosMock)
-            .then(() => console.log('Productos agregados'))
-            .catch(e => console.log(e));
+            .then(() => logger.info('Productos agregados'))
+            .catch(e => logger.error(e));
         }
       })
-      .catch(e => console.log(e));
+      .catch(e => logger.error(e));
   }
 
   async get(id?: string): Promise<IItem[] | IItem> {

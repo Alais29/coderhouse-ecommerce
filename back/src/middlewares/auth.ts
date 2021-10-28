@@ -6,6 +6,7 @@ import { IUser } from 'common/interfaces';
 import { UnauthorizedRoute } from 'errors';
 import { isValidUser } from 'utils/validations';
 import { CarritoModel } from 'models/mongoDb/carrito';
+import { logger } from 'utils/logger';
 
 interface User {
   _id?: string;
@@ -39,7 +40,7 @@ const loginFunc = async (
     return done(null, false);
   }
 
-  console.log('Login exitoso');
+  logger.info('Login exitoso');
   return done(null, user);
 };
 
@@ -70,8 +71,8 @@ const signUpFunc = async (
     const user = await UserModel.findOne({ email });
 
     if (user) {
-      console.log('El usuario ya existe');
-      console.log(user);
+      logger.warn('El usuario ya existe');
+      logger.info(user);
       return done(null, false, {
         message:
           'Ya existe un usuario registrado con ese email, por favor intenta con otro',
@@ -87,7 +88,7 @@ const signUpFunc = async (
 
       await newUser.save();
       await userCart.save();
-      console.log('Registro exitoso');
+      logger.info('Registro exitoso');
 
       return done(null, newUser);
     }

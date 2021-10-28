@@ -3,6 +3,7 @@ import { IItem, IItemQuery, IKnex } from 'common/interfaces';
 import { NotFound } from 'errors';
 import dbConfig from './../../../knexfile';
 import { productosMock } from 'mocks/products';
+import { logger } from 'utils/logger';
 
 export class ProductosModelMySql {
   private connection: Knex;
@@ -14,7 +15,7 @@ export class ProductosModelMySql {
     const configDb: IKnex = dbConfig;
     const options = configDb[environment];
     this.connection = knex(options);
-    console.log(`BD MySQL ${environment} configurada`);
+    logger.info(`BD MySQL ${environment} configurada`);
     this.connection.schema.hasTable('productos').then(exists => {
       if (!exists) {
         this.connection.schema
@@ -31,13 +32,13 @@ export class ProductosModelMySql {
             productosTable.integer('stock').notNullable();
           })
           .then(() => {
-            console.log('Tabla productos creada');
+            logger.info('Tabla productos creada');
             this.connection('productos')
               .insert(productosMock)
-              .then(() => console.log('Productos agregados'))
-              .catch(e => console.log(e));
+              .then(() => logger.info('Productos agregados'))
+              .catch(e => logger.error(e));
           })
-          .catch(e => console.log(e));
+          .catch(e => logger.error(e));
       }
     });
   }

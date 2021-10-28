@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import Config from 'config';
 import { ModelType } from 'common/enums';
 import { modelTypeToUse } from 'api/modelType';
+import { logger } from 'utils/logger';
 
 const getMongoUrl = (type: number): string => {
   switch (type) {
@@ -15,6 +16,6 @@ const getMongoUrl = (type: number): string => {
 const mongoUrl = getMongoUrl(modelTypeToUse);
 
 export const clientPromise = mongoose.connect(mongoUrl).then(m => {
-  console.log('Base de datos mongo conectada');
+  logger.info('Base de datos mongo conectada');
   return m.connection.getClient();
 });

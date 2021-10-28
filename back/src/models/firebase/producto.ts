@@ -4,6 +4,7 @@ import admin, { firestore } from 'firebase-admin';
 import { productosMock } from 'mocks/products';
 import moment from 'moment';
 import Config from 'config';
+import { logger } from 'utils/logger';
 
 export class ProductosModelFirebase {
   public productosDb;
@@ -16,7 +17,7 @@ export class ProductosModelFirebase {
       }),
     });
     const db = admin.firestore();
-    console.log('Base de datos firebase configurada');
+    logger.info('Base de datos firebase configurada');
     this.productosDb = db.collection('productos');
     this.get()
       .then(productos => {
@@ -27,10 +28,10 @@ export class ProductosModelFirebase {
             const docRef = this.productosDb.doc();
             batch.set(docRef, product);
           });
-          batch.commit().then(() => console.log('Productos agregados'));
+          batch.commit().then(() => logger.info('Productos agregados'));
         }
       })
-      .catch(e => console.log(e));
+      .catch(e => logger.error(e));
   }
 
   async get(id?: string): Promise<IItem[] | IItem> {

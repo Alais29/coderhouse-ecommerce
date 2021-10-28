@@ -2,6 +2,7 @@ import knex, { Knex } from 'knex';
 import { IItem, IKnex } from 'common/interfaces';
 import { NotFound, RepeatedProductInCart } from 'errors';
 import dbConfig from './../../../knexfile';
+import { logger } from 'utils/logger';
 
 export class CarritosModelMySql {
   private connection: Knex;
@@ -13,7 +14,7 @@ export class CarritosModelMySql {
     const configDb: IKnex = dbConfig;
     const options = configDb[environment];
     this.connection = knex(options);
-    console.log(`BD MySQL ${environment} configurada`);
+    logger.info(`BD MySQL ${environment} configurada`);
     this.connection.schema.hasTable('carrito').then(exists => {
       if (!exists) {
         this.connection.schema
@@ -30,9 +31,9 @@ export class CarritosModelMySql {
             carritoTable.integer('stock').notNullable();
           })
           .then(() => {
-            console.log('Tabla carrito creada');
+            logger.info('Tabla carrito creada');
           })
-          .catch(e => console.log(e));
+          .catch(e => logger.error(e));
       }
     });
   }
