@@ -2,6 +2,7 @@ import 'dotenv/config.js';
 
 const env = {
   PORT: process.env.PORT || 8080,
+  MODE: process.env.MODE || 'noCluster',
   MONGO_ATLAS_USER: process.env.MONGO_ATLAS_USER || 'user',
   MONGO_ATLAS_PASSWORD: process.env.MONGO_ATLAS_PASSWORD || 'pasw',
   MONGO_ATLAS_CLUSTER: process.env.MONGO_ATLAS_CLUSTER || 'clusterUrl',
