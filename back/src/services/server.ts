@@ -1,6 +1,6 @@
 import express from 'express';
 import compression from 'compression';
-import path from 'path';
+// import path from 'path';
 import cors from 'cors';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
@@ -15,7 +15,7 @@ const app: express.Application = express();
 const tenMinutes = 1000 * 60 * 10;
 
 app.use(compression());
-app.use(express.static(path.resolve(__dirname, '../../', 'public')));
+app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
