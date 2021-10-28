@@ -1,15 +1,19 @@
 import { IItem, IItemQuery } from 'common/interfaces';
 import { NotFound } from 'errors';
-import admin, { firestore, ServiceAccount } from 'firebase-admin';
+import admin, { firestore } from 'firebase-admin';
 import { productosMock } from 'mocks/products';
 import moment from 'moment';
-import serviceAccount from './../../../firebase.json';
+import Config from 'config';
 
 export class ProductosModelFirebase {
   public productosDb;
   constructor() {
     admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount as ServiceAccount),
+      credential: admin.credential.cert({
+        projectId: Config.FIREBASE_PROJECT_ID,
+        privateKey: Config.FIREBASE_PRIVATE_KEY,
+        clientEmail: Config.FIREBASE_CLIENT_EMAIL,
+      }),
     });
     const db = admin.firestore();
     console.log('Base de datos firebase configurada');
