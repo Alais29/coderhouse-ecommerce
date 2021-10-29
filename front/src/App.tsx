@@ -1,6 +1,11 @@
 import { useEffect } from 'react';
 import { Container } from 'react-bootstrap';
-import { HashRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import {
+  HashRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom';
 import LoadingScreen from 'components/LoadingScreen/LoadingScreen';
 import Navigation from 'components/Navigation/Navigation';
 import Login from 'pages/Login/Login';
@@ -9,31 +14,36 @@ import AddProduct from 'pages/AddProduct/AddProduct';
 import Cart from 'pages/Cart/Cart';
 import Productos from 'pages/Productos/Productos';
 import Dashboard from 'pages/Dashboard/Dashboard';
-import { useAppSelector, useAppDispatch } from 'hooks/redux'
-import { getUserData } from 'features/user/userSlice'
+import { useAppSelector, useAppDispatch } from 'hooks/redux';
+import { getUserData } from 'features/user/userSlice';
 import { getCookie } from 'utilities/others';
+import { ToastContainer } from 'react-toastify';
 
 const App = () => {
-  const { status, isLoggedIn } = useAppSelector((state) => state.user);
+  const { status, isLoggedIn } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
 
-  const isLoggedInCookie = getCookie('connect.sid')
+  const isLoggedInCookie = getCookie('connect.sid');
 
   useEffect(() => {
-    if (isLoggedInCookie && status === "idle") {
+    if (isLoggedInCookie && status === 'idle') {
       const getUserInfo = async () => {
-        try { await dispatch(getUserData()).unwrap() }
-        catch (e) { console.log(e) }
-      }
+        try {
+          await dispatch(getUserData()).unwrap();
+        } catch (e) {
+          console.log(e);
+        }
+      };
       getUserInfo();
     }
-  }, [status, dispatch, isLoggedInCookie])
+  }, [status, dispatch, isLoggedInCookie]);
 
   return (
     <Router>
-      {isLoggedInCookie && (status === "idle" || status === "loading")
-        ? <LoadingScreen />
-        : <>
+      {isLoggedInCookie && (status === 'idle' || status === 'loading') ? (
+        <LoadingScreen />
+      ) : (
+        <>
           {isLoggedIn && <Navigation />}
           <Container>
             <Switch>
@@ -44,7 +54,7 @@ const App = () => {
                 <Signup />
               </Route>
               <Route path="/add-product">
-                {isLoggedIn ? <AddProduct /> : <Redirect to="/login"/>}
+                {isLoggedIn ? <AddProduct /> : <Redirect to="/login" />}
               </Route>
               <Route path="/cart">
                 {isLoggedIn ? <Cart /> : <Redirect to="/login" />}
@@ -58,9 +68,10 @@ const App = () => {
             </Switch>
           </Container>
         </>
-      }
+      )}
+      <ToastContainer />
     </Router>
   );
-}
+};
 
 export default App;

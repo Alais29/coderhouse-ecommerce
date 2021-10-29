@@ -35,7 +35,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prettier": "prettier --config .prettierrc 'src/**/*.tsx' --write"
   },
   "eslintConfig": {
     "extends": [
@@ -56,6 +57,7 @@
     ]
   },
   "devDependencies": {
-    "@types/body-scroll-lock": "^3.1.0"
+    "@types/body-scroll-lock": "^3.1.0",
+    "prettier": "^2.4.1"
   }
 }

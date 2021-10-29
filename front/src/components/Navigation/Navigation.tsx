@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
-import { Container, Nav, Navbar } from 'react-bootstrap'
-import CartIcon from "./CartIcon";
-import cx from 'classnames/bind'
-import styles from './styles.module.scss'
+import { Link } from 'react-router-dom';
+import { Container, Nav, Navbar } from 'react-bootstrap';
+import CartIcon from './CartIcon';
+import cx from 'classnames/bind';
+import styles from './styles.module.scss';
 
 const Navigation = () => {
   return (
@@ -11,17 +11,26 @@ const Navigation = () => {
       <Navbar.Collapse id="responsive-navbar-nav">
         <Container>
           <Nav className="me-auto">
-            <Link className="nav-link" to="/">Inicio</Link>
-            <Link className="nav-link" to="/productos">Productos</Link>
-            <Link className="nav-link" to="/add-product">Agregar Producto</Link>
-            <Link className={cx('nav-link', 'ms-sm-auto', styles['cart-icon'])} to="/cart">
+            <Link className="nav-link" to="/">
+              Inicio
+            </Link>
+            <Link className="nav-link" to="/productos">
+              Productos
+            </Link>
+            <Link className="nav-link" to="/add-product">
+              Agregar Producto
+            </Link>
+            <Link
+              className={cx('nav-link', 'ms-sm-auto', styles['cart-icon'])}
+              to="/cart"
+            >
               <CartIcon />
             </Link>
           </Nav>
         </Container>
       </Navbar.Collapse>
     </Navbar>
-  )
-}
+  );
+};
 
-export default Navigation
+export default Navigation;

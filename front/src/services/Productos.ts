@@ -1,10 +1,23 @@
-import axios from "axios";
-import { IItem } from "../commons/interfaces";
-const baseUrl = "/api/productos";
+import axios from 'axios';
+import { IItem, IItemQuery } from '../commons/interfaces';
 
-export const getProducts = async () => {
+const baseUrl = '/api/productos';
+
+export const getProducts = async (query?: IItemQuery) => {
   try {
-    const response = await axios.get(`${baseUrl}/listar`);
+    let queryString = '';
+    if (query) {
+      queryString = '?';
+      const queryArray = Object.entries(query);
+      queryArray.forEach((queryValues, index) => {
+        queryString += `${queryValues[0]}=${queryValues[1]}${
+          index !== queryArray.length - 1 ? '&' : ''
+        }`;
+      });
+    } else {
+      queryString = '';
+    }
+    const response = await axios.get(`${baseUrl}/listar${queryString}`);
     return response.data.data;
   } catch (e) {
     throw new Error(e.response.data.message);

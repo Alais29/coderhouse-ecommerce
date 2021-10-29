@@ -1,39 +1,39 @@
-import { useState } from "react";
-import { Alert, Button } from "react-bootstrap"
-import { userLogout } from 'features/user/userSlice'
-import { emptyCart } from "features/cart/cartSlice";
-import { useAppDispatch, useAppSelector } from 'hooks/redux'
+import { useState } from 'react';
+import { Alert, Button } from 'react-bootstrap';
+import { userLogout } from 'features/user/userSlice';
+import { emptyCart } from 'features/cart/cartSlice';
+import { useAppDispatch, useAppSelector } from 'hooks/redux';
 
-import cx from 'classnames/bind'
-import styles from './styles.module.scss'
+import cx from 'classnames/bind';
+import styles from './styles.module.scss';
 
 const Dashboard = () => {
-  const [ logoutError, setLogoutError ] = useState('');
+  const [logoutError, setLogoutError] = useState('');
 
-  const { data, status, error } = useAppSelector((state) => state.user);
+  const { data, status, error } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
 
   const handleLogout = async () => {
     try {
-      await dispatch(userLogout()).unwrap()
-      dispatch(emptyCart())
+      await dispatch(userLogout()).unwrap();
+      dispatch(emptyCart());
     } catch (e) {
-      setLogoutError('Hubo un error, por favor intente de nuevo.')
+      setLogoutError('Hubo un error, por favor intente de nuevo.');
       setTimeout(() => {
-        setLogoutError('')
-      }, 3000)
+        setLogoutError('');
+      }, 3000);
     }
-  }
+  };
 
   return (
     <div>
       <h1 className="text-center mt-5 pt-4">Dashboard</h1>
-      {error && 
-        <Alert variant='danger'>
+      {error && (
+        <Alert variant="danger">
           <span className="me-3">{logoutError}</span>
         </Alert>
-      }
-      <Alert variant='success'>
+      )}
+      <Alert variant="success">
         <div className="text-center">
           <span className="me-3 fw-bold">Bienvenido/a {data?.nombre}</span>
         </div>
@@ -61,14 +61,14 @@ const Dashboard = () => {
           </div>
         </div>
         <Button
-          onClick={status === "loading" ? undefined : handleLogout}
-          disabled={status === "loading"}
+          onClick={status === 'loading' ? undefined : handleLogout}
+          disabled={status === 'loading'}
         >
-          {status === "loading" ? 'Procesando...' : 'Logout'}
+          {status === 'loading' ? 'Procesando...' : 'Logout'}
         </Button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;

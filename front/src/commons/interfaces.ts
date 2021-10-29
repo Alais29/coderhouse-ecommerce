@@ -34,3 +34,12 @@ export interface IUser {
 }
 
 export interface IUserFormData extends FormData, IUser {}
+
+export interface IItemQuery extends IObject {
+  nombre?: string;
+  // codigo?: string;
+  // minPrice?: string;
+  // maxPrice?: string;
+  // minStock?: string;
+  // maxStock?: string;
+}

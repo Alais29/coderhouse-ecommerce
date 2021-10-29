@@ -1,10 +1,10 @@
-import { CSSProperties } from 'react'
-import { Spinner } from 'react-bootstrap'
-import cx from 'classnames/bind'
-import styles from './styles.module.scss'
+import { CSSProperties } from 'react';
+import { Spinner } from 'react-bootstrap';
+import cx from 'classnames/bind';
+import styles from './styles.module.scss';
 
 interface ILoadingScreen {
-  style?: CSSProperties
+  style?: CSSProperties;
 }
 
 const LoadingScreen = ({ style = {} }: ILoadingScreen) => {
@@ -12,7 +12,7 @@ const LoadingScreen = ({ style = {} }: ILoadingScreen) => {
     <div className={cx(styles['loading-screen'])} style={style}>
       <Spinner animation="grow" variant="primary" />
     </div>
-  )
-}
+  );
+};
 
-export default LoadingScreen
+export default LoadingScreen;
