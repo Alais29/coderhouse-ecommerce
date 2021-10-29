@@ -55,7 +55,7 @@ const Login = ({ setLoggedIn, loggedIn, loggedInUser, setLoggedInUser }: ILogin)
         :
         <Alert variant='primary'>
           <div className="my-5 text-center">
-            <Button className="mb-2" type="submit" as="a" href="http://localhost:8080/api/auth/login">
+            <Button className="mb-2" type="submit" as="a" href="/api/auth/login">
               Login con Facebook
             </Button>
           </div>
