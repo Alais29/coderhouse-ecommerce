@@ -65,3 +65,10 @@ export interface IUser {
   password: string;
   isValidPassword: (password: string) => Promise<boolean>;
 }
+
+export interface IMessage {
+  _id: string;
+  email: string;
+  text: string;
+  date: string;
+}

@@ -7,6 +7,7 @@ import {
 import Config from 'config';
 import { NextFunction, Request, Response } from 'express';
 import { UnauthorizedRoute } from 'errors';
+import { Email } from 'services/email';
 
 const strategyOptions: StrategyOption = {
   clientID: Config.FACEBOOK_APP_ID,
@@ -21,6 +22,23 @@ const loginFunc: VerifyFunction = async (
   profile,
   done,
 ) => {
+  const gmailService = new Email('gmail');
+  // const etherealService = new Email('ethereal');
+  const content = `<p> ${profile.displayName}, ${new Date()}</p>`;
+
+  let profilePic = '';
+  let email = '';
+  if (profile.photos) profilePic = profile.photos[0].value;
+  if (profile.emails) email = profile.emails[0].value;
+
+  // await etherealService.sendEmail(Config.ETHEREAL_EMAIL, 'log in', content);
+  const response = await gmailService.sendEmail(
+    email,
+    'Log in',
+    content,
+    profilePic,
+  );
+  console.log(response);
   return done(null, profile);
 };
 

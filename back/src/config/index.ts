@@ -41,6 +41,15 @@ const env = {
     process.env.FIREBASE_CLIENT_EMAIL || 'firebaseClientEmail',
   FIREBASE_PRIVATE_KEY:
     process.env.FIREBASE_PRIVATE_KEY || 'firebasePrivateKey',
+  ETHEREAL_EMAIL: process.env.ETHEREAL_EMAIL || 'yourEmailAccount',
+  ETHEREAL_PASSWORD: process.env.ETHEREAL_PASSWORD || 'yourEmailPassword',
+  ETHEREAL_NAME: process.env.ETHEREAL_NAME || 'yourName',
+  GMAIL_EMAIL: process.env.GMAIL_EMAIL || 'email@gmail.com',
+  GMAIL_PASSWORD: process.env.GMAIL_PASSWORD || 'password',
+  GMAIL_NAME: process.env.GMAIL_NAME || 'GMAIL owner name',
+  TWILIO_ACCOUNT_ID: process.env.TWILIO_ACCOUNT_ID || 'twilioId',
+  TWILIO_TOKEN: process.env.TWILIO_TOKEN || 'twilioToken',
+  TWILIO_CELLPHONE: process.env.TWILIO_CELLPHONE || '+123456789',
 };
 
 export default env;

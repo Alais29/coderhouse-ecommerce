@@ -1,4 +1,6 @@
 import { Request, Response } from 'express';
+import Config from 'config';
+import { Email } from 'services/email';
 
 type Photos = {
   value: string;
@@ -43,7 +45,17 @@ export const userData = (req: Request, res: Response): void => {
   }
 };
 
-export const logoutUser = (req: Request, res: Response): void => {
+export const logoutUser = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  if (req.isAuthenticated()) {
+    const etherealService = new Email('ethereal');
+    const userData: User = req.user;
+
+    const content = `<p> ${userData.displayName}, ${new Date()}</p>`;
+    await etherealService.sendEmail(Config.ETHEREAL_EMAIL, 'Log out', content);
+  }
   req.session.destroy(err => {
     if (err) res.status(500).json({ message: 'Ocurrió un error' });
     else {
