@@ -18,6 +18,7 @@ import cx from 'classnames/bind';
 import styles from './styles.module.scss';
 import LoadingScreen from 'components/LoadingScreen/LoadingScreen';
 import Filter from 'components/Filter/Filter';
+import { isEmpty } from 'utilities/others';
 
 const Productos = () => {
   const [showModal, setShowModal] = useState(false);
@@ -126,13 +127,20 @@ const Productos = () => {
           <Spinner animation="grow" variant="primary" />
         </div>
       )}
-      {status === 'succeeded' && (
+      {status !== 'loading' && !isEmpty(data) ? (
         <ProductList
           location="home"
           productos={data}
           handleToggleShowModal={handleToggleShowModal}
           handleAddToCart={handleAddToCart}
         />
+      ) : (
+        <div className="text-center mt-4">
+          <h2>
+            No se encontraron productos, intenta con otros parámetros de
+            búsqueda
+          </h2>
+        </div>
       )}
       <Modal show={showModal} onHide={() => handleToggleShowModal()}>
         {productToDelete && (

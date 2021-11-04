@@ -48,7 +48,7 @@ export interface ICarrito extends IObject, Document {
   productos: Types.ObjectId[];
 }
 
-export interface IItemQuery {
+export interface IItemQuery extends IObject {
   nombre?: string;
   codigo?: string;
   minPrice?: number;

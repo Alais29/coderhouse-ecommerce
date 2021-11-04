@@ -1,5 +1,5 @@
 import { isUrl, isValidCode } from './strings';
-import { IItem, IUserBase } from 'common/interfaces';
+import { IItem, IItemQuery, IUserBase } from 'common/interfaces';
 import { getEmptyFields } from './objects';
 import {
   MissingFieldsProduct,
@@ -77,6 +77,21 @@ export const isValidUser = (user: IUserBase): boolean | Error => {
       400,
       'Verifica los datos, la edad debe ser un número y no debe ser 0.',
     );
+  }
+
+  return true;
+};
+
+export const isQueryValid = (query: IItemQuery): boolean | Error => {
+  const queryMap = ['minPrice', 'maxPrice', 'minStock', 'maxStock'];
+
+  for (const queryField of queryMap) {
+    if (query[queryField] !== undefined && isNaN(Number(query[queryField]))) {
+      throw new ProductValidation(
+        400,
+        'Los valores de precio/stock mínimo/máximo deben ser números',
+      );
+    }
   }
 
   return true;

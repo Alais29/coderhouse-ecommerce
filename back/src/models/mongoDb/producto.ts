@@ -5,6 +5,7 @@ import { productosMock } from 'mocks/products';
 import { NotFound, ProductValidation } from 'errors';
 import uniqueValidator from 'mongoose-unique-validator';
 import { logger } from 'utils/logger';
+import { isQueryValid } from 'utils/validations';
 
 const ProductoSchema = new mongoose.Schema<IItemBase>({
   nombre: {
@@ -141,6 +142,9 @@ export class ProductosModelMongoDb {
 
   async query(options: IItemQuery): Promise<IItem[]> {
     const query: FilterQuery<IItemBase> = {};
+
+    //TODO: Validate that price and stock options are indeed numbers
+    isQueryValid(options);
 
     if (options.nombre) query.nombre = options.nombre;
 
