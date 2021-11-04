@@ -65,5 +65,3 @@ export class Email {
     return response;
   }
 }
-
-// export const EmailService = new Email();

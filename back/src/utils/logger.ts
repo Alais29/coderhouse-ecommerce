@@ -1,7 +1,7 @@
 import winston from 'winston';
 
 const { createLogger, format, transports } = winston;
-const { combine, printf, timestamp, colorize } = format;
+const { combine, printf, timestamp, colorize, splat } = format;
 
 const customFormat = printf(info => {
   return `${info.level}  | ${[info.timestamp]} | ${info.message}`;
@@ -22,6 +22,7 @@ const logConfiguration = {
     timestamp({
       format: 'MMM-DD-YYYY HH:mm:ss',
     }),
+    splat(),
     printf(info => {
       return `${info.level}  | ${[info.timestamp]} | ${info.message}`;
     }),

@@ -2,13 +2,14 @@ import * as socketio from 'socket.io';
 import * as http from 'http';
 import { messagesAPI } from 'api/mensajes';
 import { SmsService } from './twilio';
+import { logger } from '/utils/logger';
 
 export const initWsServer = (server: http.Server): void => {
   const io: socketio.Server = new socketio.Server();
   io.attach(server);
 
   io.on('connection', async (socket: socketio.Socket) => {
-    console.log('Nueva conexión');
+    logger.info('Nueva conexión');
 
     try {
       const mensajes = await messagesAPI.get();
