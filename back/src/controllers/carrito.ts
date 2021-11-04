@@ -43,6 +43,15 @@ export const deleteCarritoProduct = async (
   res: Response,
 ): Promise<void> => {
   const { email } = req.user as User;
-  const newCarritoProductList = await carritoAPI.delete(req.params.id, email);
+  const newCarritoProductList = await carritoAPI.delete(email, req.params.id);
+  res.json({ data: newCarritoProductList });
+};
+
+export const deleteCarritoAllProducts = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const { email } = req.user as User;
+  const newCarritoProductList = await carritoAPI.delete(email);
   res.json({ data: newCarritoProductList });
 };

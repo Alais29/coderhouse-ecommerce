@@ -12,6 +12,9 @@ const env = {
     process.env.FIREBASE_CLIENT_EMAIL || 'firebaseClientEmail',
   FIREBASE_PRIVATE_KEY:
     process.env.FIREBASE_PRIVATE_KEY || 'firebasePrivateKey',
+  GMAIL_EMAIL: process.env.GMAIL_EMAIL || 'email@gmail.com',
+  GMAIL_PASSWORD: process.env.GMAIL_PASSWORD || 'password',
+  GMAIL_NAME: process.env.GMAIL_NAME || 'GMAIL owner name',
 };
 
 export default env;

@@ -18,8 +18,9 @@ class CarritoAPI {
     return newProduct;
   }
 
-  delete(id: string, userEmail: string) {
-    return this.factory.delete(id, userEmail);
+  delete(userEmail: string, id?: string) {
+    if (id) return this.factory.delete(userEmail, id);
+    return this.factory.delete(userEmail);
   }
 }
 

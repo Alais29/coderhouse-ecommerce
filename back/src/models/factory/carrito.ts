@@ -14,7 +14,7 @@ interface IModel {
 interface IModelMongo {
   get: (userEmail: string, id?: string) => Promise<IItem | IItem[]>;
   save: (id: string, userEmail: string) => Promise<IItem>;
-  delete: (id: string, userEmail: string) => Promise<IItem[]>;
+  delete: (userEmail: string, id?: string) => Promise<IItem[]>;
 }
 
 type IModelType = IModel | IModelMongo;

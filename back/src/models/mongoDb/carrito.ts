@@ -117,7 +117,7 @@ export class CarritoModelMongoDb {
     }
   }
 
-  async delete(id: string, userEmail: string): Promise<IItem[]> {
+  async delete(userEmail: string, id?: string): Promise<IItem[]> {
     try {
       // get user and his cart
       const user = (
@@ -129,7 +129,7 @@ export class CarritoModelMongoDb {
         .findById(user.cart)
         .populate('productos');
 
-      if (cart) {
+      if (cart && id) {
         // check that the product to be deleted is in the cart
         const productToDelete = cart.productos.find(
           item => item._id.toString() === id,
@@ -148,6 +148,12 @@ export class CarritoModelMongoDb {
           404,
           'El producto que desea eliminar no está en el carrito',
         );
+      }
+
+      if (cart) {
+        cart.productos = [];
+        await cart.save();
+        return cart.productos as unknown as IItem[];
       }
       throw new NotFound(404, 'El carrito no existe');
     } catch (e) {

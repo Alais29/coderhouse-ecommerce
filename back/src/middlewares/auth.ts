@@ -1,12 +1,14 @@
+import { NextFunction, Request, Response } from 'express';
 import passport from 'passport';
 import passportLocal, { IStrategyOptionsWithRequest } from 'passport-local';
+import Config from 'config';
 import { UserModel } from 'models/mongoDb/user';
-import { NextFunction, Request, Response } from 'express';
 import { IUser } from 'common/interfaces';
 import { UnauthorizedRoute } from 'errors';
 import { isValidUser } from 'utils/validations';
-import { CarritoModel } from 'models/mongoDb/carrito';
 import { logger } from 'utils/logger';
+import { CarritoModel } from 'models/mongoDb/carrito';
+import { EmailService } from 'services/email';
 
 interface User {
   _id?: string;
@@ -89,6 +91,22 @@ const signUpFunc = async (
       await newUser.save();
       await userCart.save();
       logger.info('Registro exitoso');
+
+      const emailContent = `
+        <h1>Nuevo Registro</h1>
+        <span style="display: block"><span style="font-weight: bold">Email:</span> ${userData.email}</span>
+        <span style="display: block"><span style="font-weight: bold">Nombre:</span> ${userData.nombre}</span>
+        <span style="display: block"><span style="font-weight: bold">Direccion:</span> ${userData.direccion}</span>
+        <span style="display: block"><span style="font-weight: bold">Edad:</span> ${userData.edad}</span>
+        <span style="display: block"><span style="font-weight: bold">Teléfono:</span> ${userData.telefono}</span>
+      `;
+
+      EmailService.sendEmail(
+        Config.GMAIL_EMAIL,
+        'Nuevo registro',
+        emailContent,
+        userData.foto,
+      );
 
       return done(null, newUser);
     }
