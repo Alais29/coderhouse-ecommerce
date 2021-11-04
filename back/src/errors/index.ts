@@ -46,6 +46,14 @@ export class RepeatedProductInCart extends BaseError {
   }
 }
 
+export class CartIsEmpty extends BaseError {
+  public error: string;
+  constructor(statusCode: number, message: string) {
+    super(statusCode, message);
+    this.error = `-${EErrorCodes.CartEmpty}`;
+  }
+}
+
 export class UnauthorizedRoute extends BaseError {
   public error: string;
   public descripcion: string;

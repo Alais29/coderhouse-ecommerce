@@ -1,38 +1,49 @@
 import { Request, Response } from 'express';
 import Config from 'config';
-import { CarritoModel } from 'models/mongoDb/carrito';
-import { EmailService } from 'services/email';
+import { CartIsEmpty } from 'errors';
 import { IItem } from 'common/interfaces';
 import { carritoAPI } from 'api/carrito';
+import { EmailService } from 'services/email';
+import { SmsService } from 'services/twilio';
+import { isEmpty } from 'utils/others';
 
 interface User {
-  cart?: string;
   nombre?: string;
   email: string;
+  telefono: string;
 }
 
 export const sendOrder = async (req: Request, res: Response): Promise<void> => {
-  const { email, nombre } = req.user as User;
+  const { email, nombre, telefono } = req.user as User;
   const productos = (await carritoAPI.get(email)) as IItem[];
 
-  let emailContent = '<h2>Productos</h2>';
+  if (!isEmpty(productos)) {
+    let emailContent = '<h2>Productos</h2>';
 
-  const total = productos.reduce((total, item) => (total += item.precio), 0);
-  productos.forEach(item => {
-    emailContent += `
-        <span style="display: block">- ${item.nombre}, ${item.codigo}, $${item.precio} </span>
-        `;
-  });
+    const total = productos.reduce((total, item) => (total += item.precio), 0);
+    productos.forEach(item => {
+      emailContent += `
+          <span style="display: block">- ${item.nombre}, ${item.codigo}, $${item.precio} </span>
+          `;
+    });
 
-  emailContent += `<h3>Total: $${total}</h3>`;
+    emailContent += `<h3>Total: $${total.toFixed(2)}</h3>`;
 
-  EmailService.sendEmail(
-    Config.GMAIL_EMAIL,
-    `Nuevo pedido de: ${nombre}, ${email}`,
-    emailContent,
-  );
+    EmailService.sendEmail(
+      Config.GMAIL_EMAIL,
+      `Nuevo pedido de: ${nombre}, ${email}`,
+      emailContent,
+    );
 
-  await carritoAPI.delete(email);
+    SmsService.sendMessage(
+      telefono,
+      `Tu pedido ha sido recibido y está siendo procesado`,
+    );
 
-  res.json({ data: 'Orden enviada con éxito' });
+    await carritoAPI.delete(email);
+
+    res.json({ data: 'Orden enviada con éxito' });
+  } else {
+    throw new CartIsEmpty(404, 'El carrito está vacío');
+  }
 };

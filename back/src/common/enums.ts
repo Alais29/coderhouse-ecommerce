@@ -4,6 +4,7 @@ export enum EErrorCodes {
   ProductValidation,
   ProductNotFound,
   ProductRepeated,
+  CartEmpty,
   UserSignUpValidation,
   UserAlreadyExists,
   UserNotLoggedIn,

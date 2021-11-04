@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Spinner } from 'react-bootstrap';
+import { Button, Spinner } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { useAppDispatch, useAppSelector } from 'hooks/redux';
-import { fetchProductsCart, removeProductCart } from 'features/cart/cartSlice';
+import {
+  fetchProductsCart,
+  removeProductCart,
+  sendCartOrder,
+} from 'features/cart/cartSlice';
 import { isEmpty } from 'utilities/others';
 import ProductList from 'components/ProductList/ProductList';
 import LoadingScreen from 'components/LoadingScreen/LoadingScreen';
@@ -14,6 +18,9 @@ import styles from './styles.module.scss';
 const Cart = () => {
   const [total, setTotal] = useState(0);
   const [deleteProductRequestStatus, setDeleteProductRequestStatus] = useState<
+    'idle' | 'loading'
+  >('idle');
+  const [sendOrderRequestStatus, setSendOrderRequestStatus] = useState<
     'idle' | 'loading'
   >('idle');
 
@@ -31,6 +38,20 @@ const Cart = () => {
     } finally {
       setDeleteProductRequestStatus('idle');
       enableBodyScroll(document.body);
+    }
+  };
+
+  const handleSendOrder = async () => {
+    try {
+      setSendOrderRequestStatus('loading');
+      const response = await dispatch(sendCartOrder()).unwrap();
+      toast.success(response);
+    } catch (e) {
+      toast.error(
+        'Hubo un error enviando la orden, por favor intente de nuevo.',
+      );
+    } finally {
+      setSendOrderRequestStatus('idle');
     }
   };
 
@@ -73,13 +94,17 @@ const Cart = () => {
           </div>
         )
       ) : (
-        <div className="d-flex justify-content-end">
-          <p className="border rounded p-4">
+        <div className="d-flex justify-content-end gap-3 align-items-center">
+          <div className="border rounded p-3">
             <span className="fw-bold">Total:</span> ${total.toFixed(2)}
-          </p>
+          </div>
+          <Button variant="primary" size="lg" onClick={handleSendOrder}>
+            Enviar orden
+          </Button>
         </div>
       )}
-      {deleteProductRequestStatus === 'loading' && (
+      {(deleteProductRequestStatus === 'loading' ||
+        sendOrderRequestStatus === 'loading') && (
         <LoadingScreen
           style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)', zIndex: 2000 }}
         />

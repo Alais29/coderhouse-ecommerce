@@ -91,8 +91,6 @@ export const productsSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-// export const { increment, decrement, incrementByAmount } = productsSlice.actions;
-
 export const { removeProduct } = productsSlice.actions;
 
 export default productsSlice.reducer;
