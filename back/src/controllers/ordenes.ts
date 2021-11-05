@@ -36,8 +36,15 @@ export const sendOrder = async (req: Request, res: Response): Promise<void> => {
     );
 
     SmsService.sendMessage(
+      Config.ADMIN_WHATSAPP,
+      `Nuevo pedido de: ${nombre}, ${email}`,
+      'whatsapp',
+    );
+
+    SmsService.sendMessage(
       telefono,
       `Tu pedido ha sido recibido y está siendo procesado`,
+      'sms',
     );
 
     await carritoAPI.delete(email);
