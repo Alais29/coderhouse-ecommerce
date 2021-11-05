@@ -35,10 +35,12 @@ const loginFunc = async (
   const user = (await UserModel.findOne({ email })) as IUser;
 
   if (!user) {
+    logger.warn('Usuario incorrecto');
     return done(null, false);
   }
 
   if (!(await user.isValidPassword(password))) {
+    logger.warn('Contraseña incorrecta');
     return done(null, false);
   }
 
@@ -57,10 +59,19 @@ const signUpFunc = async (
   ) => void,
 ) => {
   try {
-    const { email, password, nombre, direccion, edad, telefono } = req.body;
+    const {
+      email,
+      password,
+      repeatPassword,
+      nombre,
+      direccion,
+      edad,
+      telefono,
+    } = req.body;
     const userData = {
       email,
       password,
+      repeatPassword,
       nombre,
       direccion,
       edad: Number(edad),
@@ -73,7 +84,7 @@ const signUpFunc = async (
     const user = await UserModel.findOne({ email });
 
     if (user) {
-      logger.warn('El usuario ya existe');
+      logger.warn('Error, El usuario ya existe');
       logger.info(user);
       return done(null, false, {
         message:
@@ -107,6 +118,8 @@ const signUpFunc = async (
         emailContent,
         userData.foto,
       );
+
+      logger.info('Email enviado al administrador');
 
       return done(null, newUser);
     }

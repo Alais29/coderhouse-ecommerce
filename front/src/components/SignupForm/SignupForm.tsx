@@ -13,12 +13,14 @@ const SignupForm = ({ onSubmit }: ISignupForm) => {
   const [formValues, setFormValues] = useState({
     email: '',
     password: '',
+    repeatPassword: '',
     nombre: '',
     direccion: '',
     edad: '',
   });
   const [telefono, setTelefono] = useState();
-  const { email, password, nombre, direccion, edad } = formValues;
+  const { email, password, repeatPassword, nombre, direccion, edad } =
+    formValues;
 
   const fotoRef = useRef<HTMLInputElement>(null);
 
@@ -46,6 +48,7 @@ const SignupForm = ({ onSubmit }: ISignupForm) => {
       setFormValues({
         email: '',
         password: '',
+        repeatPassword: '',
         nombre: '',
         direccion: '',
         edad: '',
@@ -73,6 +76,15 @@ const SignupForm = ({ onSubmit }: ISignupForm) => {
             type="password"
             value={password}
             name="password"
+            onChange={handleChange}
+          />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="password">
+          <Form.Label>Repite tu contraseña</Form.Label>
+          <Form.Control
+            type="password"
+            value={repeatPassword}
+            name="repeatPassword"
             onChange={handleChange}
           />
         </Form.Group>

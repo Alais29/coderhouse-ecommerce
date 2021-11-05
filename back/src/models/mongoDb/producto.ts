@@ -143,7 +143,6 @@ export class ProductosModelMongoDb {
   async query(options: IItemQuery): Promise<IItem[]> {
     const query: FilterQuery<IItemBase> = {};
 
-    //TODO: Validate that price and stock options are indeed numbers
     isQueryValid(options);
 
     if (options.nombre) query.nombre = options.nombre;

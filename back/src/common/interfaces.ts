@@ -60,6 +60,7 @@ export interface IItemQuery extends IObject {
 export interface IUserBase extends IObject {
   email: string;
   password: string;
+  repeatPassword: string;
   nombre: string;
   direccion: string;
   edad: number;

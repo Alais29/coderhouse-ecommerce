@@ -1,6 +1,7 @@
 import { UserExists, UserNotLoggedIn } from 'errors';
 import { NextFunction, Request, Response } from 'express';
 import passport from 'middlewares/auth';
+import { logger } from 'utils/logger';
 
 interface User {
   email: string;
@@ -27,6 +28,7 @@ export const signupUser = (
 ): void => {
   passport.authenticate('signup', function (err, user, info) {
     if (err) {
+      logger.warn('Error al registrarse');
       return next(err);
     }
     if (!user) {

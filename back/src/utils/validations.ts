@@ -72,6 +72,13 @@ export const isValidUser = (user: IUserBase): boolean | Error => {
     );
   }
 
+  if (user.password !== user.repeatPassword) {
+    throw new UserValidation(
+      400,
+      'Verifica los datos, Las contraseñas no coinciden.',
+    );
+  }
+
   if (isNaN(user.edad) || user.edad === 0) {
     throw new UserValidation(
       400,
