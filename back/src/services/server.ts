@@ -1,4 +1,5 @@
 import express from 'express';
+import helmet from 'helmet';
 import session from 'express-session';
 import cors from 'cors';
 import path from 'path';
@@ -21,6 +22,7 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+app.use(helmet());
 
 app.use(
   session({
