@@ -15,7 +15,8 @@
     "migrate:db": "npx knex migrate:latest --env development",
     "rollback:db": "npx knex migrate:rollback --env development",
     "seed:db": "npx knex seed:run --env development",
-    "iniciar:db": "npm run rollback:db && npm run migrate:db && npm run seed:db"
+    "iniciar:db": "npm run rollback:db && npm run migrate:db && npm run seed:db",
+    "artillery": "artillery run artillery/test.yml"
   },
   "author": "Alfonsina Lizardo",
   "license": "ISC",
