@@ -4,8 +4,8 @@ import passportLocal, { IStrategyOptionsWithRequest } from 'passport-local';
 import Config from 'config';
 import { UserModel } from 'models/mongoDb/user';
 import { IUser } from 'common/interfaces';
-import { UnauthorizedRoute } from 'errors';
-import { isValidUser } from 'utils/validations';
+import { UnauthorizedRoute, UserValidation } from 'errors';
+import { signupValidation } from 'utils/validations';
 import { logger } from 'utils/logger';
 import { CarritoModel } from 'models/mongoDb/carrito';
 import { EmailService } from 'services/email';
@@ -79,7 +79,11 @@ const signUpFunc = async (
       foto: req.file?.path || '',
     };
 
-    isValidUser(userData);
+    const { error } = signupValidation(userData);
+
+    if (error) {
+      throw new UserValidation(400, error.details[0].message);
+    }
 
     const user = await UserModel.findOne({ email });
 
