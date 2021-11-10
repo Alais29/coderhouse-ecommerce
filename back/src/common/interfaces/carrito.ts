@@ -4,13 +4,10 @@ import { IObject } from './others';
 export interface ICarrito extends IObject, Document {
   id: string;
   user: Types.ObjectId;
-  productos: {
-    producto: Types.ObjectId;
-    quantity: number;
-  }[];
+  productos: IItemCarrito[];
 }
 
 export interface IItemCarrito {
-  producto: string;
+  producto: Types.ObjectId;
   quantity: number;
 }

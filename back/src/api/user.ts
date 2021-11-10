@@ -28,7 +28,7 @@ class UserAPI {
 
   async deleteUser(id: string) {
     await this.factory.delete(id);
-    //Borrar carrito tambien
+    //TODO: Borrar carrito tambien
   }
 
   async query(email: string): Promise<IUser> {

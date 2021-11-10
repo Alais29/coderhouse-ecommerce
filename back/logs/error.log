@@ -1,0 +1,11 @@
+[31merror[39m  | Nov-10-2021 17:26:54 | Error: -1, Message: No Autorizado, Stack: UnauthorizedRoute: No Autorizado
+    at new BaseError (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:13:11)
+    at new UnauthorizedRoute (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:61:5)
+    at isLoggedIn (/home/alizardo/Projects/coderhouse-ecommerce/back/src/middlewares/auth.ts:142:37)
+    at Layer.handle [as handle_request] (/home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:317:13)
+    at /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:335:12)
+    at next (/home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:275:10)
+    at Function.handle (/home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:174:3)
+    at router (/home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:47:12) 

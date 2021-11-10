@@ -2,7 +2,6 @@ import { UserNotExists } from 'errors';
 import { CarritoModelFactory } from 'models/factory/carrito';
 import { CarritoModelMongoDb } from 'models/mongoDb/carrito';
 import { userAPI } from './user';
-import { UserModel } from 'models/mongoDb/user';
 import { modelTypeToUse } from './modelType';
 
 class CarritoAPI {
@@ -37,6 +36,15 @@ class CarritoAPI {
   async save(userId: string, productId: string) {
     const newProduct = await this.factory.save(userId, productId);
     return newProduct;
+  }
+
+  async update(userId: string, productId: string, amount: number) {
+    if (this.factory instanceof CarritoModelMongoDb) {
+      const updatedCart = await this.factory.update(userId, productId, amount);
+      return updatedCart;
+    } else {
+      throw new Error('No se puedo crear el carrito');
+    }
   }
 
   delete(userId: string, productId?: string) {

@@ -1,10 +1,9 @@
 import mongoose from 'mongoose';
-import { ICarrito } from 'common/interfaces/carrito';
+import { ICarrito, IItemCarrito } from 'common/interfaces/carrito';
 import { IItem } from 'common/interfaces/products';
 import { NotFound } from 'errors';
 import { ProductosModel } from 'models/mongoDb/producto';
 
-//TODO; intentar agregar cantidad de productos como lo hizo christian
 const CarritoSchema = new mongoose.Schema<ICarrito>({
   user: {
     type: 'ObjectId',
@@ -84,44 +83,90 @@ export class CarritoModelMongoDb {
     }
   }
 
-  async save(userId: string, productId: string): Promise<IItem> {
+  async save(userId: string, productId: string): Promise<IItemCarrito> {
     try {
       const product = await this.productosModel.findById(productId);
 
       if (product) {
         // if product exists, get the cart and check if the product is already in it
-        const cart = (await this.carritoModel.findOne({
-          user: userId,
-        })) as ICarrito;
+        const cart = await this.carritoModel
+          .findOne({ user: userId })
+          .populate('productos.producto');
 
-        const productInCartIndex = cart.productos.findIndex(
-          item => item.producto._id.toString() === productId,
-        );
+        if (cart) {
+          const productInCartIndex = cart.productos.findIndex(
+            item => item.producto._id.toString() === productId,
+          );
 
-        if (productInCartIndex === -1) {
-          // if it's not in the cart, add it with a quantity of 1
-          cart.productos = cart.productos.concat({
-            producto: product._id,
-            quantity: 1,
-          });
-        } else {
-          // if it's in the cart then add 1 to the quantity
-          cart.productos[productInCartIndex].quantity += 1;
+          if (productInCartIndex === -1) {
+            // if it's not in the cart, add 1
+            cart.productos = cart.productos.concat({
+              producto: product._id,
+              quantity: 1,
+            });
+
+            await cart.save();
+            const updatedCart = await cart.populate('productos.producto');
+            return updatedCart.productos[updatedCart.productos.length - 1];
+          } else {
+            // if it's in the cart then add 1 more
+            cart.productos[productInCartIndex].quantity += 1;
+            await cart.save();
+            return cart.productos[productInCartIndex];
+          }
         }
-        await cart.save();
-        return product as IItem;
+        throw new NotFound(404, 'El carrito no existe');
       }
       throw new NotFound(404, 'El producto que deseas agregar no existe');
     } catch (e) {
       if (e instanceof mongoose.Error.CastError) {
         throw new NotFound(
-          404,
+          400,
           'El producto que deseas agregar o el carrito no existe',
         );
       } else if (e instanceof NotFound) {
         throw e;
       } else {
         throw { error: e, message: 'No se pudo agregar el producto' };
+      }
+    }
+  }
+
+  async update(
+    userId: string,
+    productId: string,
+    amount: number,
+  ): Promise<IItemCarrito[]> {
+    try {
+      const cart = await this.carritoModel
+        .findOne({ user: userId })
+        .populate('productos.producto');
+
+      if (cart) {
+        // check if product is in the cart
+        const productInCartIndex = cart.productos.findIndex(
+          item => item.producto._id.toString() === productId,
+        );
+
+        if (productInCartIndex !== -1) {
+          // if it is, add the specified amount
+          cart.productos[productInCartIndex].quantity = amount;
+          await cart.save();
+          return cart.productos;
+        }
+        throw new NotFound(
+          404,
+          'El producto que deseas editar no está en el carrito',
+        );
+      }
+      throw new NotFound(404, 'El carrito no existe');
+    } catch (e) {
+      if (e instanceof NotFound) {
+        throw e;
+      } else if (e instanceof mongoose.Error.CastError) {
+        throw new NotFound(404, 'El carrito no existe');
+      } else {
+        throw { error: e, message: 'Hubo un problema al eliminar el producto' };
       }
     }
   }
@@ -138,15 +183,12 @@ export class CarritoModelMongoDb {
           item => item.producto._id.toString() === productId,
         );
         if (productInCartIndex !== -1) {
-          // if the product is in the cart, check if there's more than 1 of that product, if so, decrease its quantity by 1, if not, remove the product from cart
-          if (cart.productos[productInCartIndex].quantity > 1)
-            cart.productos[productInCartIndex].quantity -= 1;
-          else {
-            const newProductsInCart = cart.productos.filter(
-              item => item.producto._id.toString() !== productId,
-            );
-            cart.productos = newProductsInCart;
-          }
+          // if it is, remove it from cart
+          const newProductsInCart = cart.productos.filter(
+            item => item.producto._id.toString() !== productId,
+          );
+          cart.productos = newProductsInCart;
+
           await cart.save();
           return cart.productos as unknown as IItem[];
         }
