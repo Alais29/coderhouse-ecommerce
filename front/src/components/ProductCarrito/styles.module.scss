@@ -10,6 +10,7 @@
   &__info-container {
     display: flex;
     justify-content: stretch;
+    gap: 10px;
     text-align: center;
     align-items: center;
     flex-basis: 400px;
@@ -22,6 +23,9 @@
   &__info {
     flex-basis: 400px;
     flex-grow: 1;
+  }
+  &__qty {
+    flex-basis: 110px;
   }
   &__price {
     font-weight: bold;

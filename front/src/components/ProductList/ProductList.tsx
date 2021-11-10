@@ -1,4 +1,4 @@
-import { IItemAPI } from 'commons/interfaces';
+import { IItemAPI, IItemCarrito } from 'commons/interfaces';
 import { isEmpty } from 'utilities/others';
 import Product from 'components/Product/Product';
 import ProductCarrito from 'components/ProductCarrito/ProductCarrito';
@@ -6,7 +6,7 @@ import cx from 'classnames/bind';
 import styles from './styles.module.scss';
 
 interface IProductList {
-  productos: IItemAPI[] | [];
+  productos: IItemAPI[] | IItemCarrito[] | [];
   handleToggleShowModal?: (
     producto?: IItemAPI,
     action?: 'edit' | 'delete',
@@ -39,7 +39,7 @@ const ProductList = ({
           location === 'home' &&
           handleToggleShowModal &&
           handleAddToCart &&
-          productos.map((producto: IItemAPI) => (
+          (productos as IItemAPI[]).map((producto: IItemAPI) => (
             <Product
               key={producto.id}
               product={producto}
@@ -50,9 +50,9 @@ const ProductList = ({
         {!isEmpty(productos) &&
           location === 'cart' &&
           handleRemove &&
-          productos.map((producto: IItemAPI) => (
+          (productos as IItemCarrito[]).map((producto: IItemCarrito) => (
             <ProductCarrito
-              key={producto.id}
+              key={producto.producto.id}
               product={producto}
               handleRemove={handleRemove}
             />

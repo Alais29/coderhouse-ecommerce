@@ -4,7 +4,7 @@ const baseUrl = '/api/carrito';
 
 export const getCarritoProducts = async () => {
   try {
-    const response = await axios.get(`${baseUrl}/listar`);
+    const response = await axios.get(`${baseUrl}`);
     return response.data.data;
   } catch (e) {
     throw new Error(e.response.data.message);
@@ -13,7 +13,7 @@ export const getCarritoProducts = async () => {
 
 export const saveCarritoProduct = async (id: string) => {
   try {
-    const response = await axios.post(`${baseUrl}/agregar/${id}`);
+    const response = await axios.post(`${baseUrl}/${id}`);
     return response.data.data;
   } catch (e) {
     throw new Error(e.response.data.message);
@@ -22,7 +22,7 @@ export const saveCarritoProduct = async (id: string) => {
 
 export const deleteCarritoProduct = async (id: string) => {
   try {
-    const response = await axios.delete(`${baseUrl}/eliminar/${id}`);
+    const response = await axios.delete(`${baseUrl}/${id}`);
     return response.data.data;
   } catch (e) {
     throw new Error(e.response.data.message);

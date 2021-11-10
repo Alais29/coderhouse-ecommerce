@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { IItemAPI } from 'commons/interfaces';
+import { IItemCarrito } from 'commons/interfaces';
 import {
   getCarritoProducts,
   saveCarritoProduct,
@@ -8,7 +8,7 @@ import {
 import { sendOrder } from 'services/Orders';
 
 interface CartState {
-  data: IItemAPI[];
+  data: IItemCarrito[];
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null | undefined;
 }
@@ -78,7 +78,14 @@ export const cartSlice = createSlice({
         state.data = action.payload;
       })
       .addCase(addProductToCart.fulfilled, (state, action) => {
-        state.data = state.data.concat(action.payload);
+        const productIndex = state.data.findIndex(
+          item => item.producto.id === action.payload.producto.id,
+        );
+        if (productIndex === -1) {
+          state.data = state.data.concat(action.payload);
+        } else {
+          state.data[productIndex].quantity = action.payload.quantity;
+        }
         state.status = 'succeeded';
         state.error = null;
       })

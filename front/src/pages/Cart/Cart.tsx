@@ -65,8 +65,8 @@ const Cart = () => {
   }, [dispatch, status, error]);
 
   useEffect(() => {
-    const totalCost = data.reduce((total, product) => {
-      return (total += Number(product.precio));
+    const totalCost = data.reduce((total, item) => {
+      return (total += Number(item.producto.precio) * item.quantity);
     }, 0);
     setTotal(totalCost);
   }, [data]);

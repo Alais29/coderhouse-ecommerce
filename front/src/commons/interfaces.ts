@@ -16,6 +16,11 @@ export interface IItemAPI extends IItem {
   timestamp: string;
 }
 
+export interface IItemCarrito {
+  producto: IItemAPI;
+  quantity: number;
+}
+
 export interface IMessage {
   id?: number;
   date?: string;
