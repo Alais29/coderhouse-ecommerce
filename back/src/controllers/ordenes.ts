@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import Config from 'config';
 import { CartIsEmpty } from 'errors';
-import { IItem } from 'common/interfaces';
+import { IItem } from 'common/interfaces/products';
 import { carritoAPI } from 'api/carrito';
 import { EmailService } from 'services/email';
 import { SmsService } from 'services/twilio';

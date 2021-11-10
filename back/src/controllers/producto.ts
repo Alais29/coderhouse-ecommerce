@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { isValidProduct } from 'utils/validations';
-import { IItem, IItemQuery } from 'common/interfaces';
+import { IItem, IItemQuery } from 'common/interfaces/products';
 import { NotFound } from 'errors';
 import { productsAPI } from 'api/productos';
 import { isEmpty } from 'utils/others';

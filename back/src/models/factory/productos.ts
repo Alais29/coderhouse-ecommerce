@@ -1,5 +1,5 @@
 import { ModelType } from 'common/enums';
-import { IItem, IItemQuery } from 'common/interfaces';
+import { IItem, IItemQuery } from 'common/interfaces/products';
 import { ProductosModelFirebase } from 'models/firebase/producto';
 import { ProductosModelFs } from 'models/fs/producto';
 import { ProductosModel } from 'models/memory/productos';

@@ -1,10 +1,10 @@
-import { IItem, IItemQuery } from 'common/interfaces';
+import { IItem, IItemQuery } from 'common/interfaces/products';
 import { NotFound } from 'errors';
 import admin, { firestore } from 'firebase-admin';
 import { productosMock } from 'mocks/products';
 import moment from 'moment';
 import Config from 'config';
-import { logger } from 'utils/logger';
+import { logger } from 'services/logger';
 
 export class ProductosModelFirebase {
   public productosDb;

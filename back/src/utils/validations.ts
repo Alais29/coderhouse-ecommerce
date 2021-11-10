@@ -1,5 +1,6 @@
 import { isEmail, isUrl, isValidCode } from './strings';
-import { IItem, IItemQuery, IUserBase } from 'common/interfaces';
+import { IItem, IItemQuery } from 'common/interfaces/products';
+import { IUserBase } from 'common/interfaces/users';
 import { getEmptyFields } from './objects';
 import {
   MissingFieldsProduct,
@@ -118,51 +119,51 @@ export const isQueryValid = (query: IItemQuery): boolean | Error => {
  * @returns Validates with Joi if all the fields are valid and returns the validation result
  */
 
-export const signupValidation = (data: IUserBase): Joi.ValidationResult => {
-  const schema = Joi.object({
-    email: Joi.string()
-      .pattern(new RegExp(/[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/))
-      .required()
-      .messages({
-        'string.pattern.base': `El correo ingresado no es válido`,
-        'string.empty': `Todos los campos son obligatorios, por favor ingresa tu correo electrónico`,
-      }),
-    password: Joi.string()
-      .pattern(
-        new RegExp(
-          /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/,
-        ),
-      )
-      .required()
-      .messages({
-        'string.pattern.base': `La contraseña debe tener mínimo 8 caracteres, 1 letra mayúscula, 1 minúscula, 1 número y un caracter especial.`,
-        'string.empty': `Todos los campos son obligatorios, por favor ingresa una contraseña`,
-      }),
-    repeatPassword: Joi.string()
-      .required()
-      .valid(Joi.ref('password'))
-      .messages({
-        'string.empty': `Todos los campos son obligatorios, por favor confirma tu contraseña`,
-        'any.only': `Las contraseñas no coinciden`,
-      }),
-    nombre: Joi.string().required().messages({
-      'string.empty': `Todos los campos son obligatorios, por favor ingresa tu nombre`,
-    }),
-    direccion: Joi.string().required().messages({
-      'string.empty': `Todos los campos son obligatorios, por favor ingresa una dirección`,
-    }),
-    edad: Joi.number().integer().positive().required().messages({
-      'number.base': `La edad debe ser un número`,
-      'number.integer': `La edad debe ser un número entero`,
-      'number.positive': `La edad es obligatoria y debe ser mayor a 0`,
-    }),
-    telefono: Joi.string().required().messages({
-      'string.empty': `Todos los campos son obligatorios, por favor ingresa tu teléfono`,
-    }),
-    foto: Joi.string().required().messages({
-      'string.empty': `Todos los campos son obligatorios, por favor ingresa una foto para usar como imagen de tu perfil`,
-    }),
-  });
+// export const signupValidation = (data: IUserBase): Joi.ValidationResult => {
+//   const userSchema = Joi.object({
+//     email: Joi.string()
+//       .pattern(new RegExp(/[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/))
+//       .required()
+//       .messages({
+//         'string.pattern.base': `El correo ingresado no es válido`,
+//         'string.empty': `Todos los campos son obligatorios, por favor ingresa tu correo electrónico`,
+//       }),
+//     password: Joi.string()
+//       .pattern(
+//         new RegExp(
+//           /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/,
+//         ),
+//       )
+//       .required()
+//       .messages({
+//         'string.pattern.base': `La contraseña debe tener mínimo 8 caracteres, 1 letra mayúscula, 1 minúscula, 1 número y un caracter especial.`,
+//         'string.empty': `Todos los campos son obligatorios, por favor ingresa una contraseña`,
+//       }),
+//     repeatPassword: Joi.string()
+//       .required()
+//       .valid(Joi.ref('password'))
+//       .messages({
+//         'string.empty': `Todos los campos son obligatorios, por favor confirma tu contraseña`,
+//         'any.only': `Las contraseñas no coinciden`,
+//       }),
+//     nombre: Joi.string().required().messages({
+//       'string.empty': `Todos los campos son obligatorios, por favor ingresa tu nombre`,
+//     }),
+//     direccion: Joi.string().required().messages({
+//       'string.empty': `Todos los campos son obligatorios, por favor ingresa una dirección`,
+//     }),
+//     edad: Joi.number().integer().positive().required().messages({
+//       'number.base': `La edad debe ser un número`,
+//       'number.integer': `La edad debe ser un número entero`,
+//       'number.positive': `La edad es obligatoria y debe ser mayor a 0`,
+//     }),
+//     telefono: Joi.string().required().messages({
+//       'string.empty': `Todos los campos son obligatorios, por favor ingresa tu teléfono`,
+//     }),
+//     foto: Joi.string().required().messages({
+//       'string.empty': `Todos los campos son obligatorios, por favor ingresa una foto para usar como imagen de tu perfil`,
+//     }),
+//   });
 
-  return schema.validate(data);
-};
+//   return schema.validate(data);
+// };

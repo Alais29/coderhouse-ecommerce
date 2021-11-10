@@ -1,5 +1,6 @@
 import { ModelType } from 'common/enums';
-import { IItem } from 'common/interfaces';
+import { ICarrito } from 'common/interfaces/carrito';
+import { IItem } from 'common/interfaces/products';
 import { CarritoModelFirebase } from 'models/firebase/carrito';
 import { CarritoModelFs } from 'models/fs/carrito';
 import { CarritoModel } from 'models/memory/carrito';
@@ -12,9 +13,10 @@ interface IModel {
   delete: (id: string) => Promise<IItem[]>;
 }
 interface IModelMongo {
-  get: (userEmail: string, id?: string) => Promise<IItem | IItem[]>;
-  save: (id: string, userEmail: string) => Promise<IItem>;
-  delete: (userEmail: string, id?: string) => Promise<IItem[]>;
+  createCart: (userId: string) => Promise<ICarrito>;
+  get: (userId: string, productId?: string) => Promise<IItem | IItem[]>;
+  save: (userId: string, productId: string) => Promise<IItem>;
+  delete: (userId: string, productId?: string) => Promise<IItem[]>;
 }
 
 type IModelType = IModel | IModelMongo;

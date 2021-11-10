@@ -3,7 +3,9 @@ import helmet from 'helmet';
 import session from 'express-session';
 import cors from 'cors';
 import path from 'path';
+import * as http from 'http';
 import MongoStore from 'connect-mongo';
+import Config from 'config';
 import routes from 'routes';
 import { unknownEndpoint } from 'middlewares/unknownEndpoint';
 import { errorHandler } from 'middlewares/errorHandler';
@@ -11,8 +13,6 @@ import { clientPromise } from 'services/mongodb';
 import passport from 'middlewares/auth';
 
 const app: express.Application = express();
-
-const oneDay = 1000 * 60 * 60 * 24;
 
 app.use(express.static('public'));
 app.use(
@@ -26,7 +26,7 @@ app.use(helmet());
 
 app.use(
   session({
-    secret: 'b2xyddLPtfeK0ryUgbLZ',
+    secret: Config.SESSION_SECRET,
     resave: true,
     saveUninitialized: false,
     rolling: true,
@@ -37,7 +37,7 @@ app.use(
       autoRemoveInterval: 1,
     }),
     cookie: {
-      maxAge: oneDay,
+      maxAge: Config.SESSION_COOKIE_TIMEOUT_MIN * 1000 * 60,
       httpOnly: false,
     },
   }),
@@ -50,4 +50,6 @@ app.use('/api', routes);
 app.use(errorHandler);
 app.use(unknownEndpoint);
 
-export default app;
+const Server = new http.Server(app);
+
+export default Server;

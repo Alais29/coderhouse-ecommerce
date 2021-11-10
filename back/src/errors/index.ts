@@ -81,6 +81,13 @@ export class MissingFieldsUser extends UserValidation {
   }
 }
 
+export class UserNotExists extends BaseError {
+  public error: string;
+  constructor(statusCode: number, message: string) {
+    super(statusCode, message);
+    this.error = `-${EErrorCodes.UserDoesNotExists}`;
+  }
+}
 export class UserExists extends BaseError {
   public error: string;
   constructor(statusCode: number, message: string) {

@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
-import { IUser } from 'common/interfaces';
+import { IUser, IUserBase } from 'common/interfaces/users';
+import { NotFound } from 'errors';
 
 const Schema = mongoose.Schema;
 
@@ -12,10 +13,6 @@ const UserSchema = new Schema<IUser>({
   edad: { type: Number, required: true },
   telefono: { type: String, required: true },
   foto: { type: String, required: true },
-  cart: {
-    type: 'ObjectId',
-    ref: 'Carrito',
-  },
 });
 
 UserSchema.pre('save', async function (next) {
@@ -38,3 +35,49 @@ UserSchema.set('toJSON', {
 });
 
 export const UserModel = mongoose.model<IUser>('User', UserSchema);
+
+export class UserModelMongoDb {
+  private userModel;
+
+  constructor() {
+    this.userModel = UserModel;
+  }
+
+  async get(id?: string): Promise<IUser[] | IUser> {
+    let output: IUser[] | IUser = [];
+    try {
+      if (id) {
+        const document = await this.userModel.findById(id);
+        if (document) output = document;
+      } else {
+        output = await this.userModel.find();
+      }
+      return output;
+    } catch (e) {
+      if (e instanceof mongoose.Error.CastError) {
+        throw new NotFound(404, 'Usuario no encontrado');
+      } else {
+        throw { error: e, message: 'Hubo un problema al cargar los usuarios' };
+      }
+    }
+  }
+
+  async save(userData: IUserBase): Promise<IUser> {
+    const newUser = new this.userModel(userData);
+    await newUser.save();
+    return newUser;
+  }
+
+  async update(id: string, data: IUserBase): Promise<IUser> {
+    return this.userModel.findByIdAndUpdate(id, data);
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.userModel.findByIdAndDelete(id);
+  }
+
+  async query(email: string): Promise<IUser> {
+    const result = await this.userModel.find({ email });
+    return result[0];
+  }
+}

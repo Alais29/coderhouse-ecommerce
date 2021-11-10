@@ -1,4 +1,4 @@
-import { IItem } from 'common/interfaces';
+import { IItem } from 'common/interfaces/products';
 import { NotFound, RepeatedProductInCart } from 'errors';
 import { ProductosModel } from './productos';
 

@@ -2,7 +2,7 @@ import { promises as fsPromises } from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 import moment from 'moment';
 import path from 'path';
-import { IItem, IItemQuery } from 'common/interfaces';
+import { IItem, IItemQuery } from 'common/interfaces/products';
 import { NotFound } from 'errors';
 
 const productosPath = path.resolve(__dirname, '../../../productos.json');

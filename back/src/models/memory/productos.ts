@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import moment from 'moment';
-import { IItem, IItemQuery } from 'common/interfaces';
+import { IItem, IItemQuery } from 'common/interfaces/products';
 import { NotFound } from 'errors';
 import { productosMockMem } from 'mocks/products-mem';
 

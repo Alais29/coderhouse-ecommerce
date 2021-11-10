@@ -1,6 +1,6 @@
 import { promises as fsPromises } from 'fs';
 import path from 'path';
-import { IItem } from 'common/interfaces';
+import { IItem } from 'common/interfaces/products';
 import { ProductosModelFs } from 'models/fs/producto';
 import { NotFound, RepeatedProductInCart } from 'errors';
 

@@ -1,7 +1,7 @@
 import { UserExists, UserNotLoggedIn } from 'errors';
 import { NextFunction, Request, Response } from 'express';
 import passport from 'middlewares/auth';
-import { logger } from 'utils/logger';
+import { logger } from 'services/logger';
 
 interface User {
   email: string;

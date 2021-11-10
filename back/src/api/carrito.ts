@@ -1,4 +1,8 @@
+import { UserNotExists } from 'errors';
 import { CarritoModelFactory } from 'models/factory/carrito';
+import { CarritoModelMongoDb } from 'models/mongoDb/carrito';
+import { userAPI } from './user';
+import { UserModel } from 'models/mongoDb/user';
 import { modelTypeToUse } from './modelType';
 
 class CarritoAPI {
@@ -8,19 +12,36 @@ class CarritoAPI {
     this.factory = CarritoModelFactory.model(modelTypeToUse);
   }
 
-  get(userEmail: string, id?: string) {
-    if (id) return this.factory.get(userEmail, id);
-    return this.factory.get(userEmail);
+  async createCart(userId: string) {
+    const user = await userAPI.getUsers(userId);
+
+    if (!user)
+      throw new UserNotExists(
+        400,
+        'Ocurrió un error al crear el carrito, el usuario no existe',
+      );
+
+    if (this.factory instanceof CarritoModelMongoDb) {
+      const newCart = await this.factory.createCart(userId);
+      return newCart;
+    } else {
+      throw new Error('No se pudo crear el carrito');
+    }
   }
 
-  async save(id: string, userEmail: string) {
-    const newProduct = await this.factory.save(id, userEmail);
+  get(userId: string, productId?: string) {
+    if (productId) return this.factory.get(userId, productId);
+    return this.factory.get(userId);
+  }
+
+  async save(userId: string, productId: string) {
+    const newProduct = await this.factory.save(userId, productId);
     return newProduct;
   }
 
-  delete(userEmail: string, id?: string) {
-    if (id) return this.factory.delete(userEmail, id);
-    return this.factory.delete(userEmail);
+  delete(userId: string, productId?: string) {
+    if (productId) return this.factory.delete(userId, productId);
+    return this.factory.delete(userId);
   }
 }
 

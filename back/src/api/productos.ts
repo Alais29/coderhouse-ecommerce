@@ -1,4 +1,4 @@
-import { IItem, IItemQuery } from 'common/interfaces';
+import { IItem, IItemQuery } from 'common/interfaces/products';
 import { ProductosModelFactory } from 'models/factory/productos';
 import { modelTypeToUse } from './modelType';
 

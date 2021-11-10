@@ -1,10 +1,10 @@
-import { IItem, IItemBase, IItemQuery } from 'common/interfaces';
+import { IItem, IItemBase, IItemQuery } from 'common/interfaces/products';
 import moment from 'moment';
 import mongoose, { FilterQuery } from 'mongoose';
 import { productosMock } from 'mocks/products';
 import { NotFound, ProductValidation } from 'errors';
 import uniqueValidator from 'mongoose-unique-validator';
-import { logger } from 'utils/logger';
+import { logger } from 'services/logger';
 import { isQueryValid } from 'utils/validations';
 
 const ProductoSchema = new mongoose.Schema<IItemBase>({

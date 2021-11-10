@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import Config from 'config';
 import { ModelType } from 'common/enums';
 import { modelTypeToUse } from 'api/modelType';
-import { logger } from 'utils/logger';
+import { logger } from 'services/logger';
 
 const getMongoUrl = (type: number): string => {
   switch (type) {
