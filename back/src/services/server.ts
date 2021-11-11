@@ -15,10 +15,7 @@ import passport from 'middlewares/auth';
 const app: express.Application = express();
 
 app.use(express.static('public'));
-app.use(
-  '/uploads',
-  express.static(path.resolve(__dirname, '../../', 'uploads')),
-);
+app.use('/uploads', express.static(path.resolve('uploads')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
