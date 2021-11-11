@@ -1,5 +1,6 @@
 import { Document, Types } from 'mongoose';
 import { IObject } from './others';
+import { IItem } from './products';
 
 export interface ICarrito extends IObject, Document {
   id: string;
@@ -8,6 +9,6 @@ export interface ICarrito extends IObject, Document {
 }
 
 export interface IItemCarrito {
-  producto: Types.ObjectId;
+  producto: Types.ObjectId | IItem;
   quantity: number;
 }

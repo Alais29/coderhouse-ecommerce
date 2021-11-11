@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 import { ICarrito, IItemCarrito } from 'common/interfaces/carrito';
-import { IItem } from 'common/interfaces/products';
 import { NotFound } from 'errors';
 import { ProductosModel } from 'models/mongoDb/producto';
 
@@ -51,9 +50,12 @@ export class CarritoModelMongoDb {
     return newCart;
   }
 
-  async get(userId: string, productId?: string): Promise<IItem[] | IItem> {
+  async get(
+    userId: string,
+    productId?: string,
+  ): Promise<IItemCarrito[] | IItemCarrito> {
     try {
-      let output: IItem[] | IItem = [];
+      let output: IItemCarrito[] | IItemCarrito = [];
 
       const cart = await this.carritoModel
         .findOne({ user: userId })
@@ -62,14 +64,14 @@ export class CarritoModelMongoDb {
       if (cart && productId) {
         // if there's a productId in the request, search for that product in the cart
         const product = cart.productos.find(
-          item => item.producto._id.toString() === productId,
+          item => item.producto.id.toString() === productId,
         );
         // if the product is in the cart return that product, if not throw an error
-        if (product) output = product as unknown as IItem;
+        if (product) output = product;
         else throw new NotFound(404, 'El producto no está en el carrito');
       } else if (cart) {
         // if there's no productId in the request return all the products in the cart
-        output = cart.productos as unknown as IItem[];
+        output = cart.productos;
       }
       return output;
     } catch (e) {
@@ -95,7 +97,7 @@ export class CarritoModelMongoDb {
 
         if (cart) {
           const productInCartIndex = cart.productos.findIndex(
-            item => item.producto._id.toString() === productId,
+            item => item.producto.id.toString() === productId,
           );
 
           if (productInCartIndex === -1) {
@@ -145,7 +147,7 @@ export class CarritoModelMongoDb {
       if (cart) {
         // check if product is in the cart
         const productInCartIndex = cart.productos.findIndex(
-          item => item.producto._id.toString() === productId,
+          item => item.producto.id.toString() === productId,
         );
 
         if (productInCartIndex !== -1) {
@@ -171,7 +173,7 @@ export class CarritoModelMongoDb {
     }
   }
 
-  async delete(userId: string, productId?: string): Promise<IItem[]> {
+  async delete(userId: string, productId?: string): Promise<IItemCarrito[]> {
     try {
       const cart = await this.carritoModel
         .findOne({ user: userId })
@@ -180,17 +182,17 @@ export class CarritoModelMongoDb {
       if (cart && productId) {
         // check that the product to be deleted is in the cart
         const productInCartIndex = cart.productos.findIndex(
-          item => item.producto._id.toString() === productId,
+          item => item.producto.id.toString() === productId,
         );
         if (productInCartIndex !== -1) {
           // if it is, remove it from cart
           const newProductsInCart = cart.productos.filter(
-            item => item.producto._id.toString() !== productId,
+            item => item.producto.id.toString() !== productId,
           );
           cart.productos = newProductsInCart;
 
           await cart.save();
-          return cart.productos as unknown as IItem[];
+          return cart.productos;
         }
         throw new NotFound(
           404,
@@ -202,7 +204,7 @@ export class CarritoModelMongoDb {
         // if the cart exists but no productId is received, then delete all products
         cart.productos = [];
         await cart.save();
-        return cart.productos as unknown as IItem[];
+        return cart.productos;
       }
       throw new NotFound(404, 'El carrito no existe');
     } catch (e) {

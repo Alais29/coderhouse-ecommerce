@@ -1,29 +1,42 @@
 import { Request, Response } from 'express';
 import Config from 'config';
 import { CartIsEmpty } from 'errors';
+import { IItemCarrito } from 'common/interfaces/carrito';
 import { IItem } from 'common/interfaces/products';
 import { carritoAPI } from 'api/carrito';
 import { EmailService } from 'services/email';
 import { SmsService } from 'services/twilio';
 import { isEmpty } from 'utils/others';
+import { Types } from 'mongoose';
 
 interface User {
+  _id: string;
   nombre?: string;
   email: string;
   telefono: string;
 }
 
 export const sendOrder = async (req: Request, res: Response): Promise<void> => {
-  const { email, nombre, telefono } = req.user as User;
-  const productos = (await carritoAPI.get(email)) as IItem[];
+  const { _id, email, nombre, telefono } = req.user as User;
+  const productos = (await carritoAPI.get(_id)) as IItemCarrito[];
+
+  // TS type guard to check if product property from products is populated
+  function isProductPopulated(obj: IItem | Types.ObjectId): obj is IItem {
+    return (obj as IItem).nombre !== undefined;
+  }
 
   if (!isEmpty(productos)) {
     let emailContent = '<h2>Productos</h2>';
 
-    const total = productos.reduce((total, item) => (total += item.precio), 0);
+    const total = productos.reduce((total, item) => {
+      if (isProductPopulated(item.producto))
+        return (total += item.producto.precio * item.quantity);
+      else return total;
+    }, 0);
     productos.forEach(item => {
-      emailContent += `
-          <span style="display: block">- ${item.nombre}, ${item.codigo}, $${item.precio} </span>
+      if (isProductPopulated(item.producto))
+        emailContent += `
+          <span style="display: block">- ${item.quantity} ${item.producto.nombre}, ${item.producto.codigo}, $${item.producto.precio} </span>
           `;
     });
 
@@ -47,7 +60,7 @@ export const sendOrder = async (req: Request, res: Response): Promise<void> => {
       'sms',
     );
 
-    await carritoAPI.delete(email);
+    await carritoAPI.delete(_id);
 
     res.json({ data: 'Orden enviada con éxito' });
   } else {

@@ -14,14 +14,17 @@ interface IModel {
 }
 interface IModelMongo {
   createCart: (userId: string) => Promise<ICarrito>;
-  get: (userId: string, productId?: string) => Promise<IItem | IItem[]>;
+  get: (
+    userId: string,
+    productId?: string,
+  ) => Promise<IItemCarrito | IItemCarrito[]>;
   save: (userId: string, productId: string) => Promise<IItemCarrito>;
   update: (
     userId: string,
     productId: string,
     amount: number,
   ) => Promise<IItemCarrito[]>;
-  delete: (userId: string, productId?: string) => Promise<IItem[]>;
+  delete: (userId: string, productId?: string) => Promise<IItemCarrito[]>;
 }
 
 type IModelType = IModel | IModelMongo;

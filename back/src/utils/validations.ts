@@ -8,7 +8,6 @@ import {
   ProductValidation,
   UserValidation,
 } from 'errors';
-import Joi from 'joi';
 
 /**
  *
