@@ -24,8 +24,20 @@
     flex-basis: 400px;
     flex-grow: 1;
   }
-  &__qty {
-    flex-basis: 110px;
+  &__qty-price {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    justify-content: center;
+  }
+  &__qty-form {
+    flex-basis: 115px;
+  }
+  &__btns {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    width: 100%;
   }
   &__price {
     font-weight: bold;
@@ -37,6 +49,12 @@
       :global(.btn) {
         width: auto;
       }
+    }
+    &__qty-price {
+      justify-content: start;
+    }
+    &__btns {
+      width: auto;
     }
   }
 }

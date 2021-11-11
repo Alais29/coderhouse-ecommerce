@@ -20,6 +20,18 @@ export const saveCarritoProduct = async (id: string) => {
   }
 };
 
+export const editCarritoProduct = async (productData: {
+  productId: string;
+  amount: string | number;
+}) => {
+  try {
+    const response = await axios.put(`${baseUrl}`, productData);
+    return response.data.data;
+  } catch (e) {
+    throw new Error(e.response.data.message);
+  }
+};
+
 export const deleteCarritoProduct = async (id: string) => {
   try {
     const response = await axios.delete(`${baseUrl}/${id}`);

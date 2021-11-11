@@ -3,6 +3,7 @@ import { IItemCarrito } from 'commons/interfaces';
 import {
   getCarritoProducts,
   saveCarritoProduct,
+  editCarritoProduct,
   deleteCarritoProduct,
 } from 'services/Carrito';
 import { sendOrder } from 'services/Orders';
@@ -31,6 +32,14 @@ export const addProductToCart = createAsyncThunk(
   'cart/addProductToCart',
   async (productId: string) => {
     const response = await saveCarritoProduct(productId);
+    return response;
+  },
+);
+
+export const editProductInCart = createAsyncThunk(
+  'cart/editProductInCart',
+  async (productData: { productId: string; amount: string | number }) => {
+    const response = await editCarritoProduct(productData);
     return response;
   },
 );
@@ -88,6 +97,9 @@ export const cartSlice = createSlice({
         }
         state.status = 'succeeded';
         state.error = null;
+      })
+      .addCase(editProductInCart.fulfilled, (state, action) => {
+        state.data = action.payload;
       })
       .addCase(sendCartOrder.fulfilled, state => {
         state.data = [];
