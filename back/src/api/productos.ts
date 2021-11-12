@@ -1,4 +1,4 @@
-import { IItem, IItemQuery } from 'common/interfaces/products';
+import { IItem, IItemBase, IItemQuery } from 'common/interfaces/products';
 import { ProductosModelFactory } from 'models/factory/productos';
 import { modelTypeToUse } from './modelType';
 
@@ -14,7 +14,7 @@ class ProductsAPI {
     return this.factory.get();
   }
 
-  async save(producto: IItem) {
+  async save(producto: IItemBase) {
     const newProduct = await this.factory.save(producto);
     return newProduct;
   }

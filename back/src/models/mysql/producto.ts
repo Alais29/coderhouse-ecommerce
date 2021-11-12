@@ -1,6 +1,6 @@
 import knex, { Knex } from 'knex';
 import { IKnex } from 'common/interfaces/others';
-import { IItem, IItemQuery } from 'common/interfaces/products';
+import { IItem, IItemBase, IItemQuery } from 'common/interfaces/products';
 import { NotFound } from 'errors';
 import dbConfig from './../../../knexfile';
 import { productosMock } from 'mocks/products';
@@ -59,7 +59,7 @@ export class ProductosModelMySql {
     }
   }
 
-  async save(producto: IItem): Promise<IItem> {
+  async save(producto: IItemBase): Promise<IItem> {
     try {
       const newProductId = await this.connection('productos').insert(producto);
       const newProduct = this.get(newProductId[0] as unknown as string);

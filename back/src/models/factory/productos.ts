@@ -1,5 +1,5 @@
 import { ModelType } from 'common/enums';
-import { IItem, IItemQuery } from 'common/interfaces/products';
+import { IItem, IItemBase, IItemQuery } from 'common/interfaces/products';
 import { ProductosModelFirebase } from 'models/firebase/producto';
 import { ProductosModelFs } from 'models/fs/producto';
 import { ProductosModel } from 'models/memory/productos';
@@ -8,7 +8,7 @@ import { ProductosModelMySql } from 'models/mysql/producto';
 
 interface IModel {
   get: (id?: string) => Promise<IItem | IItem[]>;
-  save: (producto: IItem) => Promise<IItem>;
+  save: (producto: IItemBase) => Promise<IItem>;
   update: (id: string, producto: IItem) => Promise<IItem>;
   delete: (id: string) => Promise<void>;
   query: (options: IItemQuery) => Promise<IItem | IItem[]>;

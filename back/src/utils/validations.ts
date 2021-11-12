@@ -1,5 +1,5 @@
 import { isEmail, isUrl, isValidCode } from './strings';
-import { IItem, IItemQuery } from 'common/interfaces/products';
+import { IItem, IItemBase, IItemQuery } from 'common/interfaces/products';
 import { IUserBase } from 'common/interfaces/users';
 import { getEmptyFields } from './objects';
 import {
@@ -14,7 +14,9 @@ import {
  * @param producto a product item
  * @returns checks if the product has empty fields, and if all the fields are valid, if they're not, it will return a proper error
  */
-export const isValidProduct = (producto: IItem): boolean | Error => {
+export const isValidProduct = (
+  producto: IItem | IItemBase,
+): boolean | Error => {
   const emptyFields = getEmptyFields(producto);
 
   if (emptyFields.length !== 0) {

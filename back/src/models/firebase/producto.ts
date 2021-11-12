@@ -1,4 +1,4 @@
-import { IItem, IItemQuery } from 'common/interfaces/products';
+import { IItem, IItemBase, IItemQuery } from 'common/interfaces/products';
 import { NotFound } from 'errors';
 import admin, { firestore } from 'firebase-admin';
 import { productosMock } from 'mocks/products';
@@ -65,7 +65,7 @@ export class ProductosModelFirebase {
     }
   }
 
-  async save(data: IItem): Promise<IItem> {
+  async save(data: IItemBase): Promise<IItem> {
     try {
       data.timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
       const productDocumentRef = await this.productosDb.add({

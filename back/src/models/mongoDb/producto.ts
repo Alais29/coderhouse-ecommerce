@@ -87,7 +87,7 @@ export class ProductosModelMongoDb {
     }
   }
 
-  async save(data: IItem): Promise<IItem> {
+  async save(data: IItemBase): Promise<IItem> {
     try {
       const newProduct = await new this.productos(data);
       await newProduct.save();

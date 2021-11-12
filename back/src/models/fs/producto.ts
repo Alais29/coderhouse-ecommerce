@@ -2,7 +2,7 @@ import { promises as fsPromises } from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 import moment from 'moment';
 import path from 'path';
-import { IItem, IItemQuery } from 'common/interfaces/products';
+import { IItem, IItemBase, IItemQuery } from 'common/interfaces/products';
 import { NotFound } from 'errors';
 
 const productosPath = path.resolve(__dirname, '../../../productos.json');
@@ -19,7 +19,7 @@ export class ProductosModelFs {
     }
   }
 
-  async save(producto: IItem): Promise<IItem> {
+  async save(producto: IItemBase): Promise<IItem> {
     try {
       const productos = await fsPromises.readFile(productosPath, 'utf-8');
       const productosJSON = JSON.parse(productos);
@@ -32,7 +32,7 @@ export class ProductosModelFs {
         productosPath,
         JSON.stringify(productosJSON, null, '\t'),
       );
-      return producto;
+      return producto as IItem;
     } catch (e) {
       throw { error: e, message: 'No se pudo guardar el producto' };
     }
