@@ -5,6 +5,8 @@ import cors from 'cors';
 import path from 'path';
 import * as http from 'http';
 import MongoStore from 'connect-mongo';
+import swaggerUi from 'swagger-ui-express';
+import docs from 'docs';
 import Config from 'config';
 import routes from 'routes';
 import { unknownEndpoint } from 'middlewares/unknownEndpoint';
@@ -43,6 +45,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/api', routes);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(docs));
 
 app.use(errorHandler);
 app.use(unknownEndpoint);
