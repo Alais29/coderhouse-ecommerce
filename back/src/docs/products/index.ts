@@ -5,15 +5,13 @@ import saveProduct from './saveProduct';
 import updateProduct from './updateProduct';
 
 export default {
-  paths: {
-    '/productos': {
-      ...getProducts,
-      ...saveProduct,
-    },
-    '/productos/{id}': {
-      ...getProduct,
-      ...updateProduct,
-      ...deleteProduct,
-    },
+  '/productos': {
+    ...getProducts,
+    ...saveProduct,
+  },
+  '/productos/{id}': {
+    ...getProduct,
+    ...updateProduct,
+    ...deleteProduct,
   },
 };

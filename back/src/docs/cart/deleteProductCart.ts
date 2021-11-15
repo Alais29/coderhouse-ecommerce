@@ -1,33 +1,33 @@
 export default {
-  post: {
-    tags: ['Products'],
-    description: 'Save a new product.',
-    operationId: 'saveProduct',
-    parameters: [],
-    requestBody: {
-      required: true,
-      content: {
-        'application/json': {
-          schema: {
-            $ref: '#/components/schemas/ProductInput',
-          },
+  delete: {
+    tags: ['Cart'],
+    description: 'Delete a product in the cart.',
+    operationId: 'deleteProductCart',
+    parameters: [
+      {
+        name: 'id',
+        in: 'path',
+        schema: {
+          $ref: '#/components/schemas/id',
         },
+        required: true,
+        description: 'A single product id',
       },
-    },
+    ],
     responses: {
       200: {
-        description: 'Product created successfully.',
+        description: 'Product was removed successfully from the cart.',
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/Product',
+              $ref: '#/components/schemas/ProductsCart',
             },
           },
         },
       },
-      400: {
+      404: {
         description:
-          'One or more of the product properties do not meet the proper conditions.',
+          "The cart does not exists (there's no cart associated to the user) or the product you want to delete is not in the cart.",
         content: {
           'application/json': {
             schema: {

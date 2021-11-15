@@ -1,8 +1,8 @@
 export default {
-  put: {
-    tags: ['Products'],
-    description: 'Update an existing product.',
-    operationId: 'updateProduct',
+  post: {
+    tags: ['Cart'],
+    description: 'Add a product to the cart.',
+    operationId: 'saveProductCart',
     parameters: [
       {
         name: 'id',
@@ -14,34 +14,13 @@ export default {
         description: 'A single product id',
       },
     ],
-    requestBody: {
-      required: 'true',
-      content: {
-        'application/json': {
-          schema: {
-            $ref: '#/components/schemas/ProductInput',
-          },
-        },
-      },
-    },
     responses: {
       200: {
-        description: 'Product updated successfully.',
+        description: 'Product was added to cart.',
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/Product',
-            },
-          },
-        },
-      },
-      400: {
-        description:
-          'One or more of the product properties do not meet the proper conditions.',
-        content: {
-          'application/json': {
-            schema: {
-              $ref: '#/components/schemas/Error',
+              $ref: '#/components/schemas/ProductCart',
             },
           },
         },
@@ -57,7 +36,7 @@ export default {
         },
       },
       404: {
-        description: 'The product to update does not exist.',
+        description: 'The cart or the product you want to add does not exists.',
         content: {
           'application/json': {
             schema: {

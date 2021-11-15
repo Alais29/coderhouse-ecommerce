@@ -1,4 +1,5 @@
 import basicInfo from './basicInfo';
+import cart from './cart';
 import components from './components';
 import products from './products';
 import servers from './servers';
@@ -9,5 +10,8 @@ export default {
   ...servers,
   ...tags,
   ...components,
-  ...products,
+  paths: {
+    ...products,
+    ...cart,
+  },
 };

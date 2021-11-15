@@ -1,33 +1,33 @@
 export default {
-  post: {
-    tags: ['Products'],
-    description: 'Save a new product.',
-    operationId: 'saveProduct',
-    parameters: [],
-    requestBody: {
-      required: true,
-      content: {
-        'application/json': {
-          schema: {
-            $ref: '#/components/schemas/ProductInput',
-          },
+  get: {
+    tags: ['Cart'],
+    description: 'Get a list of all products in the cart.',
+    operationId: 'getProductsCart',
+    parameters: [
+      {
+        name: 'id',
+        in: 'path',
+        schema: {
+          $ref: '#/components/schemas/id',
         },
+        required: true,
+        description: 'A single product id',
       },
-    },
+    ],
     responses: {
       200: {
-        description: 'Product created successfully.',
+        description: 'Product in the cart was obtained',
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/Product',
+              $ref: '#/components/schemas/ProductCart',
             },
           },
         },
       },
-      400: {
+      404: {
         description:
-          'One or more of the product properties do not meet the proper conditions.',
+          "The cart does not exists (there's no cart associated to the user) or the product is not in the cart.",
         content: {
           'application/json': {
             schema: {

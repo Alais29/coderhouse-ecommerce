@@ -12,6 +12,12 @@ export default {
           $ref: '#/components/schemas/Product',
         },
       },
+      ProductsCart: {
+        type: 'array',
+        items: {
+          $ref: '#/components/schemas/ProductCart',
+        },
+      },
       Product: {
         type: 'object',
         properties: {
@@ -91,6 +97,32 @@ export default {
             type: 'number',
             description: 'Product stock',
             example: '21',
+          },
+        },
+      },
+      ProductCart: {
+        type: 'object',
+        properties: {
+          producto: {
+            $ref: '#/components/schemas/Product',
+          },
+          quantity: {
+            type: 'number',
+            description: 'Amount of this product in the cart.',
+            example: '1',
+          },
+        },
+      },
+      ProductCartEdit: {
+        type: 'object',
+        properties: {
+          productId: {
+            $ref: '#/components/schemas/id',
+          },
+          amount: {
+            type: 'number',
+            description: 'New desired amount of product to add to cart',
+            example: '5',
           },
         },
       },

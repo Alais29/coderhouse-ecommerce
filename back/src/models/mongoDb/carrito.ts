@@ -123,7 +123,7 @@ export class CarritoModelMongoDb {
     } catch (e) {
       if (e instanceof mongoose.Error.CastError) {
         throw new NotFound(
-          400,
+          404,
           'El producto que deseas agregar o el carrito no existe',
         );
       } else if (e instanceof NotFound) {
