@@ -43,7 +43,7 @@ ProductoSchema.set('toJSON', {
 });
 
 ProductoSchema.plugin(uniqueValidator, {
-  message: 'El campo ya existe, ingrese uno diferente.',
+  message: 'El código ya existe, ingrese uno diferente.',
 });
 
 export const ProductosModel = mongoose.model<IItemBase>(
@@ -130,9 +130,13 @@ export class ProductosModelMongoDb {
 
   async delete(id: string): Promise<void> {
     try {
-      await this.productos.findByIdAndRemove(id);
+      const productDeleted = await this.productos.findByIdAndRemove(id);
+      if (productDeleted === null)
+        throw new NotFound(404, 'El producto que desea eliminar no existe');
     } catch (e) {
-      if (e instanceof mongoose.Error.CastError) {
+      if (e instanceof NotFound) {
+        throw e;
+      } else if (e instanceof mongoose.Error.CastError) {
         throw new NotFound(404, 'El producto que desea eliminar no existe');
       } else {
         throw { error: e, message: 'Hubo un problema al eliminar el producto' };

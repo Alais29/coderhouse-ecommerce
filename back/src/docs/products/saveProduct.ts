@@ -1,22 +1,21 @@
 export default {
-  get: {
+  post: {
     tags: ['Products'],
-    description: 'Get a specific product.',
-    operationId: 'getProduct',
-    parameters: [
-      {
-        name: 'id',
-        in: 'path',
-        schema: {
-          $ref: '#/components/schemas/id',
+    description: 'Save a new product.',
+    operationId: 'saveProduct',
+    parameters: [],
+    requestBody: {
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/ProductInput',
+          },
         },
-        required: true,
-        description: 'A single product id',
       },
-    ],
+    },
     responses: {
       200: {
-        description: 'Product was obtained',
+        description: 'Product created successfully.',
         content: {
           'application/json': {
             schema: {
@@ -25,8 +24,9 @@ export default {
           },
         },
       },
-      401: {
-        description: 'Unauthorized route, login first and try again',
+      400: {
+        description:
+          'One or more of the product properties do not meet the proper conditions.',
         content: {
           'application/json': {
             schema: {
@@ -35,8 +35,8 @@ export default {
           },
         },
       },
-      404: {
-        description: 'The product does not exist.',
+      401: {
+        description: 'Unauthorized route, login first and try again',
         content: {
           'application/json': {
             schema: {

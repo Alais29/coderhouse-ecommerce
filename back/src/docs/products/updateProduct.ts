@@ -1,8 +1,8 @@
 export default {
-  get: {
+  put: {
     tags: ['Products'],
-    description: 'Get a specific product.',
-    operationId: 'getProduct',
+    description: 'Update an existing product.',
+    operationId: 'updateProduct',
     parameters: [
       {
         name: 'id',
@@ -14,13 +14,33 @@ export default {
         description: 'A single product id',
       },
     ],
+    requestBody: {
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/ProductInput',
+          },
+        },
+      },
+    },
     responses: {
       200: {
-        description: 'Product was obtained',
+        description: 'Product updated successfully.',
         content: {
           'application/json': {
             schema: {
               $ref: '#/components/schemas/Product',
+            },
+          },
+        },
+      },
+      400: {
+        description:
+          'One or more of the product properties do not meet the proper conditions.',
+        content: {
+          'application/json': {
+            schema: {
+              $ref: '#/components/schemas/Error',
             },
           },
         },
@@ -36,7 +56,7 @@ export default {
         },
       },
       404: {
-        description: 'The product does not exist.',
+        description: 'The product to update does not exist.',
         content: {
           'application/json': {
             schema: {

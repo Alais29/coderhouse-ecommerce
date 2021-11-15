@@ -1,8 +1,8 @@
 export default {
-  get: {
+  delete: {
     tags: ['Products'],
-    description: 'Get a specific product.',
-    operationId: 'getProduct',
+    description: 'Deletes an existing product.',
+    operationId: 'deleteProduct',
     parameters: [
       {
         name: 'id',
@@ -16,14 +16,7 @@ export default {
     ],
     responses: {
       200: {
-        description: 'Product was obtained',
-        content: {
-          'application/json': {
-            schema: {
-              $ref: '#/components/schemas/Product',
-            },
-          },
-        },
+        description: 'Product deleted successfully.',
       },
       401: {
         description: 'Unauthorized route, login first and try again',
@@ -36,7 +29,7 @@ export default {
         },
       },
       404: {
-        description: 'The product does not exist.',
+        description: 'The product to delete does not exist.',
         content: {
           'application/json': {
             schema: {

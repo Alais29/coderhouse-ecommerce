@@ -18,4 +18,4 @@ scenarios:
             email: '{{ email }}'
             password: '{{ password }}'
       - get:
-          url: '/api/productos/listar'
+          url: '/api/productos'

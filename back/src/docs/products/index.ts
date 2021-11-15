@@ -1,15 +1,19 @@
+import deleteProduct from './deleteProduct';
 import getProduct from './getProduct';
 import getProducts from './getProducts';
+import saveProduct from './saveProduct';
+import updateProduct from './updateProduct';
 
 export default {
   paths: {
-    '/productos/listar': {
+    '/productos': {
       ...getProducts,
+      ...saveProduct,
     },
-    '/productos/listar/{id}': {
+    '/productos/{id}': {
       ...getProduct,
-      // ...updateTodo,
-      // ...deleteTodo,
+      ...updateProduct,
+      ...deleteProduct,
     },
   },
 };

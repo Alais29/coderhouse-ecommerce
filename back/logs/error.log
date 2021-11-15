@@ -9,3 +9,164 @@
     at next (/home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:275:10)
     at Function.handle (/home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:174:3)
     at router (/home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:47:12) 
+[31merror[39m  | Nov-15-2021 13:53:36 | Error: -3, Message: Todos los campos excepto "stock" son obligatorios, Stack: MissingFieldsProduct: Todos los campos excepto "stock" son obligatorios
+    at new BaseError (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:13:11)
+    at new ProductValidation (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:20:5)
+    at new MissingFieldsProduct (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:28:5)
+    at Object.isValidProduct (/home/alizardo/Projects/coderhouse-ecommerce/back/src/utils/validations.ts:21:11)
+    at /home/alizardo/Projects/coderhouse-ecommerce/back/src/controllers/producto.ts:52:3
+    at Generator.next (<anonymous>)
+    at /home/alizardo/Projects/coderhouse-ecommerce/back/src/controllers/producto.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (/home/alizardo/Projects/coderhouse-ecommerce/back/src/controllers/producto.ts:4:12)
+    at saveProducto (/home/alizardo/Projects/coderhouse-ecommerce/back/src/controllers/producto.ts:46:20) 
+[31merror[39m  | Nov-15-2021 13:54:23 | Error: -3, Message: El código ya existe, ingrese uno diferente., Stack: ProductValidation: El código ya existe, ingrese uno diferente.
+    at new BaseError (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:13:11)
+    at new ProductValidation (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:20:5)
+    at ProductosModelMongoDb.<anonymous> (/home/alizardo/Projects/coderhouse-ecommerce/back/src/models/mongoDb/producto.ts:98:15)
+    at Generator.throw (<anonymous>)
+    at rejected (/home/alizardo/Projects/coderhouse-ecommerce/back/src/models/mongoDb/producto.ts:6:65)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) 
+[31merror[39m  | Nov-15-2021 13:55:13 | Error: -3, Message: Todos los campos excepto "stock" son obligatorios, Stack: MissingFieldsProduct: Todos los campos excepto "stock" son obligatorios
+    at new BaseError (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:13:11)
+    at new ProductValidation (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:20:5)
+    at new MissingFieldsProduct (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:28:5)
+    at Object.isValidProduct (/home/alizardo/Projects/coderhouse-ecommerce/back/src/utils/validations.ts:21:11)
+    at /home/alizardo/Projects/coderhouse-ecommerce/back/src/controllers/producto.ts:52:3
+    at Generator.next (<anonymous>)
+    at /home/alizardo/Projects/coderhouse-ecommerce/back/src/controllers/producto.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (/home/alizardo/Projects/coderhouse-ecommerce/back/src/controllers/producto.ts:4:12)
+    at saveProducto (/home/alizardo/Projects/coderhouse-ecommerce/back/src/controllers/producto.ts:46:20) 
+[31merror[39m  | Nov-15-2021 14:22:15 | Error: -4, Message: El producto que desea actualizar no existe, Stack: NotFound: El producto que desea actualizar no existe
+    at new BaseError (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:13:11)
+    at new NotFound (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:36:5)
+    at ProductosModelMongoDb.<anonymous> (/home/alizardo/Projects/coderhouse-ecommerce/back/src/models/mongoDb/producto.ts:118:15)
+    at Generator.throw (<anonymous>)
+    at rejected (/home/alizardo/Projects/coderhouse-ecommerce/back/src/models/mongoDb/producto.ts:6:65)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) 
+[31merror[39m  | Nov-15-2021 14:23:14 | Error: undefined, Message: Unexpected token } in JSON at position 373, Stack: SyntaxError: Unexpected token } in JSON at position 373
+    at JSON.parse (<anonymous>)
+    at parse (/home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/body-parser/lib/types/json.js:89:19)
+    at /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/body-parser/lib/read.js:121:18
+    at invokeCallback (/home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/raw-body/index.js:224:16)
+    at done (/home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/raw-body/index.js:213:7)
+    at IncomingMessage.onEnd (/home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/raw-body/index.js:273:7)
+    at IncomingMessage.emit (events.js:327:22)
+    at IncomingMessage.EventEmitter.emit (domain.js:467:12)
+    at endReadableNT (internal/streams/readable.js:1327:12)
+    at processTicksAndRejections (internal/process/task_queues.js:80:21) 
+[31merror[39m  | Nov-15-2021 14:23:29 | Error: -4, Message: El producto que desea actualizar no existe, Stack: NotFound: El producto que desea actualizar no existe
+    at new BaseError (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:13:11)
+    at new NotFound (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:36:5)
+    at ProductosModelMongoDb.<anonymous> (/home/alizardo/Projects/coderhouse-ecommerce/back/src/models/mongoDb/producto.ts:118:15)
+    at Generator.throw (<anonymous>)
+    at rejected (/home/alizardo/Projects/coderhouse-ecommerce/back/src/models/mongoDb/producto.ts:6:65)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) 
+[31merror[39m  | Nov-15-2021 14:23:45 | Error: -4, Message: Producto no encontrado, Stack: NotFound: Producto no encontrado
+    at new BaseError (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:13:11)
+    at new NotFound (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:36:5)
+    at ProductosModelMongoDb.<anonymous> (/home/alizardo/Projects/coderhouse-ecommerce/back/src/models/mongoDb/producto.ts:83:15)
+    at Generator.throw (<anonymous>)
+    at rejected (/home/alizardo/Projects/coderhouse-ecommerce/back/src/models/mongoDb/producto.ts:6:65)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) 
+[31merror[39m  | Nov-15-2021 14:24:03 | Error: -4, Message: Producto no encontrado, Stack: NotFound: Producto no encontrado
+    at new BaseError (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:13:11)
+    at new NotFound (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:36:5)
+    at ProductosModelMongoDb.<anonymous> (/home/alizardo/Projects/coderhouse-ecommerce/back/src/models/mongoDb/producto.ts:83:15)
+    at Generator.throw (<anonymous>)
+    at rejected (/home/alizardo/Projects/coderhouse-ecommerce/back/src/models/mongoDb/producto.ts:6:65)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) 
+[31merror[39m  | Nov-15-2021 14:24:14 | Error: -4, Message: Producto no encontrado, Stack: NotFound: Producto no encontrado
+    at new BaseError (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:13:11)
+    at new NotFound (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:36:5)
+    at ProductosModelMongoDb.<anonymous> (/home/alizardo/Projects/coderhouse-ecommerce/back/src/models/mongoDb/producto.ts:83:15)
+    at Generator.throw (<anonymous>)
+    at rejected (/home/alizardo/Projects/coderhouse-ecommerce/back/src/models/mongoDb/producto.ts:6:65)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) 
+[31merror[39m  | Nov-15-2021 14:24:28 | Error: -4, Message: Producto no encontrado, Stack: NotFound: Producto no encontrado
+    at new BaseError (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:13:11)
+    at new NotFound (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:36:5)
+    at ProductosModelMongoDb.<anonymous> (/home/alizardo/Projects/coderhouse-ecommerce/back/src/models/mongoDb/producto.ts:83:15)
+    at Generator.throw (<anonymous>)
+    at rejected (/home/alizardo/Projects/coderhouse-ecommerce/back/src/models/mongoDb/producto.ts:6:65)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) 
+[31merror[39m  | Nov-15-2021 14:26:09 | Error: undefined, Message: Unexpected token } in JSON at position 263, Stack: SyntaxError: Unexpected token } in JSON at position 263
+    at JSON.parse (<anonymous>)
+    at parse (/home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/body-parser/lib/types/json.js:89:19)
+    at /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/body-parser/lib/read.js:121:18
+    at invokeCallback (/home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/raw-body/index.js:224:16)
+    at done (/home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/raw-body/index.js:213:7)
+    at IncomingMessage.onEnd (/home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/raw-body/index.js:273:7)
+    at IncomingMessage.emit (events.js:327:22)
+    at IncomingMessage.EventEmitter.emit (domain.js:467:12)
+    at endReadableNT (internal/streams/readable.js:1327:12)
+    at processTicksAndRejections (internal/process/task_queues.js:80:21) 
+[31merror[39m  | Nov-15-2021 15:29:22 | Error: -4, Message: Producto no encontrado, Stack: NotFound: Producto no encontrado
+    at new BaseError (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:13:11)
+    at new NotFound (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:36:5)
+    at ProductosModelMongoDb.<anonymous> (/home/alizardo/Projects/coderhouse-ecommerce/back/src/models/mongoDb/producto.ts:84:15)
+    at Generator.throw (<anonymous>)
+    at rejected (/home/alizardo/Projects/coderhouse-ecommerce/back/src/models/mongoDb/producto.ts:6:65)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) 
+[31merror[39m  | Nov-15-2021 15:39:48 | Error: -4, Message: Producto no encontrado, Stack: NotFound: Producto no encontrado
+    at new BaseError (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:13:11)
+    at new NotFound (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:36:5)
+    at /home/alizardo/Projects/coderhouse-ecommerce/back/src/controllers/producto.ts:41:14
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/alizardo/Projects/coderhouse-ecommerce/back/src/controllers/producto.ts:5:58)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) 
+[31merror[39m  | Nov-15-2021 15:40:32 | Error: -4, Message: Producto no encontrado, Stack: NotFound: Producto no encontrado
+    at new BaseError (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:13:11)
+    at new NotFound (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:36:5)
+    at /home/alizardo/Projects/coderhouse-ecommerce/back/src/controllers/producto.ts:41:14
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/alizardo/Projects/coderhouse-ecommerce/back/src/controllers/producto.ts:5:58)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) 
+[31merror[39m  | Nov-15-2021 15:41:11 | Error: -4, Message: El producto que desea eliminar no existe, Stack: NotFound: El producto que desea eliminar no existe
+    at new BaseError (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:13:11)
+    at new NotFound (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:36:5)
+    at ProductosModelMongoDb.<anonymous> (/home/alizardo/Projects/coderhouse-ecommerce/back/src/models/mongoDb/producto.ts:136:15)
+    at Generator.throw (<anonymous>)
+    at rejected (/home/alizardo/Projects/coderhouse-ecommerce/back/src/models/mongoDb/producto.ts:6:65)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) 
+[31merror[39m  | Nov-15-2021 15:41:16 | Error: -4, Message: El producto que desea eliminar no existe, Stack: NotFound: El producto que desea eliminar no existe
+    at new BaseError (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:13:11)
+    at new NotFound (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:36:5)
+    at ProductosModelMongoDb.<anonymous> (/home/alizardo/Projects/coderhouse-ecommerce/back/src/models/mongoDb/producto.ts:136:15)
+    at Generator.throw (<anonymous>)
+    at rejected (/home/alizardo/Projects/coderhouse-ecommerce/back/src/models/mongoDb/producto.ts:6:65)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) 
+[31merror[39m  | Nov-15-2021 15:42:26 | Error: -3, Message: Todos los campos excepto "stock" son obligatorios, Stack: MissingFieldsProduct: Todos los campos excepto "stock" son obligatorios
+    at new BaseError (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:13:11)
+    at new ProductValidation (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:20:5)
+    at new MissingFieldsProduct (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:28:5)
+    at Object.isValidProduct (/home/alizardo/Projects/coderhouse-ecommerce/back/src/utils/validations.ts:21:11)
+    at /home/alizardo/Projects/coderhouse-ecommerce/back/src/controllers/producto.ts:52:3
+    at Generator.next (<anonymous>)
+    at /home/alizardo/Projects/coderhouse-ecommerce/back/src/controllers/producto.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (/home/alizardo/Projects/coderhouse-ecommerce/back/src/controllers/producto.ts:4:12)
+    at saveProducto (/home/alizardo/Projects/coderhouse-ecommerce/back/src/controllers/producto.ts:46:20) 
+[31merror[39m  | Nov-15-2021 15:42:31 | Error: -3, Message: El código ya existe, ingrese uno diferente., Stack: ProductValidation: El código ya existe, ingrese uno diferente.
+    at new BaseError (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:13:11)
+    at new ProductValidation (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:20:5)
+    at ProductosModelMongoDb.<anonymous> (/home/alizardo/Projects/coderhouse-ecommerce/back/src/models/mongoDb/producto.ts:98:15)
+    at Generator.throw (<anonymous>)
+    at rejected (/home/alizardo/Projects/coderhouse-ecommerce/back/src/models/mongoDb/producto.ts:6:65)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) 
+[31merror[39m  | Nov-15-2021 15:42:55 | Error: -4, Message: Producto no encontrado, Stack: NotFound: Producto no encontrado
+    at new BaseError (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:13:11)
+    at new NotFound (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:36:5)
+    at /home/alizardo/Projects/coderhouse-ecommerce/back/src/controllers/producto.ts:40:14
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/alizardo/Projects/coderhouse-ecommerce/back/src/controllers/producto.ts:5:58)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) 
+[31merror[39m  | Nov-15-2021 15:46:37 | Error: NotFound: El producto que desea eliminar no existe, Message: Hubo un problema al eliminar el producto, Stack: undefined 
+[31merror[39m  | Nov-15-2021 15:48:14 | Error: -4, Message: El producto que desea eliminar no existe, Stack: NotFound: El producto que desea eliminar no existe
+    at new BaseError (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:13:11)
+    at new NotFound (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:36:5)
+    at ProductosModelMongoDb.<anonymous> (/home/alizardo/Projects/coderhouse-ecommerce/back/src/models/mongoDb/producto.ts:135:15)
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/alizardo/Projects/coderhouse-ecommerce/back/src/models/mongoDb/producto.ts:5:58)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) 

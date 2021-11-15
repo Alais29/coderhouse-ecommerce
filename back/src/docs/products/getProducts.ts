@@ -75,7 +75,7 @@ export default {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/UnauthorizedRouteError',
+              $ref: '#/components/schemas/Error',
             },
           },
         },
@@ -85,7 +85,7 @@ export default {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/NotFoundError',
+              $ref: '#/components/schemas/Error',
             },
           },
         },

@@ -1,7 +1,7 @@
 /**
- *
+ * Determines if the item passed as argument is empty or not
  * @param item string, number, array, or object
- * @returns Determines if the item passed as argument is empty or not
+ * @returns true if item is empty, false if it's not
  */
 export const isEmpty = (item: string | number | unknown): boolean => {
   switch (typeof item) {
