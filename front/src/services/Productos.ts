@@ -17,7 +17,7 @@ export const getProducts = async (query?: IItemQuery) => {
     } else {
       queryString = '';
     }
-    const response = await axios.get(`${baseUrl}/listar${queryString}`);
+    const response = await axios.get(`${baseUrl}${queryString}`);
     return response.data.data;
   } catch (e) {
     throw new Error(e.response.data.message);
@@ -26,7 +26,7 @@ export const getProducts = async (query?: IItemQuery) => {
 
 export const saveProduct = async (newProduct: IItem) => {
   try {
-    const response = await axios.post(`${baseUrl}/guardar`, newProduct);
+    const response = await axios.post(`${baseUrl}`, newProduct);
     return response.data.data;
   } catch (e) {
     throw new Error(e.response.data.message);
@@ -35,7 +35,7 @@ export const saveProduct = async (newProduct: IItem) => {
 
 export const deleteProduct = async (id: string) => {
   try {
-    const response = await axios.delete(`${baseUrl}/borrar/${id}`);
+    const response = await axios.delete(`${baseUrl}/${id}`);
     return response.data.data;
   } catch (e) {
     throw new Error(e.response.data.message);
@@ -44,7 +44,7 @@ export const deleteProduct = async (id: string) => {
 
 export const updateProduct = async (id: string, product: IItem) => {
   try {
-    const response = await axios.put(`${baseUrl}/actualizar/${id}`, product);
+    const response = await axios.put(`${baseUrl}/${id}`, product);
     return response.data.data;
   } catch (e) {
     throw new Error(e.response.data.message);
