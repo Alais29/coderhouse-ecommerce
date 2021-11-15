@@ -137,13 +137,13 @@ export default {
           },
         },
       },
-      Error: {
+      NotFoundError: {
         type: 'object',
         properties: {
           error: {
             type: 'string',
             description: 'Error internal code.',
-            example: '-1',
+            example: '-4',
           },
           name: {
             type: 'string',
@@ -161,10 +161,36 @@ export default {
             example:
               'NotFound: Producto no encontrado\n    at new BaseError (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:13:11)\n    at new NotFound (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:36:5)\n    at ProductosModelMongoDb.<anonymous> (/home/alizardo/Projects/coderhouse-ecommerce/back/src/models/mongoDb/producto.ts:83:15)\n    at Generator.throw (<anonymous>)\n    at rejected (/home/alizardo/Projects/coderhouse-ecommerce/back/src/models/mongoDb/producto.ts:6:65)\n    at processTicksAndRejections (internal/process/task_queues.js:93:5)',
           },
-          description: {
+        },
+      },
+      UnauthorizedRouteError: {
+        type: 'object',
+        properties: {
+          error: {
             type: 'string',
-            description: 'Error description, can be present or not.',
-            example: 'Faltan los siguientes campos: nombre',
+            description: 'Error internal code.',
+            example: '-1',
+          },
+          name: {
+            type: 'string',
+            description: 'Name of the error class.',
+            example: 'UnauthorizedRoute',
+          },
+          message: {
+            type: 'string',
+            description: 'Error message.',
+            example: 'No Autorizado',
+          },
+          stack: {
+            type: 'string',
+            description: 'Error stack trace',
+            example:
+              '"UnauthorizedRoute: No Autorizado\n    at new BaseError (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:13:11)\n    at new UnauthorizedRoute (/home/alizardo/Projects/coderhouse-ecommerce/back/src/errors/index.ts:61:5)\n    at isLoggedIn (/home/alizardo/Projects/coderhouse-ecommerce/back/src/middlewares/auth.ts:142:37)\n    at Layer.handle [as handle_request] (/home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:317:13)\n    at /home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:284:7\n    at Function.process_params (/home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:335:12)\n    at next (/home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:275:10)\n    at Function.handle (/home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:174:3)\n    at router (/home/alizardo/Projects/coderhouse-ecommerce/back/node_modules/express/lib/router/index.js:47:12)',
+          },
+          descripcion: {
+            type: 'string',
+            description: 'Error description.',
+            example: 'No tienes permisos para realizar esa acción',
           },
         },
       },
