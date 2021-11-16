@@ -1,25 +1,96 @@
 export default {
   components: {
     schemas: {
-      id: {
+      ProductId: {
         type: 'string',
         description: 'An id of a product',
         example: '61717f366466441a1936e9fa',
       },
-      Products: {
-        type: 'array',
-        items: {
-          $ref: '#/components/schemas/Product',
+      UserId: {
+        type: 'string',
+        description: 'An id of an user.',
+        example: '6185584bc0d33bdb01a32966',
+      },
+      User: {
+        type: 'object',
+        description: 'User data.',
+        properties: {
+          email: {
+            type: 'string',
+            description: 'User email.',
+            example: 'test1@example.com',
+          },
+          nombre: {
+            type: 'string',
+            description: 'User name.',
+            example: 'Jose Perez',
+          },
+          direccion: {
+            type: 'string',
+            description: 'User address.',
+            example: 'Providencia 1550',
+          },
+          edad: {
+            type: 'number',
+            description: 'User age.',
+            example: '30',
+          },
+          telefono: {
+            type: 'string',
+            description: 'User phone number, with international code.',
+            example: '+56912345678',
+          },
+          foto: {
+            type: 'string',
+            description: 'Path to where the user picture is sotraged.',
+            example: 'uploads/foto-test1@example.com.png',
+          },
+          id: {
+            type: 'string',
+            description: 'User id.',
+            example: '61855811efae7a5e849ebb9c',
+          },
         },
       },
-      ProductsCart: {
-        type: 'array',
-        items: {
-          $ref: '#/components/schemas/ProductCart',
+      UserData: {
+        type: 'object',
+        description: 'User data.',
+        properties: {
+          email: {
+            type: 'string',
+            description: 'User email.',
+            example: 'test1@example.com',
+          },
+          nombre: {
+            type: 'string',
+            description: 'User name.',
+            example: 'Jose Perez',
+          },
+          direccion: {
+            type: 'string',
+            description: 'User address.',
+            example: 'Providencia 1550',
+          },
+          edad: {
+            type: 'number',
+            description: 'User age.',
+            example: '30',
+          },
+          telefono: {
+            type: 'string',
+            description: 'User phone number, with international code.',
+            example: '+56912345678',
+          },
+          foto: {
+            type: 'string',
+            description: 'Path to where the user picture is sotraged.',
+            example: 'uploads/foto-test1@example.com.png',
+          },
         },
       },
       Product: {
         type: 'object',
+        description: 'A product.',
         properties: {
           id: {
             type: 'string',
@@ -66,6 +137,8 @@ export default {
       },
       ProductInput: {
         type: 'object',
+        description:
+          'Product data when saving a new product or editing an existing one.',
         properties: {
           nombre: {
             type: 'string',
@@ -102,6 +175,7 @@ export default {
       },
       ProductCart: {
         type: 'object',
+        description: 'A product in the cart.',
         properties: {
           producto: {
             $ref: '#/components/schemas/Product',
@@ -113,21 +187,9 @@ export default {
           },
         },
       },
-      ProductCartEdit: {
-        type: 'object',
-        properties: {
-          productId: {
-            $ref: '#/components/schemas/id',
-          },
-          amount: {
-            type: 'number',
-            description: 'New desired amount of product to add to cart',
-            example: '5',
-          },
-        },
-      },
       Error: {
         type: 'object',
+        description: 'Error structure.',
         properties: {
           error: {
             type: 'string',

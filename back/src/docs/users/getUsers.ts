@@ -1,32 +1,28 @@
 export default {
   get: {
-    tags: ['Products'],
-    description: 'Get a specific product.',
-    operationId: 'getProduct',
-    parameters: [
-      {
-        name: 'id',
-        in: 'path',
-        schema: {
-          $ref: '#/components/schemas/ProductId',
-        },
-        required: true,
-        description: 'A single product id',
-      },
-    ],
+    tags: ['User'],
+    description:
+      'Get a list of all users. Only available for logged in admin user',
+    operationId: 'getUsers',
+    parameters: [],
     responses: {
       200: {
-        description: 'Product was obtained',
+        description: 'Users were obtained.',
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/Product',
+              type: 'array',
+              description: 'Array of products.',
+              items: {
+                $ref: '#/components/schemas/User',
+              },
             },
           },
         },
       },
       401: {
-        description: 'Unauthorized route, login first and try again',
+        description:
+          'Unauthorized route, login as an admin first and try again.',
         content: {
           'application/json': {
             schema: {
@@ -36,7 +32,7 @@ export default {
         },
       },
       404: {
-        description: 'The product does not exist.',
+        description: 'There are no registered users.',
         content: {
           'application/json': {
             schema: {

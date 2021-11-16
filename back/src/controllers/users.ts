@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import { userAPI } from 'api/user';
 import { userJoiSchema } from 'common/interfaces/users';
-import { UserExists, UserValidation } from 'errors';
+import { NotFound, UserExists, UserValidation } from 'errors';
 import { ValidationError } from 'joi';
+import { isEmpty } from 'utils/others';
 
 export const validateUserInput = async (
   req: Request,
@@ -28,6 +29,12 @@ export const validateUserInput = async (
       throw e;
     }
   }
+};
+
+export const getUsers = async (req: Request, res: Response): Promise<void> => {
+  const data = await userAPI.getUsers();
+  if (!isEmpty(data)) res.json({ data });
+  else throw new NotFound(404, 'No hay usuarios registrados.');
 };
 
 export const getUser = async (req: Request, res: Response): Promise<void> => {

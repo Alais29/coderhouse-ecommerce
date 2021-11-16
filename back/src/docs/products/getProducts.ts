@@ -65,7 +65,11 @@ export default {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/Products',
+              type: 'array',
+              description: 'Array of products.',
+              items: {
+                $ref: '#/components/schemas/Product',
+              },
             },
           },
         },
@@ -80,7 +84,7 @@ export default {
           },
         },
       },
-      400: {
+      404: {
         description: 'There are no products',
         content: {
           'application/json': {

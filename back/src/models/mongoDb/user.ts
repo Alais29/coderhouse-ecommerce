@@ -31,6 +31,7 @@ UserSchema.set('toJSON', {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
     delete returnedObject.__v;
+    delete returnedObject.password;
   },
 });
 
@@ -48,13 +49,16 @@ export class UserModelMongoDb {
     try {
       if (id) {
         const document = await this.userModel.findById(id);
-        if (document) output = document;
+        if (document !== null) output = document;
+        else throw new NotFound(404, 'Usuario no encontrado');
       } else {
         output = await this.userModel.find();
       }
       return output;
     } catch (e) {
-      if (e instanceof mongoose.Error.CastError) {
+      if (e instanceof NotFound) {
+        throw e;
+      } else if (e instanceof mongoose.Error.CastError) {
         throw new NotFound(404, 'Usuario no encontrado');
       } else {
         throw { error: e, message: 'Hubo un problema al cargar los usuarios' };

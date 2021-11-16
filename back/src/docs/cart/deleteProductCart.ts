@@ -8,7 +8,7 @@ export default {
         name: 'id',
         in: 'path',
         schema: {
-          $ref: '#/components/schemas/id',
+          $ref: '#/components/schemas/ProductId',
         },
         required: true,
         description: 'A single product id',
@@ -20,7 +20,11 @@ export default {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/ProductsCart',
+              type: 'array',
+              description: 'Array of products in cart.',
+              items: {
+                $ref: '#/components/schemas/ProductCart',
+              },
             },
           },
         },

@@ -1,9 +1,11 @@
 import basicInfo from './basicInfo';
 import cart from './cart';
 import components from './components';
+import login from './login';
 import products from './products';
 import servers from './servers';
 import tags from './tags';
+import users from './users';
 
 export default {
   ...basicInfo,
@@ -13,5 +15,7 @@ export default {
   paths: {
     ...products,
     ...cart,
+    ...login,
+    ...users,
   },
 };
