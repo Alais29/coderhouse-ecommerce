@@ -139,7 +139,11 @@ export const isLoggedIn = (
   res: Response,
   next: NextFunction,
 ): void => {
-  if (!req.isAuthenticated()) throw new UnauthorizedRoute(401, 'No Autorizado');
+  if (!req.isAuthenticated())
+    throw new UnauthorizedRoute(
+      401,
+      'Debes estar loggeado para realizar esta acción',
+    );
 
   next();
 };

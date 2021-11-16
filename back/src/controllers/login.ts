@@ -28,13 +28,13 @@ export const signupUser = (
 ): void => {
   passport.authenticate('signup', function (err, user, info) {
     if (err) {
-      logger.warn('Error al registrarse');
+      logger.warn('Error al registrar usuario');
       return next(err);
     }
     if (!user) {
       throw new UserExists(400, info.message);
     }
-    res.json({ msg: 'signup ok' });
+    res.json({ message: 'Registro exitoso' });
   })(req, res, next);
 };
 

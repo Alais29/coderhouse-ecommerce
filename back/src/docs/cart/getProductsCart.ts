@@ -10,7 +10,11 @@ export default {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/ProductsCart',
+              type: 'array',
+              description: 'Array of products in cart.',
+              items: {
+                $ref: '#/components/schemas/ProductCart',
+              },
             },
           },
         },

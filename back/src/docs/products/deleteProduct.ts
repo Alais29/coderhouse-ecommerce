@@ -8,7 +8,7 @@ export default {
         name: 'id',
         in: 'path',
         schema: {
-          $ref: '#/components/schemas/id',
+          $ref: '#/components/schemas/ProductId',
         },
         required: true,
         description: 'A single product id',

@@ -31,6 +31,7 @@ type IModelType = IModel | IModelMongo;
 
 export class CarritoModelFactory {
   static model(type: number): IModelType {
+    //TODO: Add individual cart for user to fs, sql, memory and firebase models
     switch (type) {
       case ModelType.fs:
         return new CarritoModelFs();

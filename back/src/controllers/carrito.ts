@@ -35,7 +35,10 @@ export const saveCarritoProduct = async (
     const newProducto = await carritoAPI.save(_id, req.params.id);
     res.json({ data: newProducto });
   } else {
-    throw new UnauthorizedRoute(401, 'No Autorizado');
+    throw new UnauthorizedRoute(
+      401,
+      'Debes estar loggeado para agregar un producto al carrito.',
+    );
   }
 };
 
