@@ -30,7 +30,7 @@ app.use(
     saveUninitialized: false,
     rolling: true,
     store: MongoStore.create({
-      clientPromise,
+      clientPromise: clientPromise(),
       stringify: false,
       autoRemove: 'interval',
       autoRemoveInterval: 1,

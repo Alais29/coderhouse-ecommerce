@@ -55,16 +55,16 @@ export class ProductosModelMongoDb {
   private productos;
   constructor() {
     this.productos = ProductosModel;
-    this.get()
-      .then(productos => {
-        if (productos.length === 0) {
-          this.productos
-            .insertMany(productosMock)
-            .then(() => logger.info('Productos agregados'))
-            .catch(e => logger.error(e));
-        }
-      })
-      .catch(e => logger.error(e));
+    // this.get()
+    //   .then(productos => {
+    //     if (productos.length === 0) {
+    //       this.productos
+    //         .insertMany(productosMock)
+    //         .then(() => logger.info('Productos agregados'))
+    //         .catch(e => logger.error(e));
+    //     }
+    //   })
+    //   .catch(e => logger.error(e));
   }
 
   async get(id?: string): Promise<IItem[] | IItem> {

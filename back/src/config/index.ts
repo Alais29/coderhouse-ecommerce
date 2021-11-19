@@ -1,6 +1,7 @@
 import 'dotenv/config.js';
 
 const env = {
+  NODE_ENV: process.env.NODE_ENV || 'dev',
   PORT: process.env.PORT || 8080,
   MODE: process.env.MODE || 'noCluster',
   SESSION_SECRET: process.env.SESSION_SECRET || 'sessionSecret',
