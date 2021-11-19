@@ -1,10 +1,8 @@
 import { IItem, IItemBase, IItemQuery } from 'common/interfaces/products';
 import moment from 'moment';
 import mongoose, { FilterQuery } from 'mongoose';
-import { productosMock } from 'mocks/products';
 import { NotFound, ProductValidation } from 'errors';
 import uniqueValidator from 'mongoose-unique-validator';
-import { logger } from 'services/logger';
 import { isQueryValid } from 'utils/validations';
 
 const ProductoSchema = new mongoose.Schema<IItemBase>({
@@ -55,16 +53,6 @@ export class ProductosModelMongoDb {
   private productos;
   constructor() {
     this.productos = ProductosModel;
-    // this.get()
-    //   .then(productos => {
-    //     if (productos.length === 0) {
-    //       this.productos
-    //         .insertMany(productosMock)
-    //         .then(() => logger.info('Productos agregados'))
-    //         .catch(e => logger.error(e));
-    //     }
-    //   })
-    //   .catch(e => logger.error(e));
   }
 
   async get(id?: string): Promise<IItem[] | IItem> {

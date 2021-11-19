@@ -4,6 +4,13 @@ import { ModelType } from 'common/enums';
 import { modelTypeToUse } from 'api/modelType';
 import { logger } from 'services/logger';
 import MongoMemoryServer from 'mongodb-memory-server-core';
+import { MongoClient } from 'mongodb';
+
+export interface Global extends NodeJS.Global {
+  __MONGOINSTANCE__: MongoMemoryServer;
+}
+
+declare const global: Global;
 
 const mongoTestServer = async () => {
   const instance = await MongoMemoryServer.create();
@@ -25,7 +32,7 @@ const getMongoUrl = async (type: number): Promise<string> => {
   }
 };
 
-export const clientPromise = async () => {
+export const clientPromise = async (): Promise<MongoClient> => {
   const mongoUrl = await getMongoUrl(modelTypeToUse);
   return mongoose.connect(mongoUrl).then(m => {
     logger.info('Base de datos mongo conectada');

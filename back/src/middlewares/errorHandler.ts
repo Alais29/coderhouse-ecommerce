@@ -1,4 +1,5 @@
 import { ErrorRequestHandler } from 'express';
+import Config from 'config';
 import { logger } from 'services/logger';
 
 interface IErrorInfo {
@@ -20,8 +21,8 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
   if (descripcion) {
     errorInfo.descripcion = descripcion;
   }
-
-  logger.error(`Error: ${error}, Message: ${message}, Stack: ${stack} `);
+  if (Config.NODE_ENV !== 'test')
+    logger.error(`Error: ${error}, Message: ${message}, Stack: ${stack} `);
 
   res.status(statusCode || 500).json(errorInfo);
 };

@@ -17,7 +17,8 @@
     "seed:db": "npx knex seed:run --env development",
     "iniciar:db": "npm run rollback:db && npm run migrate:db && npm run seed:db",
     "artillery": "artillery run artillery/test.yml",
-    "test": "NODE_ENV=test jest"
+    "test": "NODE_ENV=test jest",
+    "test:watch": "NODE_ENV=test jest --watch"
   },
   "author": "Alfonsina Lizardo",
   "license": "ISC",
@@ -38,6 +39,7 @@
     "joi": "^17.4.2",
     "knex": "^0.95.10",
     "moment": "^2.29.1",
+    "mongodb": "^4.1.1",
     "mongodb-memory-server": "^8.0.2",
     "mongoose": "^6.0.6",
     "mongoose-unique-validator": "^3.0.0",
