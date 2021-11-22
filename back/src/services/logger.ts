@@ -1,4 +1,5 @@
 import winston from 'winston';
+import Config from 'config';
 
 const { createLogger, format, transports } = winston;
 const { combine, printf, timestamp, colorize } = format;
@@ -28,11 +29,13 @@ const logConfiguration = {
   ),
   transports: [
     new transports.Console(),
-    new transports.File({
-      filename: './logs/warn.log',
-      level: 'warn',
-      format: combine(warnFilter(), timestamp(), customFormat),
-    }),
+    Config.NODE_ENV !== 'test'
+      ? new transports.File({
+          filename: './logs/warn.log',
+          level: 'warn',
+          format: combine(warnFilter(), timestamp(), customFormat),
+        })
+      : new transports.Console({ level: 'warn' }),
     new transports.File({
       filename: './logs/error.log',
       level: 'error',

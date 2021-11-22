@@ -1,18 +1,19 @@
 import Server from 'services/server';
-import supertest, { SuperTest, Test } from 'supertest';
+import supertest, { SuperAgentTest } from 'supertest';
 import MongoMemoryServer from 'mongodb-memory-server-core';
 import mongoose from 'mongoose';
-import { ProductosModel } from 'models/mongoDb/producto';
-import { productosMock } from 'mocks/products';
-import { logger } from 'services/logger';
 import { IItem } from 'common/interfaces/products';
+import { addProductsMockDb } from './utils/addProductsMockDb';
+import { addUserAndLogin } from './utils/addUserAndLogin';
+import { loggedInRequest } from './utils/loggedInRequest';
 
 describe('Productos api tests', () => {
-  const request: SuperTest<Test> = supertest(Server);
+  let request: SuperAgentTest;
 
   beforeAll(async () => {
-    await ProductosModel.insertMany(productosMock);
-    logger.info('Productos agregados');
+    request = supertest.agent(Server);
+    await addProductsMockDb();
+    await addUserAndLogin(request);
   });
 
   afterAll(async () => {
@@ -23,9 +24,7 @@ describe('Productos api tests', () => {
   });
 
   it('GET: should return a list of products, 200 status code', async () => {
-    expect.assertions(2);
-
-    const response = await request.get('/api/productos');
+    const response = await loggedInRequest(request, 'get', '/api/productos');
     const productsArray = response.body.data;
 
     expect(productsArray.length).not.toBe(0);
@@ -33,12 +32,11 @@ describe('Productos api tests', () => {
   });
 
   it('GET: should return a product by its id, 200 status code', async () => {
-    expect.assertions(2);
-
-    const response = await request.get('/api/productos');
+    const response = await loggedInRequest(request, 'get', '/api/productos');
     const expectedProductId = response.body.data[0].id;
-
-    const productResponse = await request.get(
+    const productResponse = await loggedInRequest(
+      request,
+      'get',
       `/api/productos/${expectedProductId}`,
     );
     const productId = productResponse.body.data.id;
@@ -48,8 +46,6 @@ describe('Productos api tests', () => {
   });
 
   it('POST: should add a product and return it, 200 status code', async () => {
-    expect.assertions(3);
-
     const mockProduct = {
       nombre: 'Test product',
       descripcion:
@@ -59,8 +55,15 @@ describe('Productos api tests', () => {
       foto: 'https://picsum.photos/300?random=2',
       stock: 44,
     };
-    const response = await request.post('/api/productos').send(mockProduct);
-    const products = (await request.get('/api/productos')).body.data;
+    const response = await loggedInRequest(
+      request,
+      'post',
+      '/api/productos',
+      mockProduct,
+    );
+
+    const products = (await loggedInRequest(request, 'get', '/api/productos'))
+      .body.data;
 
     const productAddedToDb = products.find(
       (item: IItem) => item.nombre === 'Test product',
@@ -72,9 +75,11 @@ describe('Productos api tests', () => {
   });
 
   it('PUT: should edit a product and return it, 200 status code', async () => {
-    expect.assertions(3);
-
-    const productsResponse = await request.get('/api/productos');
+    const productsResponse = await loggedInRequest(
+      request,
+      'get',
+      '/api/productos',
+    );
     const productToEdit = productsResponse.body.data[0];
 
     const newProductData = {
@@ -82,13 +87,20 @@ describe('Productos api tests', () => {
       nombre: 'Put Test',
     };
 
-    const putResponse = await request
-      .put(`/api/productos/${productToEdit.id}`)
-      .send(newProductData);
+    const putResponse = await loggedInRequest(
+      request,
+      'put',
+      `/api/productos/${productToEdit.id}`,
+      newProductData,
+    );
     const editedProduct = putResponse.body.data;
 
     const productEditedInDb = (
-      await request.get(`/api/productos/${productToEdit.id}`)
+      await loggedInRequest(
+        request,
+        'get',
+        `/api/productos/${productToEdit.id}`,
+      )
     ).body.data;
 
     expect(putResponse.statusCode).toBe(200);
@@ -97,14 +109,22 @@ describe('Productos api tests', () => {
   });
 
   it('DELETE: should delete a product by its id, 200 status code', async () => {
-    const productsResponse = await request.get('/api/productos');
+    const productsResponse = await loggedInRequest(
+      request,
+      'get',
+      '/api/productos',
+    );
     const productToDelete = productsResponse.body.data[0];
 
-    const deleteResponse = await request.delete(
+    const deleteResponse = await loggedInRequest(
+      request,
+      'delete',
       `/api/productos/${productToDelete.id}`,
     );
 
-    const productsAfterDelete = (await request.get('/api/productos')).body.data;
+    const productsAfterDelete = (
+      await loggedInRequest(request, 'get', '/api/productos')
+    ).body.data;
     const productDeleted = productsAfterDelete.find(
       (item: IItem) => item.id === productToDelete.id,
     );

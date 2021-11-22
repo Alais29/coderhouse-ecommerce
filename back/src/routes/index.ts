@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.use('/auth', loginRouter);
 router.use('/usuarios', isLoggedIn, usersRouter);
-router.use('/productos', productoRouter);
+router.use('/productos', isLoggedIn, productoRouter);
 router.use('/carrito', isLoggedIn, carritoRouter);
 router.use('/ordenes', isLoggedIn, ordenesRouter);
 

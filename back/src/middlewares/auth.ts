@@ -81,7 +81,7 @@ const signUpFunc: VerifyFunctionWithRequest = async (
     const user = await userAPI.query(email);
 
     if (user) {
-      logger.warn('Error, El usuario ya existe');
+      logger.warn(`Error, El usuario ${email} ya existe`);
       logger.info(user);
       return done(null, false, {
         message:
@@ -90,7 +90,7 @@ const signUpFunc: VerifyFunctionWithRequest = async (
     } else {
       const newUser = await userAPI.addUser(userData);
 
-      logger.info('Registro exitoso');
+      logger.info(`Registro exitoso de usuario: ${email}`);
 
       const emailContent = `
         <h1>Nuevo Registro</h1>
