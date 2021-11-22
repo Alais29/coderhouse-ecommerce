@@ -3,9 +3,8 @@ import supertest, { SuperAgentTest } from 'supertest';
 import MongoMemoryServer from 'mongodb-memory-server-core';
 import mongoose from 'mongoose';
 import { IItem } from 'common/interfaces/products';
-import { addProductsMockDb } from './utils/addProductsMockDb';
-import { addUserAndLogin } from './utils/addUserAndLogin';
-import { loggedInRequest } from './utils/loggedInRequest';
+import { addProductsMockDb } from '../utils/addProductsMockDb';
+import { addUserAndLogin } from '../utils/addUserAndLogin';
 
 describe('Productos api tests', () => {
   let request: SuperAgentTest;
@@ -24,7 +23,7 @@ describe('Productos api tests', () => {
   });
 
   it('GET: should return a list of products, 200 status code', async () => {
-    const response = await loggedInRequest(request, 'get', '/api/productos');
+    const response = await request.get('/api/productos');
     const productsArray = response.body.data;
 
     expect(productsArray.length).not.toBe(0);
@@ -32,13 +31,12 @@ describe('Productos api tests', () => {
   });
 
   it('GET: should return a product by its id, 200 status code', async () => {
-    const response = await loggedInRequest(request, 'get', '/api/productos');
+    const response = await request.get('/api/productos');
     const expectedProductId = response.body.data[0].id;
-    const productResponse = await loggedInRequest(
-      request,
-      'get',
+    const productResponse = await request.get(
       `/api/productos/${expectedProductId}`,
     );
+
     const productId = productResponse.body.data.id;
 
     expect(productResponse.statusCode).toBe(200);
@@ -55,15 +53,9 @@ describe('Productos api tests', () => {
       foto: 'https://picsum.photos/300?random=2',
       stock: 44,
     };
-    const response = await loggedInRequest(
-      request,
-      'post',
-      '/api/productos',
-      mockProduct,
-    );
+    const response = await request.post('/api/productos').send(mockProduct);
 
-    const products = (await loggedInRequest(request, 'get', '/api/productos'))
-      .body.data;
+    const products = (await request.get('/api/productos')).body.data;
 
     const productAddedToDb = products.find(
       (item: IItem) => item.nombre === 'Test product',
@@ -75,11 +67,7 @@ describe('Productos api tests', () => {
   });
 
   it('PUT: should edit a product and return it, 200 status code', async () => {
-    const productsResponse = await loggedInRequest(
-      request,
-      'get',
-      '/api/productos',
-    );
+    const productsResponse = await request.get('/api/productos');
     const productToEdit = productsResponse.body.data[0];
 
     const newProductData = {
@@ -87,20 +75,13 @@ describe('Productos api tests', () => {
       nombre: 'Put Test',
     };
 
-    const putResponse = await loggedInRequest(
-      request,
-      'put',
-      `/api/productos/${productToEdit.id}`,
-      newProductData,
-    );
+    const putResponse = await request
+      .put(`/api/productos/${productToEdit.id}`)
+      .send(newProductData);
     const editedProduct = putResponse.body.data;
 
     const productEditedInDb = (
-      await loggedInRequest(
-        request,
-        'get',
-        `/api/productos/${productToEdit.id}`,
-      )
+      await request.get(`/api/productos/${editedProduct.id}`)
     ).body.data;
 
     expect(putResponse.statusCode).toBe(200);
@@ -109,22 +90,14 @@ describe('Productos api tests', () => {
   });
 
   it('DELETE: should delete a product by its id, 200 status code', async () => {
-    const productsResponse = await loggedInRequest(
-      request,
-      'get',
-      '/api/productos',
-    );
+    const productsResponse = await request.get('/api/productos');
     const productToDelete = productsResponse.body.data[0];
 
-    const deleteResponse = await loggedInRequest(
-      request,
-      'delete',
+    const deleteResponse = await request.delete(
       `/api/productos/${productToDelete.id}`,
     );
 
-    const productsAfterDelete = (
-      await loggedInRequest(request, 'get', '/api/productos')
-    ).body.data;
+    const productsAfterDelete = (await request.get('/api/productos')).body.data;
     const productDeleted = productsAfterDelete.find(
       (item: IItem) => item.id === productToDelete.id,
     );
