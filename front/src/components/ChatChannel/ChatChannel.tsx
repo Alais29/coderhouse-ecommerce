@@ -4,6 +4,7 @@ import { socket } from 'services/Socket';
 import { isEmpty } from 'utilities/others';
 import { Button, Form } from 'react-bootstrap';
 import { IMessage } from 'commons/interfaces';
+import { useAppSelector } from 'hooks/redux';
 import cx from 'classnames/bind';
 import styles from './styles.module.scss';
 
@@ -13,11 +14,12 @@ interface IChatChannel {
 }
 
 const ChatChannel = ({ messages, setMessages }: IChatChannel) => {
+  const { data } = useAppSelector(state => state.user);
+
   const [formValues, setFormValues] = useState({
-    email: '',
+    email: data ? data.email : '',
     text: '',
   });
-  // const [messages, setMessages] = useState<IMessage[]>([])
 
   const { email, text } = formValues;
   const emailRef = useRef<HTMLInputElement>(null);
@@ -51,9 +53,6 @@ const ChatChannel = ({ messages, setMessages }: IChatChannel) => {
       });
       socket.on('messages', data => {
         setMessages(data);
-        if (emailRef.current) {
-          emailRef.current.disabled = true;
-        }
         if (chatBoxRef.current) {
           chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
         }
@@ -91,6 +90,7 @@ const ChatChannel = ({ messages, setMessages }: IChatChannel) => {
           <Form.Control
             value={email}
             onChange={handleChange}
+            disabled={true}
             name="email"
             type="text"
             placeholder="Email"

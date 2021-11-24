@@ -13,6 +13,7 @@ import { unknownEndpoint } from 'middlewares/unknownEndpoint';
 import { errorHandler } from 'middlewares/errorHandler';
 import { clientPromise } from 'services/mongodb';
 import passport from 'middlewares/auth';
+import { initWsServer } from './socket';
 
 const app: express.Application = express();
 
@@ -50,6 +51,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(docs));
 app.use(errorHandler);
 app.use(unknownEndpoint);
 
-const Server = new http.Server(app);
+const Server: http.Server = http.createServer(app);
+initWsServer(Server);
 
 export default Server;
