@@ -1,12 +1,12 @@
-import { v4 as uuidv4 } from 'uuid';
-import moment from 'moment';
 import { IItem, IItemQuery } from 'common/interfaces/products';
 import { NotFound } from 'errors';
 import { productosMockMem } from 'mocks/products-mem';
+import { IModel } from 'models/factory/productos';
+import { productDTO } from 'dto/productos';
 
 let productos = productosMockMem;
 
-export class ProductosModel {
+export class ProductosModel implements IModel {
   async get(id?: string): Promise<IItem | IItem[]> {
     try {
       if (id) return productos.find((item: IItem) => item.id === id) as IItem;
@@ -18,11 +18,9 @@ export class ProductosModel {
 
   async save(producto: IItem): Promise<IItem> {
     try {
-      producto.id = uuidv4();
-      producto.timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
-
-      productos.push(producto);
-      return producto;
+      const newProduct = productDTO(producto);
+      productos.push(newProduct);
+      return newProduct;
     } catch (e) {
       throw { error: e, message: 'No se pudo guardar el producto' };
     }

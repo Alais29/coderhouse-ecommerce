@@ -6,7 +6,7 @@ import { ProductosModel } from 'models/memory/productos';
 import { ProductosModelMongoDb } from 'models/mongoDb/producto';
 import { ProductosModelMySql } from 'models/mysql/producto';
 
-interface IModel {
+export interface IModel {
   get: (id?: string) => Promise<IItem | IItem[]>;
   save: (producto: IItem) => Promise<IItem>;
   update: (id: string, producto: IItem) => Promise<IItem>;

@@ -1,5 +1,6 @@
 import { IMessage } from 'common/interfaces/mensajes';
 import mongoose from 'mongoose';
+import { BaseRepository } from './repository/mensajesBase';
 
 const mensajesCollection = 'mensajes';
 
@@ -28,20 +29,25 @@ const mensajesModel = mongoose.model<IMessage>(
   MensajeSchema,
 );
 
-class MensajesModelMongoDb {
-  private mensajes;
-  constructor() {
-    this.mensajes = mensajesModel;
-  }
-  async get(id?: string): Promise<IMessage[]> {
-    if (id) return this.mensajes.find({ _id: id });
-    return this.mensajes.find({});
-  }
+// class MensajesModelMongoDb {
+//   private mensajes;
+//   constructor() {
+//     this.mensajes = mensajesModel;
+//   }
+//   async get(id?: string): Promise<IMessage[] | IMessage> {
+//     if (id) return this.mensajes.find({ _id: id });
+//     return this.mensajes.find({});
+//   }
 
-  async save(data: IMessage): Promise<IMessage> {
-    const saveModel = new this.mensajes(data);
-    return saveModel.save();
-  }
-}
+//   async save(data: IMessage): Promise<IMessage> {
+//     const saveModel = new this.mensajes(data);
+//     return saveModel.save();
+//   }
+// }
 
-export const mensajesModelMongoDb = new MensajesModelMongoDb();
+export class MensajesModelMongoDb extends BaseRepository<IMessage> {}
+
+export const mensajesModelMongoDb = new MensajesModelMongoDb(
+  mensajesCollection,
+  MensajeSchema,
+);
