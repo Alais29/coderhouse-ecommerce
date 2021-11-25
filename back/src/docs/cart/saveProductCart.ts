@@ -15,7 +15,7 @@ export default {
       },
     ],
     responses: {
-      200: {
+      201: {
         description: 'Product was added to cart.',
         content: {
           'application/json': {

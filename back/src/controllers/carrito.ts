@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { NotFound, ProductValidation, UnauthorizedRoute } from 'errors';
 import { carritoAPI } from 'api/carrito';
+import { IItemCarrito } from 'common/interfaces/carrito';
 
 interface User {
   _id: string;
@@ -32,8 +33,14 @@ export const saveCarritoProduct = async (
 ): Promise<void> => {
   if (req.user) {
     const { _id } = req.user as User;
-    const newProducto = await carritoAPI.save(_id, req.params.id);
-    res.json({ data: newProducto });
+    const newProducto = (await carritoAPI.save(
+      _id,
+      req.params.id,
+    )) as IItemCarrito;
+    res
+      .location(`/api/productos/${newProducto.producto.id}`)
+      .status(201)
+      .json({ data: newProducto });
   } else {
     throw new UnauthorizedRoute(
       401,

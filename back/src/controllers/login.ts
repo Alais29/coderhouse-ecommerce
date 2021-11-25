@@ -34,7 +34,10 @@ export const signupUser = (
     if (!user) {
       throw new UserExists(400, info.message);
     }
-    res.json({ message: 'Registro exitoso' });
+    res
+      .location(`/api/usuarios/${user.id}`)
+      .status(201)
+      .json({ message: 'Registro exitoso' });
   })(req, res, next);
 };
 
