@@ -2,26 +2,30 @@ import mongoose from 'mongoose';
 import { ICarrito, IItemCarrito } from 'common/interfaces/carrito';
 import { NotFound } from 'errors';
 import { ProductosModel } from 'models/mongoDb/producto';
+import { IModelCarritoMongo } from 'models/factory/carrito';
 
-const CarritoSchema = new mongoose.Schema<ICarrito>({
-  user: {
-    type: 'ObjectId',
-    ref: 'User',
-  },
-  productos: [
-    {
-      _id: false,
-      producto: {
-        type: 'ObjectId',
-        ref: 'Producto',
-      },
-      quantity: {
-        type: Number,
-        required: true,
-      },
+const CarritoSchema = new mongoose.Schema<ICarrito>(
+  {
+    user: {
+      type: 'ObjectId',
+      ref: 'User',
     },
-  ],
-});
+    productos: [
+      {
+        _id: false,
+        producto: {
+          type: 'ObjectId',
+          ref: 'Producto',
+        },
+        quantity: {
+          type: Number,
+          required: true,
+        },
+      },
+    ],
+  },
+  { timestamps: true },
+);
 
 CarritoSchema.set('toJSON', {
   transform: (document, returnedObject) => {
@@ -33,7 +37,7 @@ CarritoSchema.set('toJSON', {
 
 export const CarritoModel = mongoose.model<ICarrito>('Carrito', CarritoSchema);
 
-export class CarritoModelMongoDb {
+export class CarritoModelMongoDb implements IModelCarritoMongo {
   private carritoModel;
   private productosModel;
   constructor() {

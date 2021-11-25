@@ -12,8 +12,7 @@ interface IModel {
   save: (id: string) => Promise<IItem>;
   delete: (id: string) => Promise<IItem[]>;
 }
-interface IModelMongo {
-  createCart: (userId: string) => Promise<ICarrito>;
+export interface IModelCarritoMongo {
   get: (
     userId: string,
     productId?: string,
@@ -27,7 +26,7 @@ interface IModelMongo {
   delete: (userId: string, productId?: string) => Promise<IItemCarrito[]>;
 }
 
-type IModelType = IModel | IModelMongo;
+export type IModelType = IModel | IModelCarritoMongo;
 
 export class CarritoModelFactory {
   static model(type: number): IModelType {
