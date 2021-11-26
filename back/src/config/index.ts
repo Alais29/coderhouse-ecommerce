@@ -1,8 +1,21 @@
-import 'dotenv/config.js';
+import dotenv from 'dotenv';
+import path from 'path';
+import minimist from 'minimist';
+
+dotenv.config({
+  path: path.resolve(`${process.env.NODE_ENV}.env`),
+});
+
+const args = minimist(process.argv.slice(2), {
+  alias: {
+    p: 'port',
+  },
+});
 
 const env = {
-  NODE_ENV: process.env.NODE_ENV || 'dev',
-  PORT: process.env.PORT || 8080,
+  NODE_ENV: process.env.NODE_ENV || 'development',
+  MODEL_PERSISTANCE: process.env.MODEL_PERSISTANCE || 'memory',
+  PORT: args.p || 8080,
   MODE: process.env.MODE || 'noCluster',
   SESSION_SECRET: process.env.SESSION_SECRET || 'sessionSecret',
   SESSION_COOKIE_TIMEOUT_MIN: parseInt(
