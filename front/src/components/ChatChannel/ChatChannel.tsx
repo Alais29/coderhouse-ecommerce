@@ -3,27 +3,37 @@ import { toast } from 'react-toastify';
 import { socket } from 'services/Socket';
 import { isEmpty } from 'utilities/others';
 import { Button, Form } from 'react-bootstrap';
-import { IMessage } from 'commons/interfaces';
-import { useAppSelector } from 'hooks/redux';
+import { useAppSelector, useAppDispatch } from 'hooks/redux';
+import { setMessages } from 'features/messages/messagesSlice';
 import cx from 'classnames/bind';
 import styles from './styles.module.scss';
 
-interface IChatChannel {
-  messages: IMessage[];
-  setMessages: React.Dispatch<React.SetStateAction<IMessage[]>>;
-}
+const ChatChannel = () => {
+  const { data: dataUser } = useAppSelector(state => state.user);
+  const { data: messages } = useAppSelector(state => state.messages);
 
-const ChatChannel = ({ messages, setMessages }: IChatChannel) => {
-  const { data } = useAppSelector(state => state.user);
+  const dispatch = useAppDispatch();
 
   const [formValues, setFormValues] = useState({
-    email: data ? data.email : '',
+    email: dataUser ? dataUser.email : '',
     text: '',
   });
 
   const { email, text } = formValues;
   const emailRef = useRef<HTMLInputElement>(null);
   const chatBoxRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (dataUser) {
+      socket.emit('get messages', dataUser.email);
+      socket.on('messages', data => {
+        dispatch(setMessages(data));
+      });
+      socket.on('messages error', data => {
+        toast.warning(data.message);
+      });
+    }
+  }, [dataUser, dispatch]);
 
   useEffect(() => {
     if (chatBoxRef.current && !isEmpty(messages)) {
@@ -45,22 +55,14 @@ const ChatChannel = ({ messages, setMessages }: IChatChannel) => {
       toast.warning('Ambos campos son obligatorios');
     } else {
       socket.emit('new message', formValues);
-      socket.on('save message success', newMessage => {
+      socket.on('new message saved', data => {
+        dispatch(setMessages(data));
         setFormValues({
           ...formValues,
           text: '',
         });
       });
-      socket.on('messages', data => {
-        setMessages(data);
-        if (chatBoxRef.current) {
-          chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
-        }
-      });
       socket.on('messages error', data => {
-        toast.warning(data.message);
-      });
-      socket.on('save message error', data => {
         toast.warning(data.message);
       });
     }
@@ -73,7 +75,7 @@ const ChatChannel = ({ messages, setMessages }: IChatChannel) => {
           <div key={msg.id} className={cx(styles['chat-channel__message'])}>
             <p>
               <span className={cx(styles['chat-channel__message-email'])}>
-                {msg.email}:{' '}
+                {msg.user.email}:{' '}
               </span>
               <span className={cx(styles['chat-channel__message-text'])}>
                 {msg.text}

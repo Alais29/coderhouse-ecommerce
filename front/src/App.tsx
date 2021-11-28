@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 import {
   HashRouter as Router,
@@ -19,12 +19,8 @@ import Chat from 'pages/Chat/Chat';
 import { useAppSelector, useAppDispatch } from 'hooks/redux';
 import { getUserData } from 'features/user/userSlice';
 import { getCookie } from 'utilities/others';
-import { socket } from 'services/Socket';
-import { IMessage } from 'commons/interfaces';
 
 const App = () => {
-  const [messages, setMessages] = useState<IMessage[]>([]);
-
   const { status, isLoggedIn } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
 
@@ -43,12 +39,6 @@ const App = () => {
     }
   }, [status, dispatch, isLoggedInCookie]);
 
-  useEffect(() => {
-    socket.on('messages', data => {
-      setMessages(data);
-    });
-  }, []);
-
   return (
     <Router>
       {isLoggedInCookie && (status === 'idle' || status === 'loading') ? (
@@ -65,7 +55,7 @@ const App = () => {
                 <Signup />
               </Route>
               <Route path="/chat">
-                <Chat messages={messages} setMessages={setMessages} />
+                {isLoggedIn ? <Chat /> : <Redirect to="/login" />}
               </Route>
               <Route path="/add-product">
                 {isLoggedIn ? <AddProduct /> : <Redirect to="/login" />}

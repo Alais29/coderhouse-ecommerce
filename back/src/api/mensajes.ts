@@ -2,13 +2,12 @@ import { IMessage } from 'common/interfaces/mensajes';
 import { mensajesModelMongoDb } from 'models/mongoDb/mensajes';
 
 class MessagesAPI {
-  get(id?: string): Promise<IMessage | IMessage[]> {
-    if (id) return mensajesModelMongoDb.get(id);
-    return mensajesModelMongoDb.get();
+  get(userId: string): Promise<IMessage[]> {
+    return mensajesModelMongoDb.get(userId);
   }
 
-  async save(data: IMessage) {
-    const newMessage = await mensajesModelMongoDb.save(data);
+  async save(userId: string, text: string, type: 'usuario' | 'sistema') {
+    const newMessage = await mensajesModelMongoDb.save(userId, text, type);
     return newMessage;
   }
 }

@@ -5,8 +5,12 @@ const mensajesCollection = 'mensajes';
 
 const MensajeSchema = new mongoose.Schema<IMessage>(
   {
-    email: { type: String, require: true },
+    user: {
+      type: 'ObjectId',
+      ref: 'User',
+    },
     text: { type: String, require: true },
+    type: { type: String, require: true },
   },
   {
     timestamps: {
@@ -33,14 +37,22 @@ class MensajesModelMongoDb {
   constructor() {
     this.mensajes = mensajesModel;
   }
-  async get(id?: string): Promise<IMessage[]> {
-    if (id) return this.mensajes.find({ _id: id });
-    return this.mensajes.find({});
+  async get(userId: string): Promise<IMessage[]> {
+    const userMessages = this.mensajes.find({ user: userId }).populate('user');
+    return userMessages;
   }
 
-  async save(data: IMessage): Promise<IMessage> {
-    const saveModel = new this.mensajes(data);
-    return saveModel.save();
+  async save(
+    userId: string,
+    text: string,
+    type: 'usuario' | 'sistema',
+  ): Promise<IMessage> {
+    const saveModel = new this.mensajes({
+      user: userId,
+      text,
+      type,
+    });
+    return (await saveModel.save()).populate('user');
   }
 }
 

@@ -1,6 +1,9 @@
+import { Types } from 'mongoose';
+
 export interface IMessage {
-  _id: string;
-  email: string;
+  id?: string;
+  user: Types.ObjectId;
   text: string;
-  date: string;
+  type: 'usuario' | 'sistema';
+  date?: string;
 }

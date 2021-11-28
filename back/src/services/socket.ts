@@ -1,48 +1,42 @@
 import * as socketio from 'socket.io';
 import * as http from 'http';
 import { messagesAPI } from 'api/mensajes';
+import { userAPI } from 'api/user';
+import { logger } from './logger';
 
 export const initWsServer = (server: http.Server): void => {
   const io: socketio.Server = new socketio.Server();
   io.attach(server);
 
   io.on('connection', async (socket: socketio.Socket) => {
-    console.log('Nueva conexión');
+    logger.info('Nueva conexión');
 
-    try {
-      const mensajes = await messagesAPI.get();
-
-      socket.emit('messages', mensajes);
-    } catch (e) {
-      socket.emit('messages error', {
-        error: e.error,
-        message: e.message,
-      });
-    }
+    socket.on('get messages', async (userEmail: string) => {
+      try {
+        const user = await userAPI.query(userEmail);
+        const userMessages = await messagesAPI.get(user.id);
+        socket.emit('messages', userMessages);
+      } catch (e) {
+        socket.emit('messages error', {
+          error: e.error,
+          message: e.message,
+        });
+      }
+    });
 
     socket.on('new message', async newMessage => {
-      messagesAPI
-        .save(newMessage)
-        .then(() => {
-          socket.emit('save message success', null);
-          messagesAPI
-            .get()
-            .then(messages => {
-              io.emit('messages', messages);
-            })
-            .catch(e => {
-              socket.emit('messages error', {
-                error: e.error,
-                message: e.message,
-              });
-            });
-        })
-        .catch(e => {
-          socket.emit('save message error', {
-            error: e.error,
-            message: e.message,
-          });
+      try {
+        const user = await userAPI.query(newMessage.email);
+        await messagesAPI.save(user.id, newMessage.text, 'usuario');
+
+        const messagesList = await messagesAPI.get(user.id);
+        socket.emit('new message saved', messagesList);
+      } catch (e) {
+        socket.emit('messages error', {
+          error: e.error,
+          message: e.message,
         });
+      }
     });
   });
 };

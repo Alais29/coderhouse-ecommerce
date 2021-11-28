@@ -1,10 +1,3 @@
-.user-data-container {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  max-width: 430px;
-  margin: 0 auto;
-}
 .user-data {
   display: flex;
   justify-content: center;
@@ -19,5 +12,11 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+  }
+  &__btn-container {
+    max-width: 432px;
+  }
+  :global(.btn) {
+    margin-top: 1rem;
   }
 }

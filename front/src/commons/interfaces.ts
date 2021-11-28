@@ -23,9 +23,10 @@ export interface IItemCarrito {
 
 export interface IMessage {
   id?: number;
-  date?: string;
-  email: string;
+  user: IUser;
   text: string;
+  type: 'usuario' | 'sistema';
+  date: string;
 }
 
 export interface IUser {

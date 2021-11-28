@@ -1,5 +1,5 @@
 import { ModelType } from 'common/enums';
-import { ICarrito, IItemCarrito } from 'common/interfaces/carrito';
+import { IItemCarrito } from 'common/interfaces/carrito';
 import { IItem } from 'common/interfaces/products';
 import { CarritoModelFirebase } from 'models/firebase/carrito';
 import { CarritoModelFs } from 'models/fs/carrito';
