@@ -1,3 +1,9 @@
+import { carritoAPI } from 'api/carrito';
+import { productsAPI } from 'api/productos';
+import { IItemCarrito } from 'common/interfaces/carrito';
+import { IItem } from 'common/interfaces/products';
+import { Types } from 'mongoose';
+
 /**
  * Determines if the item passed as argument is empty or not
  * @param item string, number, array, or object
@@ -19,4 +25,82 @@ export const isEmpty = (item: string | number | unknown): boolean => {
       return false;
   }
   return true;
+};
+
+/**
+ * TS type guard to check if product property from cart products is populated
+ * @param obj object of type IItem or Types.ObjectId
+ * @returns boolean
+ */
+export const isProductPopulated = (
+  obj: IItem | Types.ObjectId,
+): obj is IItem => {
+  return (obj as IItem).nombre !== undefined;
+};
+
+/**
+ * Returns a proper response message depending on the user input
+ * @param message string, the message sent by the user
+ * @param userId string, id of the user who sent the message
+ * @returns string
+ */
+export const getMessageResponse = async (
+  message: string,
+  userId: string,
+): Promise<string> => {
+  switch (message.toLowerCase()) {
+    case 'stock': {
+      const productos = (await productsAPI.get()) as IItem[];
+      const stock = productos.reduce(
+        (stock: Record<string, unknown>, item: IItem) => {
+          return {
+            ...stock,
+            [item.nombre]: item.stock,
+          };
+        },
+        {},
+      );
+
+      let message = '';
+
+      Object.entries(stock).forEach(item => {
+        message += `- ${item[0]}: ${item[1]}.$nl`;
+      });
+
+      return message;
+    }
+    //TODO: Send proper order information
+    case 'orden':
+      return 'Tu orden está en curso';
+    case 'carrito': {
+      const carrito = (await carritoAPI.get(userId)) as IItemCarrito[];
+      let message = '';
+
+      if (carrito.length === 0) {
+        message = 'Tu carrito está vacío.';
+      } else {
+        const total = carrito.reduce((total, item) => {
+          if (isProductPopulated(item.producto))
+            return (total += item.producto.precio * item.quantity);
+          else return total;
+        }, 0);
+
+        carrito.forEach(item => {
+          if (isProductPopulated(item.producto))
+            message += `- Cantidad: ${item.quantity}, Producto: ${item.producto.nombre}, Precio: $${item.producto.precio} c/u.$nl`;
+        });
+
+        message += `Total: $${total.toFixed(2)}.`;
+      }
+
+      return message;
+    }
+    default:
+      return `
+        Hola! No he podido comprender tu mensaje. Por favor ingresa una de las siguientes opciones:$nl
+          - Stock: Para conocer nuestro stock actual.$nl
+          - Orden: Para concer la información de tu última orden.$nl
+          - Carrito: Para conocer el estado de tu carrito.$nl
+      `;
+  }
 };

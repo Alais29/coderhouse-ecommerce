@@ -2,12 +2,10 @@ import { Request, Response } from 'express';
 import Config from 'config';
 import { CartIsEmpty } from 'errors';
 import { IItemCarrito } from 'common/interfaces/carrito';
-import { IItem } from 'common/interfaces/products';
 import { carritoAPI } from 'api/carrito';
 import { EmailService } from 'services/email';
 import { SmsService } from 'services/twilio';
-import { isEmpty } from 'utils/others';
-import { Types } from 'mongoose';
+import { isEmpty, isProductPopulated } from 'utils/others';
 
 interface User {
   _id: string;
@@ -19,11 +17,6 @@ interface User {
 export const sendOrder = async (req: Request, res: Response): Promise<void> => {
   const { _id, email, nombre, telefono } = req.user as User;
   const productos = (await carritoAPI.get(_id)) as IItemCarrito[];
-
-  // TS type guard to check if product property from products is populated
-  function isProductPopulated(obj: IItem | Types.ObjectId): obj is IItem {
-    return (obj as IItem).nombre !== undefined;
-  }
 
   if (!isEmpty(productos)) {
     let emailContent = '<h2>Productos</h2>';

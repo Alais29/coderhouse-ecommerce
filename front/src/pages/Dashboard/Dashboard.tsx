@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from 'hooks/redux';
 
 import cx from 'classnames/bind';
 import styles from './styles.module.scss';
+import { setMessages } from 'features/messages/messagesSlice';
 
 const Dashboard = () => {
   const [logoutError, setLogoutError] = useState('');
@@ -17,6 +18,7 @@ const Dashboard = () => {
     try {
       await dispatch(userLogout()).unwrap();
       dispatch(emptyCart());
+      dispatch(setMessages([]));
     } catch (e) {
       setLogoutError('Hubo un error, por favor intente de nuevo.');
       setTimeout(() => {

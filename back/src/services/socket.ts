@@ -3,6 +3,7 @@ import * as http from 'http';
 import { messagesAPI } from 'api/mensajes';
 import { userAPI } from 'api/user';
 import { logger } from './logger';
+import { getMessageResponse } from 'utils/others';
 
 export const initWsServer = (server: http.Server): void => {
   const io: socketio.Server = new socketio.Server();
@@ -28,6 +29,9 @@ export const initWsServer = (server: http.Server): void => {
       try {
         const user = await userAPI.query(newMessage.email);
         await messagesAPI.save(user.id, newMessage.text, 'usuario');
+
+        const response = await getMessageResponse(newMessage.text, user.id);
+        await messagesAPI.save(user.id, response, 'sistema');
 
         const messagesList = await messagesAPI.get(user.id);
         socket.emit('new message saved', messagesList);
