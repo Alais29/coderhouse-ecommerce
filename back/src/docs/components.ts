@@ -118,6 +118,11 @@ export default {
             description: 'Product price',
             example: '123.4',
           },
+          categoria: {
+            type: 'string',
+            description: 'Product category',
+            example: 'Home',
+          },
           foto: {
             type: 'string',
             description: 'Product image url',

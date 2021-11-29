@@ -87,7 +87,7 @@ export const cartSlice = createSlice({
         state.data = action.payload;
       })
       .addCase(addProductToCart.fulfilled, (state, action) => {
-        if (state.data.length !== 0) {
+        if (state.data.length !== 0 || state.status === 'succeeded') {
           const productIndex = state.data.findIndex(
             item => item.producto.id === action.payload.producto.id,
           );

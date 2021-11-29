@@ -8,6 +8,7 @@ import { ProductosModelMySql } from 'models/mysql/producto';
 
 interface IModel {
   get: (id?: string) => Promise<IItem | IItem[]>;
+  getByCategory?: (category: string) => Promise<IItem[]>;
   save: (producto: IItem) => Promise<IItem>;
   update: (id: string, producto: IItem) => Promise<IItem>;
   delete: (id: string) => Promise<void>;

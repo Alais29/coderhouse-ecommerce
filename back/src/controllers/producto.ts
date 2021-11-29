@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { isValidProduct } from 'utils/validations';
 import { IItem, IItemQuery } from 'common/interfaces/products';
-import { NotFound } from 'errors';
+import { NotFound, NotImplemented } from 'errors';
 import { productsAPI } from 'api/productos';
 import { isEmpty } from 'utils/others';
 
@@ -38,6 +38,15 @@ export const getProducto = async (
   const producto = await productsAPI.get(req.params.id);
   if (!isEmpty(producto)) res.json({ data: producto });
   else throw new NotFound(404, 'Producto no encontrado');
+};
+
+export const getProductosByCategory = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const productos = await productsAPI.getByCategory(req.params.category);
+  if (productos) res.json({ data: productos });
+  else throw new NotImplemented(500, 'Método no implementado');
 };
 
 export const saveProducto = async (

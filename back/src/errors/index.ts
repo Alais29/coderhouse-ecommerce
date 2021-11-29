@@ -14,6 +14,14 @@ export class BaseError extends Error {
   }
 }
 
+export class NotImplemented extends BaseError {
+  public error: string;
+  constructor(statusCode: number, message: string) {
+    super(statusCode, message);
+    this.error = `-${EErrorCodes.NotImplemented}`;
+  }
+}
+
 export class ProductValidation extends BaseError {
   public error: string;
   constructor(statusCode: number, message: string) {

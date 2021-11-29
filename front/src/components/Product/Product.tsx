@@ -30,7 +30,7 @@ const Product = ({
         </div>
         <div className="text-end mt-2">
           <Card.Text>
-            <small>{product.codigo}</small>
+            <small>{product.categoria}</small>
           </Card.Text>
         </div>
         <div className={cx('d-flex', 'flex-column', styles['product-btns'])}>

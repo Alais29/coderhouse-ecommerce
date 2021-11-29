@@ -14,6 +14,11 @@ class ProductsAPI {
     return this.factory.get();
   }
 
+  getByCategory(category: string) {
+    if (this.factory.getByCategory) return this.factory.getByCategory(category);
+    else return undefined;
+  }
+
   async save(producto: IItem) {
     const newProduct = await this.factory.save(producto);
     return newProduct;

@@ -7,6 +7,7 @@ export interface IItem {
   descripcion: string;
   codigo: string;
   precio: string;
+  categoria: string;
   foto: string;
   stock: string;
 }

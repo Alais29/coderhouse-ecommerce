@@ -16,10 +16,12 @@ const ProductForm = ({ handleSaveProduct, addRequestStatus }: IProductForm) => {
     nombre: '',
     descripcion: '',
     precio: '',
+    categoria: '',
     stock: '',
     foto: '',
   });
-  const { codigo, nombre, descripcion, precio, stock, foto } = formValues;
+  const { codigo, nombre, descripcion, precio, categoria, stock, foto } =
+    formValues;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormValues({
@@ -35,6 +37,7 @@ const ProductForm = ({ handleSaveProduct, addRequestStatus }: IProductForm) => {
         nombre: '',
         descripcion: '',
         precio: '',
+        categoria: '',
         stock: '',
         foto: '',
       });
@@ -81,6 +84,15 @@ const ProductForm = ({ handleSaveProduct, addRequestStatus }: IProductForm) => {
             type="text"
             value={precio}
             name="precio"
+            onChange={handleChange}
+          />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="categoria">
+          <Form.Label>Categoria</Form.Label>
+          <Form.Control
+            type="text"
+            value={categoria}
+            name="categoria"
             onChange={handleChange}
           />
         </Form.Group>

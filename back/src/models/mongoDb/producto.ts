@@ -27,6 +27,11 @@ const ProductoSchema = new mongoose.Schema<IItemBase>({
     require: true,
     max: [5000, 'El precio no puede ser mayor a 5000'],
   },
+  categoria: {
+    type: String,
+    require: true,
+    maxLength: [20, 'La categoría debe tener un máximo de 20 caracteres'],
+  },
   foto: { type: String, require: true },
   timestamp: { type: String, default: moment().format('DD/MM/YYYY HH:mm:ss') },
   stock: { type: Number, default: 0 },
@@ -72,6 +77,15 @@ export class ProductosModelMongoDb {
       } else {
         throw { error: e, message: 'Hubo un problema al cargar los productos' };
       }
+    }
+  }
+
+  async getByCategory(category: string): Promise<IItem[]> {
+    try {
+      const products = await this.productos.find({ categoria: category });
+      return products as IItem[];
+    } catch (e) {
+      throw { error: e, message: 'Hubo un problema al cargar los productos' };
     }
   }
 
