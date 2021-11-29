@@ -1,5 +1,6 @@
 import basicInfo from './basicInfo';
 import cart from './cart';
+import chat from './chat';
 import components from './components';
 import login from './login';
 import products from './products';
@@ -17,5 +18,6 @@ export default {
     ...cart,
     ...login,
     ...users,
+    ...chat,
   },
 };

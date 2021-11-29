@@ -1,33 +1,37 @@
 export default {
   get: {
-    tags: ['Cart'],
-    description: 'Get a list of all products in the cart.',
-    operationId: 'getProductCart',
+    tags: ['Chat'],
+    description: 'Get a list an user chat messages.',
+    operationId: 'getMessages',
     parameters: [
       {
-        name: 'id',
+        name: 'userEmail',
         in: 'path',
         schema: {
-          $ref: '#/components/schemas/ProductId',
+          type: 'string',
+          example: 'test1@example.com',
         },
         required: true,
-        description: 'A single product id',
+        description: 'A registered user email',
       },
     ],
     responses: {
       200: {
-        description: 'Product in the cart was obtained',
+        description: 'Messages were obtained',
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/ProductCart',
+              type: 'array',
+              description: 'Array of chat messages.',
+              items: {
+                $ref: '#/components/schemas/Message',
+              },
             },
           },
         },
       },
       404: {
-        description:
-          "The cart does not exists (there's no cart associated to the user) or the product is not in the cart.",
+        description: 'There are no messages',
         content: {
           'application/json': {
             schema: {
@@ -37,7 +41,8 @@ export default {
         },
       },
       401: {
-        description: 'Unauthorized route, login first and try again',
+        description:
+          "Unauthorized route, make sure you're logged in and that you're requesting the logged in user own messages.",
         content: {
           'application/json': {
             schema: {
