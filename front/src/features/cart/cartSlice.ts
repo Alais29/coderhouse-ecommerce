@@ -87,16 +87,17 @@ export const cartSlice = createSlice({
         state.data = action.payload;
       })
       .addCase(addProductToCart.fulfilled, (state, action) => {
-        const productIndex = state.data.findIndex(
-          item => item.producto.id === action.payload.producto.id,
-        );
-        if (productIndex === -1) {
-          state.data = state.data.concat(action.payload);
-        } else {
-          state.data[productIndex].quantity = action.payload.quantity;
+        if (state.data.length !== 0) {
+          const productIndex = state.data.findIndex(
+            item => item.producto.id === action.payload.producto.id,
+          );
+          if (productIndex === -1) {
+            state.data = state.data.concat(action.payload);
+          } else {
+            state.data[productIndex].quantity = action.payload.quantity;
+          }
+          state.error = null;
         }
-        state.status = 'succeeded';
-        state.error = null;
       })
       .addCase(editProductInCart.fulfilled, (state, action) => {
         state.data = action.payload;
