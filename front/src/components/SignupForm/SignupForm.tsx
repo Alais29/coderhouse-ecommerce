@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { IUserFormData } from 'commons/interfaces';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, Row, Col } from 'react-bootstrap';
 import PhoneInput from 'react-phone-number-input';
 import cx from 'classnames/bind';
 import styles from './styles.module.scss';
@@ -15,12 +15,26 @@ const SignupForm = ({ onSubmit }: ISignupForm) => {
     password: '',
     repeatPassword: '',
     nombre: '',
-    direccion: '',
+    calle: '',
+    altura: '',
+    codigoPostal: '',
+    piso: '',
+    depto: '',
     edad: '',
   });
   const [telefono, setTelefono] = useState();
-  const { email, password, repeatPassword, nombre, direccion, edad } =
-    formValues;
+  const {
+    email,
+    password,
+    repeatPassword,
+    nombre,
+    calle,
+    altura,
+    codigoPostal,
+    piso,
+    depto,
+    edad,
+  } = formValues;
 
   const fotoRef = useRef<HTMLInputElement>(null);
 
@@ -50,7 +64,11 @@ const SignupForm = ({ onSubmit }: ISignupForm) => {
         password: '',
         repeatPassword: '',
         nombre: '',
-        direccion: '',
+        calle: '',
+        altura: '',
+        codigoPostal: '',
+        piso: '',
+        depto: '',
         edad: '',
       });
       setTelefono(undefined);
@@ -61,73 +79,115 @@ const SignupForm = ({ onSubmit }: ISignupForm) => {
   return (
     <div className={cx(styles['signup-form'])}>
       <Form onSubmit={e => handleSubmit(e)}>
-        <Form.Group className="mb-3" controlId="nombre">
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            type="text"
-            value={email}
-            name="email"
-            onChange={handleChange}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="password">
-          <Form.Label>Contraseña</Form.Label>
-          <Form.Control
-            type="password"
-            value={password}
-            name="password"
-            onChange={handleChange}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="password">
-          <Form.Label>Repite tu contraseña</Form.Label>
-          <Form.Control
-            type="password"
-            value={repeatPassword}
-            name="repeatPassword"
-            onChange={handleChange}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="nombre">
-          <Form.Label>Nombre Completo</Form.Label>
-          <Form.Control
-            type="nombre"
-            value={nombre}
-            name="nombre"
-            onChange={handleChange}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="direccion">
-          <Form.Label>Dirección</Form.Label>
-          <Form.Control
-            type="direccion"
-            value={direccion}
-            name="direccion"
-            onChange={handleChange}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="edad">
-          <Form.Label>Edad</Form.Label>
-          <Form.Control
-            type="edad"
-            value={edad}
-            name="edad"
-            onChange={handleChange}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="telefono">
-          <Form.Label>Teléfono</Form.Label>
-          <PhoneInput
-            placeholder="Enter phone number"
-            value={telefono}
-            name="telefono"
-            onChange={setTelefono as (value?: unknown) => void}
-          />
-        </Form.Group>
-        <Form.Group controlId="foto" className="mb-3">
-          <Form.Label>Foto</Form.Label>
-          <Form.Control type="file" ref={fotoRef} name="foto" />
-        </Form.Group>
+        <Row>
+          <Col>
+            <Form.Group className="mb-3" controlId="nombre">
+              <Form.Label>Nombre Completo</Form.Label>
+              <Form.Control
+                type="nombre"
+                value={nombre}
+                name="nombre"
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="edad">
+              <Form.Label>Edad</Form.Label>
+              <Form.Control
+                type="edad"
+                value={edad}
+                name="edad"
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="nombre">
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type="text"
+                value={email}
+                name="email"
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="password">
+              <Form.Label>Contraseña</Form.Label>
+              <Form.Control
+                type="password"
+                value={password}
+                name="password"
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="password">
+              <Form.Label>Repite tu contraseña</Form.Label>
+              <Form.Control
+                type="password"
+                value={repeatPassword}
+                name="repeatPassword"
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="telefono">
+              <Form.Label>Teléfono</Form.Label>
+              <PhoneInput
+                placeholder="Enter phone number"
+                value={telefono}
+                name="telefono"
+                onChange={setTelefono as (value?: unknown) => void}
+              />
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group className="mb-3" controlId="calle">
+              <Form.Label>Calle</Form.Label>
+              <Form.Control
+                type="calle"
+                value={calle}
+                name="calle"
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="altura">
+              <Form.Label>Altura</Form.Label>
+              <Form.Control
+                type="altura"
+                value={altura}
+                name="altura"
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="codigoPostal">
+              <Form.Label>Código Postal</Form.Label>
+              <Form.Control
+                type="codigoPostal"
+                value={codigoPostal}
+                name="codigoPostal"
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="piso">
+              <Form.Label>Piso (opcional)</Form.Label>
+              <Form.Control
+                type="piso"
+                value={piso}
+                name="piso"
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="depto">
+              <Form.Label>Departamento (opcional)</Form.Label>
+              <Form.Control
+                type="depto"
+                value={depto}
+                name="depto"
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group controlId="foto" className="mb-3">
+              <Form.Label>Foto</Form.Label>
+              <Form.Control type="file" ref={fotoRef} name="foto" />
+            </Form.Group>
+          </Col>
+        </Row>
         <Button className="mb-2" type="submit">
           Registrarse
         </Button>

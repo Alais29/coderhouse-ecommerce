@@ -1,8 +1,9 @@
 import express from 'express';
-import { sendOrder } from 'controllers/ordenes';
+import { createOrder } from 'controllers/ordenes';
+import asyncHandler from 'express-async-handler';
 
 const ordenesRouter = express.Router();
 
-ordenesRouter.get('/', sendOrder);
+ordenesRouter.post('/', asyncHandler(createOrder));
 
 export default ordenesRouter;

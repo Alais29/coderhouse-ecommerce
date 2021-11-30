@@ -10,13 +10,40 @@ interface User {
   edad: number;
   telefono: string;
   foto: string;
+  calle: string;
+  altura: string;
+  codigoPostal: string;
+  piso: string;
+  depto: string;
 }
 
 export const loginUser = (req: Request, res: Response): void => {
   let userdata;
   if (req.user) {
-    const { email, nombre, direccion, edad, telefono, foto } = req.user as User;
-    userdata = { email, nombre, direccion, edad, telefono, foto };
+    const {
+      email,
+      nombre,
+      calle,
+      altura,
+      codigoPostal,
+      piso,
+      depto,
+      edad,
+      telefono,
+      foto,
+    } = req.user as User;
+    userdata = {
+      email,
+      nombre,
+      calle,
+      altura,
+      codigoPostal,
+      piso,
+      depto,
+      edad,
+      telefono,
+      foto,
+    };
   }
   res.json({ data: { message: 'Bienvenido!', user: userdata } });
 };
@@ -53,8 +80,30 @@ export const logoutUser = (req: Request, res: Response): void => {
 
 export const userData = (req: Request, res: Response): void => {
   if (req.isAuthenticated()) {
-    const { email, nombre, direccion, edad, telefono, foto } = req.user as User;
-    const userdata = { email, nombre, direccion, edad, telefono, foto };
+    const {
+      email,
+      nombre,
+      calle,
+      altura,
+      codigoPostal,
+      piso,
+      depto,
+      edad,
+      telefono,
+      foto,
+    } = req.user as User;
+    const userdata = {
+      email,
+      nombre,
+      calle,
+      altura,
+      codigoPostal,
+      piso,
+      depto,
+      edad,
+      telefono,
+      foto,
+    };
     res.json({ data: userdata });
   } else {
     throw new UserNotLoggedIn(404, 'Usuario no logeado');

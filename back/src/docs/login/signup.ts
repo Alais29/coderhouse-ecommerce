@@ -33,10 +33,30 @@ export default {
                 description: 'User name.',
                 example: 'Jose Perez',
               },
-              direccion: {
+              calle: {
                 type: 'string',
-                description: 'User address.',
-                example: 'Providencia 1550',
+                description: 'User address street.',
+                example: 'Providencia',
+              },
+              altura: {
+                type: 'string',
+                description: 'User address street number.',
+                example: '1550',
+              },
+              piso: {
+                type: 'string',
+                description: 'User address floor number, optional.',
+                example: '1',
+              },
+              depto: {
+                type: 'string',
+                description: 'User address department number, optional.',
+                example: '23',
+              },
+              codigoPostal: {
+                type: 'string',
+                description: 'User postal code.',
+                example: '1234567',
               },
               edad: {
                 type: 'number',

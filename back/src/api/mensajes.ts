@@ -2,6 +2,7 @@ import { IMessage } from 'common/interfaces/mensajes';
 import { mensajesModelMongoDb } from 'models/mongoDb/mensajes';
 
 class MessagesAPI {
+  //TODO: Add messages factory
   get(userId: string): Promise<IMessage[]> {
     return mensajesModelMongoDb.get(userId);
   }

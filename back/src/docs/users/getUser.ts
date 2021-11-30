@@ -38,7 +38,7 @@ export default {
         },
       },
       404: {
-        description: 'There user does not exist.',
+        description: 'The user does not exist.',
         content: {
           'application/json': {
             schema: {

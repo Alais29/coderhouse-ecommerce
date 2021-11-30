@@ -15,6 +15,7 @@ const config: Config.InitialOptions = {
   transform: {
     '^.+\\.ts?$': 'ts-jest',
   },
+  testPathIgnorePatterns: ['.d.ts', '.js'],
   modulePaths: [compilerOptions.baseUrl],
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths),
 };

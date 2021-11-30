@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { NotFound, ProductValidation, UnauthorizedRoute } from 'errors';
+import { NotFound, ProductValidation } from 'errors';
 import { carritoAPI } from 'api/carrito';
 import { IItemCarrito } from 'common/interfaces/carrito';
 
@@ -31,22 +31,15 @@ export const saveCarritoProduct = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
-  if (req.user) {
-    const { _id } = req.user as User;
-    const newProducto = (await carritoAPI.save(
-      _id,
-      req.params.id,
-    )) as IItemCarrito;
-    res
-      .location(`/api/productos/${newProducto.producto.id}`)
-      .status(201)
-      .json({ data: newProducto });
-  } else {
-    throw new UnauthorizedRoute(
-      401,
-      'Debes estar loggeado para agregar un producto al carrito.',
-    );
-  }
+  const { _id } = req.user as User;
+  const newProducto = (await carritoAPI.save(
+    _id,
+    req.params.id,
+  )) as IItemCarrito;
+  res
+    .location(`/api/productos/${newProducto.producto.id}`)
+    .status(201)
+    .json({ data: newProducto });
 };
 
 export const editCarritoProduct = async (

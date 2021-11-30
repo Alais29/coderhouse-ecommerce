@@ -40,7 +40,7 @@ const Signup = () => {
       <h1 className="text-center mt-5 pt-3">Registro de Usuario</h1>
       <SignupForm onSubmit={handleSubmit} />
       <hr />
-      <div>
+      <div className="mb-3">
         <span>¿Ya tienes cuenta?</span>
         <Link className="btn btn-primary ms-2" to="/login">
           Login

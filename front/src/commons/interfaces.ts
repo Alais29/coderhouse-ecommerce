@@ -34,7 +34,11 @@ export interface IUser {
   email: string;
   password: string;
   nombre?: string;
-  direccion?: string;
+  calle?: string;
+  altura?: string;
+  codigoPostal?: string;
+  piso?: string;
+  depto?: string;
   edad?: string;
   telefono?: string;
   foto?: string;

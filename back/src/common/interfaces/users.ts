@@ -6,7 +6,11 @@ export interface IUserBase extends IObject {
   password: string;
   repeatPassword: string;
   nombre: string;
-  direccion: string;
+  calle: string;
+  altura: string;
+  codigoPostal: string;
+  piso?: string;
+  depto?: string;
   edad: number;
   telefono: string;
   foto: string;
@@ -34,27 +38,35 @@ export const userJoiSchema = Joi.object({
     .required()
     .messages({
       'string.pattern.base': `La contraseña debe tener mínimo 8 caracteres, 1 letra mayúscula, 1 minúscula, 1 número y un caracter especial.`,
-      'string.empty': `Todos los campos son obligatorios, por favor ingresa una contraseña`,
+      'string.empty': `Por favor ingresa una contraseña`,
     }),
   repeatPassword: Joi.string().required().valid(Joi.ref('password')).messages({
-    'string.empty': `Todos los campos son obligatorios, por favor confirma tu contraseña`,
+    'string.empty': `Por favor confirma tu contraseña`,
     'any.only': `Las contraseñas no coinciden`,
   }),
   nombre: Joi.string().required().messages({
-    'string.empty': `Todos los campos son obligatorios, por favor ingresa tu nombre`,
+    'string.empty': `Por favor ingresa tu nombre`,
   }),
-  direccion: Joi.string().required().messages({
-    'string.empty': `Todos los campos son obligatorios, por favor ingresa una dirección`,
+  calle: Joi.string().required().messages({
+    'string.empty': `Por favor ingresa una calle`,
   }),
+  altura: Joi.string().required().messages({
+    'string.empty': `Por favor ingresa el número de calle`,
+  }),
+  codigoPostal: Joi.string().required().messages({
+    'string.empty': `Por favor ingresa tu código postal`,
+  }),
+  piso: Joi.string().allow(''),
+  depto: Joi.string().allow(''),
   edad: Joi.number().integer().positive().required().messages({
     'number.base': `La edad debe ser un número`,
     'number.integer': `La edad debe ser un número entero`,
     'number.positive': `La edad es obligatoria y debe ser mayor a 0`,
   }),
   telefono: Joi.string().required().messages({
-    'string.empty': `Todos los campos son obligatorios, por favor ingresa tu teléfono`,
+    'string.empty': `Por favor ingresa tu teléfono`,
   }),
   foto: Joi.string().required().messages({
-    'string.empty': `Todos los campos son obligatorios, por favor ingresa una foto para usar como imagen de tu perfil`,
+    'string.empty': `Por favor ingresa una foto para usar como imagen de tu perfil`,
   }),
 });

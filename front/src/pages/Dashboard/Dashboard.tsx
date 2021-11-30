@@ -51,7 +51,13 @@ const Dashboard = () => {
             <span className="fw-bold">Email:</span> {data?.email}
           </span>
           <span>
-            <span className="fw-bold">Direccion:</span> {data?.direccion}
+            <span className="fw-bold">Direccion:</span> {data?.calle}{' '}
+            {data?.altura}
+            {data?.piso ? `, Piso ${data?.piso}` : ''}
+            {data?.depto ? `, Depto ${data?.depto}` : ''}
+          </span>
+          <span>
+            <span className="fw-bold">Código Postal:</span> {data?.codigoPostal}
           </span>
           <span>
             <span className="fw-bold">Edad:</span> {data?.edad}

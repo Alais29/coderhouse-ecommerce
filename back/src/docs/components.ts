@@ -15,6 +15,11 @@ export default {
         type: 'object',
         description: 'User data.',
         properties: {
+          id: {
+            type: 'string',
+            description: 'User id.',
+            example: '61855811efae7a5e849ebb9c',
+          },
           email: {
             type: 'string',
             description: 'User email.',
@@ -25,10 +30,30 @@ export default {
             description: 'User name.',
             example: 'Jose Perez',
           },
-          direccion: {
+          calle: {
             type: 'string',
-            description: 'User address.',
-            example: 'Providencia 1550',
+            description: 'User address street.',
+            example: 'Providencia',
+          },
+          altura: {
+            type: 'string',
+            description: 'User address street number.',
+            example: '1550',
+          },
+          piso: {
+            type: 'string',
+            description: 'User address floor number, optional.',
+            example: '1',
+          },
+          depto: {
+            type: 'string',
+            description: 'User address department number, optional.',
+            example: '23',
+          },
+          codigoPostal: {
+            type: 'string',
+            description: 'User postal code.',
+            example: '1234567',
           },
           edad: {
             type: 'number',
@@ -44,11 +69,6 @@ export default {
             type: 'string',
             description: 'Path to where the user picture is sotraged.',
             example: 'uploads/foto-test1@example.com.png',
-          },
-          id: {
-            type: 'string',
-            description: 'User id.',
-            example: '61855811efae7a5e849ebb9c',
           },
         },
       },
@@ -66,10 +86,30 @@ export default {
             description: 'User name.',
             example: 'Jose Perez',
           },
-          direccion: {
+          calle: {
             type: 'string',
-            description: 'User address.',
-            example: 'Providencia 1550',
+            description: 'User address street.',
+            example: 'Providencia',
+          },
+          altura: {
+            type: 'string',
+            description: 'User address street number.',
+            example: '1550',
+          },
+          piso: {
+            type: 'string',
+            description: 'User address floor number, optional.',
+            example: '1',
+          },
+          depto: {
+            type: 'string',
+            description: 'User address department number, optional.',
+            example: '23',
+          },
+          codigoPostal: {
+            type: 'string',
+            description: 'User postal code.',
+            example: '1234567',
           },
           edad: {
             type: 'number',

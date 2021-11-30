@@ -6,31 +6,63 @@ import { carritoAPI } from 'api/carrito';
 import { EmailService } from 'services/email';
 import { SmsService } from 'services/twilio';
 import { isEmpty, isProductPopulated } from 'utils/others';
+import { ordenesAPI } from 'api/ordenes';
 
 interface User {
   _id: string;
   nombre?: string;
   email: string;
   telefono: string;
+  calle: string;
+  altura: string;
+  codigoPostal: string;
+  piso: string;
+  depto: string;
 }
 
-export const sendOrder = async (req: Request, res: Response): Promise<void> => {
-  const { _id, email, nombre, telefono } = req.user as User;
+export const createOrder = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const {
+    _id,
+    email,
+    nombre,
+    telefono,
+    calle,
+    altura,
+    codigoPostal,
+    piso,
+    depto,
+  } = req.user as User;
   const productos = (await carritoAPI.get(_id)) as IItemCarrito[];
 
   if (!isEmpty(productos)) {
-    let emailContent = '<h2>Productos</h2>';
-
     const total = productos.reduce((total, item) => {
       if (isProductPopulated(item.producto))
         return (total += item.producto.precio * item.quantity);
       else return total;
     }, 0);
+
+    const orderToSave = {
+      productos,
+      estado: 'generada' as const,
+      total,
+      direccionEntrega: `${calle} ${altura}${piso ? `, Piso ${piso}` : ''}${
+        depto ? `, Depto. ${depto}` : ''
+      }`,
+      codigoPostal,
+    };
+
+    const newOrder = await ordenesAPI.save(_id, orderToSave);
+
+    let emailContent = '<h2>Productos</h2>';
+
     productos.forEach(item => {
       if (isProductPopulated(item.producto))
         emailContent += `
-          <span style="display: block">- ${item.quantity} ${item.producto.nombre}, ${item.producto.codigo}, $${item.producto.precio} </span>
-          `;
+            <span style="display: block">- ${item.quantity} ${item.producto.nombre}, ${item.producto.codigo}, $${item.producto.precio} </span>
+            `;
     });
 
     emailContent += `<h3>Total: $${total.toFixed(2)}</h3>`;
@@ -55,7 +87,10 @@ export const sendOrder = async (req: Request, res: Response): Promise<void> => {
 
     await carritoAPI.delete(_id);
 
-    res.json({ data: 'Orden enviada con éxito' });
+    res
+      .location(`/api/ordenes/${newOrder.id}`)
+      .status(201)
+      .json({ data: newOrder });
   } else {
     throw new CartIsEmpty(404, 'El carrito está vacío');
   }
