@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Button, Spinner } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
@@ -7,8 +7,9 @@ import { useAppDispatch, useAppSelector } from 'hooks/redux';
 import {
   fetchProductsCart,
   removeProductCart,
-  sendCartOrder,
+  emptyCart,
 } from 'features/cart/cartSlice';
+import { createOrder } from 'features/orders/ordersSlice';
 import { isEmpty } from 'utilities/others';
 import ProductList from 'components/ProductList/ProductList';
 import LoadingScreen from 'components/LoadingScreen/LoadingScreen';
@@ -26,6 +27,7 @@ const Cart = () => {
 
   const { data, status, error } = useAppSelector(state => state.cart);
   const dispatch = useAppDispatch();
+  const history = useHistory();
 
   const handleRemove = async (id: string) => {
     try {
@@ -44,8 +46,10 @@ const Cart = () => {
   const handleSendOrder = async () => {
     try {
       setSendOrderRequestStatus('loading');
-      const response = await dispatch(sendCartOrder()).unwrap();
-      toast.success(response);
+      await dispatch(createOrder()).unwrap();
+      dispatch(emptyCart());
+      toast.success('Orden enviada con éxito!');
+      history.push('/successful-order');
     } catch (e) {
       toast.error(
         'Hubo un error enviando la orden, por favor intente de nuevo.',

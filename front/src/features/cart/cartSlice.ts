@@ -6,7 +6,6 @@ import {
   editCarritoProduct,
   deleteCarritoProduct,
 } from 'services/Carrito';
-import { sendOrder } from 'services/Orders';
 
 interface CartState {
   data: IItemCarrito[];
@@ -52,22 +51,12 @@ export const removeProductCart = createAsyncThunk(
   },
 );
 
-export const sendCartOrder = createAsyncThunk(
-  'cart/sendCartOrder',
-  async () => {
-    const response = await sendOrder();
-    return response;
-  },
-);
-
 export const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
     emptyCart(state) {
       state.data = [];
-      state.status = 'idle';
-      state.error = 'null';
     },
   },
   extraReducers(builder) {
@@ -78,6 +67,7 @@ export const cartSlice = createSlice({
       .addCase(fetchProductsCart.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.data = state.data.concat(action.payload);
+        state.error = null;
       })
       .addCase(fetchProductsCart.rejected, (state, action) => {
         state.status = 'failed';
@@ -96,14 +86,10 @@ export const cartSlice = createSlice({
           } else {
             state.data[productIndex].quantity = action.payload.quantity;
           }
-          state.error = null;
         }
       })
       .addCase(editProductInCart.fulfilled, (state, action) => {
         state.data = action.payload;
-      })
-      .addCase(sendCartOrder.fulfilled, state => {
-        state.data = [];
       });
   },
 });

@@ -54,3 +54,18 @@ export interface IItemQuery extends IObject {
   // minStock?: string;
   // maxStock?: string;
 }
+
+export interface IOrder {
+  id: string;
+  user: {
+    email: string;
+    nombre: string;
+    id: string;
+  };
+  productos: IItemCarrito[];
+  estado: 'generada' | 'completada';
+  total: number;
+  direccionEntrega: string;
+  codigoPostal: string;
+  timestamp: string;
+}

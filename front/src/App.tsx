@@ -19,6 +19,7 @@ import Chat from 'pages/Chat/Chat';
 import { useAppSelector, useAppDispatch } from 'hooks/redux';
 import { getUserData } from 'features/user/userSlice';
 import { getCookie } from 'utilities/others';
+import SuccesfulOrder from 'pages/SuccessfulOrder/SuccesfulOrder';
 
 const App = () => {
   const { status, isLoggedIn } = useAppSelector(state => state.user);
@@ -62,6 +63,9 @@ const App = () => {
               </Route>
               <Route path="/cart">
                 {isLoggedIn ? <Cart /> : <Redirect to="/login" />}
+              </Route>
+              <Route path="/successful-order">
+                {isLoggedIn ? <SuccesfulOrder /> : <Redirect to="/login" />}
               </Route>
               <Route path="/productos">
                 {isLoggedIn ? <Productos /> : <Redirect to="/login" />}
