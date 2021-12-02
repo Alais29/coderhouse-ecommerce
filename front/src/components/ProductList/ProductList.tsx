@@ -41,7 +41,7 @@ const ProductList = ({
           handleAddToCart &&
           (productos as IItemAPI[]).map((producto: IItemAPI) => (
             <Product
-              key={producto.id}
+              key={producto._id}
               product={producto}
               handleToggleShowModal={handleToggleShowModal}
               handleAddToCart={handleAddToCart}

@@ -6,6 +6,10 @@ import {
   saveProduct,
   updateProduct,
 } from 'services/Productos';
+import {
+  getProductsGraphQl,
+  saveProductGraphQl,
+} from 'services/ProductosGraphQl';
 
 interface ProductsState {
   data: IItemAPI[];
@@ -27,12 +31,31 @@ export const fetchProducts = createAsyncThunk(
   },
 );
 
+export const fetchProductsGraphQl = createAsyncThunk(
+  'products/fetchProductsGraphQl',
+  async (query?: IItemQuery) => {
+    const response = await getProductsGraphQl();
+    return response;
+  },
+);
+
 export const addNewProduct = createAsyncThunk(
   'products/addNewProduct',
   // The payload creator receives the partial product object
   async (product: IItem) => {
     // We send the initial data to the server
     const response = await saveProduct(product);
+    // The response includes the complete post object, including unique ID
+    return response;
+  },
+);
+
+export const addNewProductGraphQl = createAsyncThunk(
+  'products/addNewProductGraphQl',
+  // The payload creator receives the partial product object
+  async (product: IItem) => {
+    // We send the initial data to the server
+    const response = await saveProductGraphQl(product);
     // The response includes the complete post object, including unique ID
     return response;
   },
@@ -77,7 +100,23 @@ export const productsSlice = createSlice({
         state.status = 'failed';
         state.error = action.error.message;
       })
+      .addCase(fetchProductsGraphQl.pending, (state, action) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchProductsGraphQl.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        // Add any fetched products to the array
+        state.data = action.payload;
+      })
+      .addCase(fetchProductsGraphQl.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      })
       .addCase(addNewProduct.fulfilled, (state, action) => {
+        // We can directly add the new product object to our products array
+        state.data.push(action.payload);
+      })
+      .addCase(addNewProductGraphQl.fulfilled, (state, action) => {
         // We can directly add the new product object to our products array
         state.data.push(action.payload);
       })

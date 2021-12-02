@@ -9,6 +9,7 @@ import {
   editProduct,
   removeProductApi,
   removeProduct,
+  fetchProductsGraphQl,
 } from 'features/products/productsSlice';
 import { addProductToCart } from 'features/cart/cartSlice';
 import ConfirmationModal from 'components/Modals/ConfirmationModal/ConfirmationModal';
@@ -112,7 +113,7 @@ const Productos = () => {
 
   useEffect(() => {
     if (status === 'idle') {
-      dispatch(fetchProducts());
+      dispatch(fetchProductsGraphQl());
     } else if (status === 'failed') {
       toast.error(error);
     }

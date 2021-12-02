@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { IItem } from 'commons/interfaces';
-import { addNewProduct } from 'features/products/productsSlice';
+import {
+  addNewProduct,
+  addNewProductGraphQl,
+} from 'features/products/productsSlice';
 import { useAppDispatch } from 'hooks/redux';
 import { toast } from 'react-toastify';
 import ProductForm from 'components/ProductForm/ProductForm';
@@ -15,7 +18,7 @@ const AddProduct = () => {
   const handleSaveProduct = async (formValues: IItem, callback: () => void) => {
     try {
       setAddRequestStatus('loading');
-      await dispatch(addNewProduct(formValues)).unwrap();
+      await dispatch(addNewProductGraphQl(formValues)).unwrap();
       callback();
       toast.success('El producto fue agregado con éxito');
     } catch (e) {

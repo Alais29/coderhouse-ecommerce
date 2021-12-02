@@ -13,6 +13,7 @@ export interface IItem {
 
 export interface IItemAPI extends IItem {
   id: string;
+  _id?: string;
   timestamp: string;
 }
 
