@@ -11,8 +11,6 @@ import { unknownEndpoint } from 'middlewares/unknownEndpoint';
 import { errorHandler } from 'middlewares/errorHandler';
 import { clientPromise } from 'services/mongodb';
 import passport from 'middlewares/auth';
-import { graphqlHTTP } from 'express-graphql';
-import { graphqlRoot, graphqlSchema } from './grapql';
 
 const app: express.Application = express();
 
@@ -25,15 +23,6 @@ app.use(
   helmet({
     contentSecurityPolicy:
       process.env.NODE_ENV === 'production' ? undefined : false,
-  }),
-);
-
-app.use(
-  '/graphql',
-  graphqlHTTP({
-    schema: graphqlSchema,
-    rootValue: graphqlRoot,
-    graphiql: true,
   }),
 );
 
