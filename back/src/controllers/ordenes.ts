@@ -61,8 +61,8 @@ export const createOrder = async (
     productos.forEach(item => {
       if (isProductPopulated(item.producto))
         emailContent += `
-            <span style="display: block">- ${item.quantity} ${item.producto.nombre}, ${item.producto.codigo}, $${item.producto.precio} </span>
-            `;
+          <span style="display: block">- ${item.quantity} ${item.producto.nombre}, ${item.producto.codigo}, $${item.producto.precio} </span>
+          `;
     });
 
     emailContent += `<h3>Total: $${total.toFixed(2)}</h3>`;
@@ -94,4 +94,52 @@ export const createOrder = async (
   } else {
     throw new CartIsEmpty(404, 'El carrito está vacío');
   }
+};
+
+export const getOrders = async (req: Request, res: Response): Promise<void> => {
+  const { _id } = req.user as User;
+  const orders = await ordenesAPI.get(_id);
+  res.json({ data: orders });
+};
+
+export const getOrder = async (req: Request, res: Response): Promise<void> => {
+  const { _id } = req.user as User;
+  const orders = await ordenesAPI.get(_id, req.params.id);
+  res.json({ data: orders });
+};
+
+export const completeOrder = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const { email } = req.user as User;
+  const completedOrder = await ordenesAPI.update(req.body.id);
+
+  const total = completedOrder.productos.reduce((total, item) => {
+    if (isProductPopulated(item.producto))
+      return (total += item.producto.precio * item.quantity);
+    else return total;
+  }, 0);
+
+  let emailContent = `
+    <h2>Orden ${completedOrder.id}</h2>
+    <h4>Productos:</h4>
+  `;
+
+  completedOrder.productos.forEach(item => {
+    if (isProductPopulated(item.producto))
+      emailContent += `
+        <span style="display: block">- ${item.quantity} ${item.producto.nombre}, $${item.producto.precio} </span>
+        `;
+  });
+
+  emailContent += `<h3>Total: $${total.toFixed(2)}</h3>`;
+
+  EmailService.sendEmail(
+    email,
+    `Orden completada: ${completedOrder.id}`,
+    emailContent,
+  );
+
+  res.json({ data: completedOrder });
 };

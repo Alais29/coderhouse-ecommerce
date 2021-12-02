@@ -10,6 +10,7 @@ export enum EErrorCodes {
   UserDoesNotExists,
   UserAlreadyExists,
   UserNotLoggedIn,
+  OrderCreateError,
 }
 
 export enum ModelType {

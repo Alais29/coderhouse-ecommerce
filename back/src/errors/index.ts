@@ -111,3 +111,11 @@ export class UserNotLoggedIn extends BaseError {
     this.error = `-${EErrorCodes.UserNotLoggedIn}`;
   }
 }
+
+export class OrderCreateError extends BaseError {
+  public error: string;
+  constructor(statusCode: number, message: string) {
+    super(statusCode, message);
+    this.error = `-${EErrorCodes.OrderCreateError}`;
+  }
+}

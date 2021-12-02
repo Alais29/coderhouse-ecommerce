@@ -4,10 +4,8 @@ import { OrdenesModelMongoDb } from 'models/mongoDb/ordenes';
 
 interface IModel {
   save: (userId: string, data: IOrderBase) => Promise<IOrder>;
-  // get: (id?: string) => Promise<IUser | IUser[]>;
-  // update: (id: string, userData: IUserBase) => Promise<IUser>;
-  // delete: (id: string) => Promise<void>;
-  // query: (email: string) => Promise<IUser>;
+  get: (userId: string, orderId?: string) => Promise<IOrder | IOrder[]>;
+  update: (orderId: string) => Promise<IOrder>;
 }
 
 export class OrdenesModelFactory {
