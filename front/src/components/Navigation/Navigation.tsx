@@ -12,13 +12,16 @@ const Navigation = () => {
         <Container>
           <Nav className="me-auto">
             <Link className="nav-link" to="/">
-              Inicio
-            </Link>
-            <Link className="nav-link" to="/chat">
-              Chat
+              Cuenta
             </Link>
             <Link className="nav-link" to="/productos">
               Productos
+            </Link>
+            <Link className="nav-link" to="/ordenes">
+              Ordenes
+            </Link>
+            <Link className="nav-link" to="/chat">
+              Chat
             </Link>
             <Link className="nav-link" to="/add-product">
               Agregar Producto

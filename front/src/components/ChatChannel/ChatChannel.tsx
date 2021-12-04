@@ -10,10 +10,9 @@ import cx from 'classnames/bind';
 import styles from './styles.module.scss';
 
 const ChatChannel = () => {
-  const [loadingMessages, setLoadingMessages] = useState(true);
   const [savingMessage, setSavingMessage] = useState(false);
   const { data: dataUser } = useAppSelector(state => state.user);
-  const { data: messages } = useAppSelector(state => state.messages);
+  const { data: messages, status } = useAppSelector(state => state.messages);
 
   const dispatch = useAppDispatch();
 
@@ -27,18 +26,16 @@ const ChatChannel = () => {
   const chatBoxRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (dataUser) {
+    if (dataUser && status === 'idle') {
       socket.emit('get messages', dataUser.email);
       socket.on('messages', data => {
         dispatch(setMessages(data));
-        setLoadingMessages(false);
       });
       socket.on('messages error', data => {
         toast.warning(data.message);
-        setLoadingMessages(false);
       });
     }
-  }, [dataUser, dispatch]);
+  }, [dataUser, dispatch, status]);
 
   useEffect(() => {
     if (chatBoxRef.current && !isEmpty(messages)) {
@@ -86,17 +83,17 @@ const ChatChannel = () => {
       <div
         ref={chatBoxRef}
         className={cx(styles['chat-channel__messages'], {
-          [styles['chat-channel__messages--loading']]: loadingMessages,
+          [styles['chat-channel__messages--loading']]: status === 'idle',
           [styles['chat-channel__messages--no-messages']]:
-            !loadingMessages && messages.length === 0,
+            status === 'succeeded' && messages.length === 0,
         })}
       >
-        {loadingMessages && (
+        {status === 'idle' && (
           <Spinner animation="border" role="status" variant="primary">
             <span className="visually-hidden">Loading...</span>
           </Spinner>
         )}
-        {!loadingMessages && messages.length === 0 ? (
+        {status === 'succeeded' && messages.length === 0 ? (
           <h3 className="text-center">No tienes mensajes</h3>
         ) : (
           messages.map(msg => (

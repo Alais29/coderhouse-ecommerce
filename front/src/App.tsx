@@ -16,6 +16,7 @@ import Cart from 'pages/Cart/Cart';
 import Productos from 'pages/Productos/Productos';
 import Dashboard from 'pages/Dashboard/Dashboard';
 import Chat from 'pages/Chat/Chat';
+import Orders from 'pages/Orders/Orders';
 import { useAppSelector, useAppDispatch } from 'hooks/redux';
 import { getUserData } from 'features/user/userSlice';
 import { getCookie } from 'utilities/others';
@@ -69,6 +70,9 @@ const App = () => {
               </Route>
               <Route path="/productos">
                 {isLoggedIn ? <Productos /> : <Redirect to="/login" />}
+              </Route>
+              <Route path="/ordenes">
+                {isLoggedIn ? <Orders /> : <Redirect to="/login" />}
               </Route>
               <Route path="/">
                 {isLoggedIn ? <Dashboard /> : <Redirect to="/login" />}

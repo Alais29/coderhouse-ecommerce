@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { IOrder } from 'commons/interfaces';
-import { saveOrder } from 'services/Orders';
+import { getOrders, saveOrder } from 'services/Orders';
 
 interface OrderState {
   data: IOrder[];
@@ -16,6 +16,14 @@ const initialState: OrderState = {
   error: null,
 };
 
+export const fetchOrders = createAsyncThunk(
+  'order/fetchOrders',
+  async (): Promise<IOrder[]> => {
+    const response = await getOrders();
+    return response;
+  },
+);
+
 export const createOrder = createAsyncThunk('order/createOrder', async () => {
   const response = await saveOrder();
   return response;
@@ -26,10 +34,33 @@ export const ordersSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers(builder) {
-    builder.addCase(createOrder.fulfilled, (state, action) => {
-      state.data.push(action.payload);
-      state.lastOrder = action.payload;
-    });
+    builder
+      .addCase(fetchOrders.pending, state => {
+        state.status = 'loading';
+      })
+      .addCase(fetchOrders.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.data = action.payload;
+        state.error = null;
+
+        const notCompletedOrders = action.payload.filter(
+          item => item.estado === 'generada',
+        );
+
+        const lastNotCompletedOrder =
+          notCompletedOrders[notCompletedOrders.length - 1];
+        if (lastNotCompletedOrder) {
+          state.lastOrder = lastNotCompletedOrder;
+        }
+      })
+      .addCase(fetchOrders.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      })
+      .addCase(createOrder.fulfilled, (state, action) => {
+        state.data.push(action.payload);
+        state.lastOrder = action.payload;
+      });
   },
 });
 

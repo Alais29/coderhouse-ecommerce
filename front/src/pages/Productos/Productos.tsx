@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Modal, Spinner } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
+import { isEmpty } from 'utilities/others';
 import { IItemAPI } from 'commons/interfaces';
 import { useAppDispatch, useAppSelector } from 'hooks/redux';
 import {
@@ -14,11 +15,9 @@ import { addProductToCart } from 'features/cart/cartSlice';
 import ConfirmationModal from 'components/Modals/ConfirmationModal/ConfirmationModal';
 import ProductList from 'components/ProductList/ProductList';
 import EditModal from 'components/Modals/EditModal/EditModal';
-import cx from 'classnames/bind';
-import styles from './styles.module.scss';
 import LoadingScreen from 'components/LoadingScreen/LoadingScreen';
 import Filter from 'components/Filter/Filter';
-import { isEmpty } from 'utilities/others';
+import LoadingData from 'components/LoadingData/LoadingData';
 
 const Productos = () => {
   const [showModal, setShowModal] = useState(false);
@@ -121,26 +120,27 @@ const Productos = () => {
   return (
     <>
       <h1 className="text-center mt-5 pt-4">Productos</h1>
-      <Filter />
-      {status === 'loading' && (
-        <div className={cx(styles['spinner-container'])}>
-          <Spinner animation="grow" variant="primary" />
-        </div>
-      )}
-      {status !== 'loading' && !isEmpty(data) ? (
-        <ProductList
-          location="home"
-          productos={data}
-          handleToggleShowModal={handleToggleShowModal}
-          handleAddToCart={handleAddToCart}
-        />
+      {isEmpty(data) ? (
+        status === 'loading' ? (
+          <LoadingData />
+        ) : (
+          <div className="text-center mt-4">
+            <h2>
+              No se encontraron productos, intenta con otros parámetros de
+              búsqueda
+            </h2>
+          </div>
+        )
       ) : (
-        <div className="text-center mt-4">
-          <h2>
-            No se encontraron productos, intenta con otros parámetros de
-            búsqueda
-          </h2>
-        </div>
+        <>
+          <Filter />
+          <ProductList
+            location="home"
+            productos={data}
+            handleToggleShowModal={handleToggleShowModal}
+            handleAddToCart={handleAddToCart}
+          />
+        </>
       )}
       <Modal show={showModal} onHide={() => handleToggleShowModal()}>
         {productToDelete && (
