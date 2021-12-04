@@ -1,19 +1,22 @@
-import { useAppSelector } from 'hooks/redux';
-import cx from 'classnames/bind';
-import styles from './styles.module.scss';
 import { Col, Row, Table } from 'react-bootstrap';
 import moment from 'moment';
+import { useAppSelector } from 'hooks/redux';
+import { IOrder } from 'commons/interfaces';
+import cx from 'classnames/bind';
+import styles from './styles.module.scss';
 
-const OrderInfo = () => {
-  const { lastOrder } = useAppSelector(state => state.orders);
+interface IOrderInfo {
+  order: IOrder;
+}
 
-  const total = lastOrder?.productos.reduce((total, item) => {
+const OrderInfo = ({ order }: IOrderInfo) => {
+  const { data: userData } = useAppSelector(state => state.user);
+
+  const total = order.productos.reduce((total, item) => {
     return (total += Number(item.producto.precio) * item.quantity);
   }, 0);
 
-  const estado = lastOrder
-    ? lastOrder?.estado.charAt(0).toUpperCase() + lastOrder?.estado.slice(1)
-    : '';
+  const estado = order.estado.charAt(0).toUpperCase() + order.estado.slice(1);
 
   return (
     <div
@@ -31,8 +34,8 @@ const OrderInfo = () => {
               </tr>
             </thead>
             <tbody>
-              {lastOrder &&
-                lastOrder.productos.map(product => (
+              {order &&
+                order.productos.map(product => (
                   <tr>
                     <td>{product.quantity}</td>
                     <td>{product.producto.nombre}</td>
@@ -54,26 +57,25 @@ const OrderInfo = () => {
           <h5>Datos de la entrega:</h5>
           <ul>
             <li>
-              <span className="fw-bold">Entregar a:</span>{' '}
-              {lastOrder?.user.nombre}
-            </li>
-            <li>
-              <span className="fw-bold">Email:</span> {lastOrder?.user.email}
-            </li>
-            <li>
-              <span className="fw-bold">Orden creada:</span>{' '}
-              {moment(lastOrder?.timestamp).format('DD/MM/YYYY, LT')}
-            </li>
-            <li>
               <span className="fw-bold">Estado:</span> {estado}
             </li>
             <li>
+              <span className="fw-bold">Entregar a:</span> {userData?.nombre}
+            </li>
+            <li>
+              <span className="fw-bold">Email:</span> {userData?.email}
+            </li>
+            <li>
+              <span className="fw-bold">Orden creada:</span>{' '}
+              {moment(order.timestamp).format('DD/MM/YYYY, LT')}
+            </li>
+            <li>
               <span className="fw-bold">Dirección de entrega:</span>{' '}
-              {lastOrder?.direccionEntrega}
+              {order.direccionEntrega}
             </li>
             <li>
               <span className="fw-bold">Código Postal:</span>{' '}
-              {lastOrder?.codigoPostal}
+              {order.codigoPostal}
             </li>
           </ul>
         </Col>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { Button, Spinner } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { useAppDispatch, useAppSelector } from 'hooks/redux';
@@ -13,8 +13,7 @@ import { createOrder } from 'features/orders/ordersSlice';
 import { isEmpty } from 'utilities/others';
 import ProductList from 'components/ProductList/ProductList';
 import LoadingScreen from 'components/LoadingScreen/LoadingScreen';
-import cx from 'classnames/bind';
-import styles from './styles.module.scss';
+import LoadingData from 'components/LoadingData/LoadingData';
 
 const Cart = () => {
   const [total, setTotal] = useState(0);
@@ -85,9 +84,7 @@ const Cart = () => {
       />
       {isEmpty(data) ? (
         status === 'loading' ? (
-          <div className={cx(styles['spinner-container'])}>
-            <Spinner animation="grow" variant="primary" />
-          </div>
+          <LoadingData />
         ) : (
           <div className="text-center">
             <h2>El carrito está vacío</h2>

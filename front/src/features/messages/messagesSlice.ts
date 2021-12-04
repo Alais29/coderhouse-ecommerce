@@ -3,10 +3,12 @@ import { IMessage } from 'commons/interfaces';
 
 interface MessagesState {
   data: IMessage[];
+  status: 'idle' | 'succeeded';
 }
 
 const initialState: MessagesState = {
   data: [],
+  status: 'idle',
 };
 
 export const messagesSlice = createSlice({
@@ -15,6 +17,7 @@ export const messagesSlice = createSlice({
   reducers: {
     setMessages: (state, action) => {
       state.data = action.payload;
+      state.status = 'succeeded';
     },
     addMessage: (state, action) => {
       state.data.push(action.payload);
