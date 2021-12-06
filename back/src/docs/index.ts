@@ -3,6 +3,7 @@ import cart from './cart';
 import chat from './chat';
 import components from './components';
 import login from './login';
+import orders from './orders';
 import products from './products';
 import servers from './servers';
 import tags from './tags';
@@ -18,6 +19,7 @@ export default {
     ...cart,
     ...login,
     ...users,
+    ...orders,
     ...chat,
   },
 };

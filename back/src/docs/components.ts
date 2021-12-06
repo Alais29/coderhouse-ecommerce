@@ -11,6 +11,11 @@ export default {
         description: 'An id of an user.',
         example: '6185584bc0d33bdb01a32966',
       },
+      OrderId: {
+        type: 'string',
+        description: 'An id of an order.',
+        example: '61a6bba3f5c7da3594512795',
+      },
       User: {
         type: 'object',
         description: 'User data.',
@@ -229,6 +234,87 @@ export default {
             type: 'number',
             description: 'Amount of this product in the cart.',
             example: '1',
+          },
+        },
+      },
+      ProductOrder: {
+        type: 'object',
+        description: 'A product in an order.',
+        properties: {
+          producto: {
+            type: 'object',
+            properties: {
+              nombre: {
+                type: 'string',
+                description: 'Product name',
+                example: 'Test Product',
+              },
+              descripcion: {
+                type: 'string',
+                description: 'Product description',
+                example:
+                  'Ac nulla fringilla, suscipit justo in, facilisis velit. Vivamus ac tempus ligula. Donec facilisis augue quis felis vestibulum, vitae semper est egestas.',
+              },
+              precio: {
+                type: 'number',
+                description: 'Product price',
+                example: '123.4',
+              },
+              id: {
+                $ref: '#/components/schemas/ProductId',
+              },
+            },
+          },
+          quantity: {
+            type: 'number',
+            description: 'Amount of this product in the order.',
+            example: '1',
+          },
+        },
+      },
+      Order: {
+        type: 'object',
+        description: 'An Order.',
+        properties: {
+          user: {
+            $ref: '#/components/schemas/UserId',
+          },
+          productos: {
+            $ref: '#/components/schemas/ProductOrder',
+          },
+          total: {
+            type: 'number',
+            description: 'Total price of the order.',
+            example: '1500',
+          },
+          estado: {
+            type: 'string',
+            description:
+              'Order status, can be "generada" for generated but not completed orders, or "completada" for completed orders.',
+            example: 'generada',
+          },
+          direccionEntrega: {
+            type: 'string',
+            description: 'Delivery Address.',
+            example: 'Prueba 123, Piso 1, Depto. 121',
+          },
+          codigoPostal: {
+            type: 'string',
+            description: 'Postal code.',
+            example: '12345678',
+          },
+          timestamp: {
+            type: 'string',
+            description: 'Date and time when the order was created.',
+            example: '2021-12-01T00:02:43.013Z',
+          },
+          updatedAt: {
+            type: 'string',
+            description: 'Date and time when the order was last updated.',
+            example: '2021-12-01T00:02:43.013Z',
+          },
+          id: {
+            $ref: '#/components/schemas/OrderId',
           },
         },
       },
