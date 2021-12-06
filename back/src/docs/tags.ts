@@ -13,6 +13,9 @@ export default {
       name: 'Cart',
     },
     {
+      name: 'Orders',
+    },
+    {
       name: 'Chat',
     },
   ],

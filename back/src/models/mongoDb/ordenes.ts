@@ -59,14 +59,9 @@ export class OrdenesModelMongoDb {
         ...order,
       });
       await newOrder.save();
-      return (
-        await newOrder.populate({
-          path: 'productos.producto',
-          select: 'nombre descripcion precio',
-        })
-      ).populate({
-        path: 'user',
-        select: 'nombre email',
+      return await newOrder.populate({
+        path: 'productos.producto',
+        select: 'nombre descripcion precio',
       });
     } catch (e) {
       if (e instanceof mongoose.Error.CastError) {
@@ -145,10 +140,7 @@ export class OrdenesModelMongoDb {
       return orderToUpdate;
     } catch (e) {
       if (e instanceof mongoose.Error.CastError) {
-        throw new NotFound(
-          404,
-          'La orden no existe o ya se encuentra completada. Verifique la id de la orden',
-        );
+        throw new NotFound(400, 'La orden no existe.');
       } else if (e instanceof NotFound) {
         throw e;
       } else {
