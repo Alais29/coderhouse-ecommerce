@@ -17,6 +17,7 @@ const UserSchema = new Schema<IUser>({
   edad: { type: Number, required: true },
   telefono: { type: String, required: true },
   foto: { type: String, required: true },
+  admin: { type: Boolean, default: false },
 });
 
 UserSchema.pre('save', async function (next) {

@@ -14,6 +14,7 @@ export interface IUserBase extends IObject {
   edad: number;
   telefono: string;
   foto: string;
+  admin?: boolean;
 }
 
 export interface IUser extends IUserBase {
@@ -66,6 +67,7 @@ export const userJoiSchema = Joi.object({
   telefono: Joi.string().required().messages({
     'string.empty': `Por favor ingresa tu teléfono`,
   }),
+  admin: Joi.boolean().default(false),
   foto: Joi.string().required().messages({
     'string.empty': `Por favor ingresa una foto para usar como imagen de tu perfil`,
   }),

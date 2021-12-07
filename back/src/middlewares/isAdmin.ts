@@ -1,14 +1,17 @@
 import { Request, Response, NextFunction } from 'express';
 import { UnauthorizedRoute } from 'errors';
 
-const admin = true;
+interface User {
+  admin: boolean;
+}
 
 export const isAdmin = (
   req: Request,
   res: Response,
   next: NextFunction,
 ): void => {
-  if (admin) {
+  const { admin } = req.user as User;
+  if (req.user && admin) {
     next();
   } else {
     throw new UnauthorizedRoute(

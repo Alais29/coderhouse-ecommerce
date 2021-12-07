@@ -13,7 +13,7 @@ import {
 const usersRouter = Router();
 
 usersRouter.get('/', isAdmin, asyncHandler(getUsers));
-usersRouter.get('/:id', asyncHandler(getUser));
+usersRouter.get('/:id', isAdmin, asyncHandler(getUser));
 // usersRouter.post('/', validateUserInput, asyncHandler(addUser));
 usersRouter.put('/:id', asyncHandler(updateUser));
 usersRouter.delete('/:id', asyncHandler(deleteUser));
