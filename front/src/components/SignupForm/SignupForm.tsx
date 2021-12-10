@@ -1,15 +1,25 @@
 import React, { useState, useRef } from 'react';
-import { IUserFormData } from 'commons/interfaces';
+import { useHistory } from 'react-router-dom';
 import { Button, Form, Row, Col } from 'react-bootstrap';
+import { toast } from 'react-toastify';
+import { IObject, IUserFormData } from 'commons/interfaces';
 import PhoneInput from 'react-phone-number-input';
+import { useAppDispatch, useAppSelector } from 'hooks/redux';
+import { userLogin, userSignUp } from 'features/user/userSlice';
+
 import cx from 'classnames/bind';
 import styles from './styles.module.scss';
 
 interface ISignupForm {
-  onSubmit: (data: IUserFormData, callback: () => void) => void;
+  location: 'dashboard' | 'signupPage';
 }
 
-const SignupForm = ({ onSubmit }: ISignupForm) => {
+const SignupForm = ({ location }: ISignupForm) => {
+  const { data: dataUser } = useAppSelector(state => state.user);
+  const dispatch = useAppDispatch();
+
+  const history = useHistory();
+
   const [formValues, setFormValues] = useState({
     email: '',
     password: '',
@@ -45,7 +55,7 @@ const SignupForm = ({ onSubmit }: ISignupForm) => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     let fotoToUpload = null;
@@ -58,7 +68,8 @@ const SignupForm = ({ onSubmit }: ISignupForm) => {
     formData.append('foto', fotoToUpload ? fotoToUpload[0] : '');
     formData.append('telefono', telefono || '');
 
-    onSubmit(formData, () => {
+    try {
+      await dispatch(userSignUp(formData)).unwrap();
       setFormValues({
         email: '',
         password: '',
@@ -73,7 +84,28 @@ const SignupForm = ({ onSubmit }: ISignupForm) => {
       });
       setTelefono(undefined);
       if (fotoRef.current) fotoRef.current.value = '';
-    });
+
+      toast.success('¡Registro Exitoso!');
+
+      if (location === 'signupPage') {
+        const dataObj: IObject = {};
+        formData.forEach((value, key) => (dataObj[key] = value));
+
+        const loginData = {
+          email: dataObj.email as string,
+          password: dataObj.password as string,
+        };
+
+        await dispatch(userLogin(loginData)).unwrap();
+        history.push('/account');
+      }
+    } catch (e) {
+      const message =
+        e.message === 'Missing credentials'
+          ? 'Todos los campos son obligatorios'
+          : e.message;
+      toast.error(message);
+    }
   };
 
   return (
@@ -135,6 +167,29 @@ const SignupForm = ({ onSubmit }: ISignupForm) => {
                 onChange={setTelefono as (value?: unknown) => void}
               />
             </Form.Group>
+            {dataUser && dataUser.admin && (
+              <Form.Group controlId="foto" className="mb-3">
+                <p>¿Administrador?</p>
+                <div key={`inline-radio`} className="mb-3">
+                  <Form.Check
+                    inline
+                    label="Si"
+                    name="admin"
+                    type="radio"
+                    id={`inline-radio-1`}
+                    value="true"
+                  />
+                  <Form.Check
+                    inline
+                    label="No"
+                    name="admin"
+                    type="radio"
+                    id={`inline-radio-2`}
+                    value="false"
+                  />
+                </div>
+              </Form.Group>
+            )}
           </Col>
           <Col>
             <Form.Group className="mb-3" controlId="calle">

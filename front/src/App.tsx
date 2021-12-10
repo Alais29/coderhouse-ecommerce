@@ -11,10 +11,9 @@ import LoadingScreen from 'components/LoadingScreen/LoadingScreen';
 import Navigation from 'components/Navigation/Navigation';
 import Login from 'pages/Login/Login';
 import Signup from 'pages/Signup/Signup';
-import AddProduct from 'pages/AddProduct/AddProduct';
 import Cart from 'pages/Cart/Cart';
 import Productos from 'pages/Productos/Productos';
-import Dashboard from 'pages/Dashboard/Dashboard';
+import Account from 'pages/Account/Account';
 import Chat from 'pages/Chat/Chat';
 import Orders from 'pages/Orders/Orders';
 import { useAppSelector, useAppDispatch } from 'hooks/redux';
@@ -51,16 +50,13 @@ const App = () => {
           <Container>
             <Switch>
               <Route path="/login">
-                <Login />
+                {isLoggedIn ? <Redirect to="/" /> : <Login />}
               </Route>
               <Route path="/signup">
-                <Signup />
+                {isLoggedIn ? <Redirect to="/" /> : <Signup />}
               </Route>
               <Route path="/chat">
                 {isLoggedIn ? <Chat /> : <Redirect to="/login" />}
-              </Route>
-              <Route path="/add-product">
-                {isLoggedIn ? <AddProduct /> : <Redirect to="/login" />}
               </Route>
               <Route path="/cart">
                 {isLoggedIn ? <Cart /> : <Redirect to="/login" />}
@@ -68,14 +64,14 @@ const App = () => {
               <Route path="/successful-order">
                 {isLoggedIn ? <SuccesfulOrder /> : <Redirect to="/login" />}
               </Route>
-              <Route path="/productos">
-                {isLoggedIn ? <Productos /> : <Redirect to="/login" />}
-              </Route>
               <Route path="/ordenes">
                 {isLoggedIn ? <Orders /> : <Redirect to="/login" />}
               </Route>
+              <Route path="/account">
+                {isLoggedIn ? <Account /> : <Redirect to="/login" />}
+              </Route>
               <Route path="/">
-                {isLoggedIn ? <Dashboard /> : <Redirect to="/login" />}
+                {isLoggedIn ? <Productos /> : <Redirect to="/login" />}
               </Route>
             </Switch>
           </Container>
