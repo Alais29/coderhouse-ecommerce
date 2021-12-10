@@ -1,4 +1,4 @@
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { IUser } from 'commons/interfaces';
 import LoginForm from 'components/LoginForm/LoginForm';
@@ -8,12 +8,9 @@ import { useAppDispatch } from 'hooks/redux';
 const Login = () => {
   const dispatch = useAppDispatch();
 
-  const history = useHistory();
-
   const handleSubmit = async (data: IUser) => {
     try {
       await dispatch(userLogin(data)).unwrap();
-      history.push('/dashboard');
     } catch (e) {
       toast.error(
         'Hubo un error, por favor verifique su usuario y/o contraseña',

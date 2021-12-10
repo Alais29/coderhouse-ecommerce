@@ -11,10 +11,10 @@ const Navigation = () => {
       <Navbar.Collapse id="responsive-navbar-nav">
         <Container>
           <Nav className="me-auto">
-            <Link className="nav-link" to="/">
+            <Link className="nav-link" to="/account">
               Cuenta
             </Link>
-            <Link className="nav-link" to="/productos">
+            <Link className="nav-link" to="/">
               Productos
             </Link>
             <Link className="nav-link" to="/ordenes">
@@ -22,9 +22,6 @@ const Navigation = () => {
             </Link>
             <Link className="nav-link" to="/chat">
               Chat
-            </Link>
-            <Link className="nav-link" to="/add-product">
-              Agregar Producto
             </Link>
             <Link
               className={cx('nav-link', 'ms-sm-auto', styles['cart-icon'])}

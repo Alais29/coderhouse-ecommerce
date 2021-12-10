@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import { Button, Form, Spinner } from 'react-bootstrap';
-import { IItem, IItemAPI } from 'commons/interfaces';
+import { IItem } from 'commons/interfaces';
+import { useAppDispatch } from 'hooks/redux';
+import { addNewProduct } from 'features/products/productsSlice';
+import { toast } from 'react-toastify';
 
-interface IProductForm {
-  handleSaveProduct: (
-    formValues: IItem | IItemAPI,
-    callback: () => void,
-  ) => void;
-  addRequestStatus: 'idle' | 'loading';
-}
+const ProductForm = () => {
+  const [addRequestStatus, setAddRequestStatus] = useState<'idle' | 'loading'>(
+    'idle',
+  );
 
-const ProductForm = ({ handleSaveProduct, addRequestStatus }: IProductForm) => {
   const [formValues, setFormValues] = useState({
     codigo: '',
     nombre: '',
@@ -23,6 +22,8 @@ const ProductForm = ({ handleSaveProduct, addRequestStatus }: IProductForm) => {
   const { codigo, nombre, descripcion, precio, categoria, stock, foto } =
     formValues;
 
+  const dispatch = useAppDispatch();
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormValues({
       ...formValues,
@@ -30,8 +31,10 @@ const ProductForm = ({ handleSaveProduct, addRequestStatus }: IProductForm) => {
     });
   };
 
-  const handleSubmit = () => {
-    handleSaveProduct(formValues, () => {
+  const handleSaveProduct = async () => {
+    try {
+      setAddRequestStatus('loading');
+      await dispatch(addNewProduct(formValues)).unwrap();
       setFormValues({
         codigo: '',
         nombre: '',
@@ -41,7 +44,12 @@ const ProductForm = ({ handleSaveProduct, addRequestStatus }: IProductForm) => {
         stock: '',
         foto: '',
       });
-    });
+      toast.success('El producto fue agregado con éxito');
+    } catch (e) {
+      toast.error(e.message);
+    } finally {
+      setAddRequestStatus('idle');
+    }
   };
 
   return (
@@ -116,7 +124,7 @@ const ProductForm = ({ handleSaveProduct, addRequestStatus }: IProductForm) => {
         </Form.Group>
         <Button
           className="mb-2"
-          onClick={handleSubmit}
+          onClick={handleSaveProduct}
           disabled={addRequestStatus === 'loading'}
         >
           Guardar{' '}
