@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { IUser } from 'commons/interfaces';
-import { loginUser, signupUser, logoutUser, userData } from 'services/Login';
+import { loginUser, logoutUser } from 'services/Login';
+import { signupUser, userData } from 'services/User';
 
 interface UserState {
   data: IUser | null;

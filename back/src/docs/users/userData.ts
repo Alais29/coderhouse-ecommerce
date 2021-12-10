@@ -1,6 +1,6 @@
 export default {
   get: {
-    tags: ['Authentication'],
+    tags: ['User'],
     description: 'Log in to the system.',
     operationId: 'userData',
     parameters: [],

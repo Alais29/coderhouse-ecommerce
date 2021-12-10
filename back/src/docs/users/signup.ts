@@ -1,6 +1,6 @@
 export default {
   post: {
-    tags: ['Authentication'],
+    tags: ['User'],
     description: 'Sign up to the system (add a valid user).',
     operationId: 'signup',
     parameters: [],
