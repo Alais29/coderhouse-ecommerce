@@ -1,6 +1,8 @@
 import { carritoAPI } from 'api/carrito';
+import { ordenesAPI } from 'api/ordenes';
 import { productsAPI } from 'api/productos';
 import { IItemCarrito } from 'common/interfaces/carrito';
+import { IOrder } from 'common/interfaces/ordenes';
 import { IItem } from 'common/interfaces/products';
 import { Types } from 'mongoose';
 
@@ -70,8 +72,28 @@ export const getMessageResponse = async (
       return message;
     }
     //TODO: Send proper order information
-    case 'orden':
-      return 'Tu orden está en curso';
+    case 'orden': {
+      const orders = (await ordenesAPI.get(userId)) as IOrder[];
+      let message = '';
+      if (isEmpty(orders)) {
+        message = 'No tienes ordenes recientes.';
+      } else {
+        const lastOrder = orders[orders.length - 1];
+        message = `Tu última orden (ID: ${lastOrder.id}), se encuentra ${
+          lastOrder.estado === 'generada' ? 'en curso' : 'completada'
+        } y ${
+          lastOrder.estado === 'generada' ? 'será entregada' : 'fue entregada'
+        } en ${
+          lastOrder.direccionEntrega
+        }. Los productos incluidos en la orden son: $nl`;
+        lastOrder.productos.map(item => {
+          if (isProductPopulated(item.producto))
+            message += `- Cantidad: ${item.quantity}, Producto: ${item.producto.nombre}, Precio: $${item.producto.precio} c/u.$nl`;
+        });
+        message += `Total: $${lastOrder.total}.$nl`;
+      }
+      return message;
+    }
     case 'carrito': {
       const carrito = (await carritoAPI.get(userId)) as IItemCarrito[];
       let message = '';
