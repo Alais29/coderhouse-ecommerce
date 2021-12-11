@@ -7,6 +7,8 @@ import {
   Redirect,
 } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
 import LoadingScreen from 'components/LoadingScreen/LoadingScreen';
 import Navigation from 'components/Navigation/Navigation';
 import Login from 'pages/Login/Login';
@@ -20,6 +22,8 @@ import { useAppSelector, useAppDispatch } from 'hooks/redux';
 import { getUserData } from 'features/user/userSlice';
 import { getCookie } from 'utilities/others';
 import SuccesfulOrder from 'pages/SuccessfulOrder/SuccesfulOrder';
+
+library.add(fas);
 
 const App = () => {
   const { status, isLoggedIn } = useAppSelector(state => state.user);
