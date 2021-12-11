@@ -31,6 +31,7 @@ const SignupForm = ({ location }: ISignupForm) => {
     piso: '',
     depto: '',
     edad: '',
+    admin: 'false',
   });
   const [telefono, setTelefono] = useState();
   const {
@@ -44,6 +45,7 @@ const SignupForm = ({ location }: ISignupForm) => {
     piso,
     depto,
     edad,
+    admin,
   } = formValues;
 
   const fotoRef = useRef<HTMLInputElement>(null);
@@ -81,6 +83,7 @@ const SignupForm = ({ location }: ISignupForm) => {
         piso: '',
         depto: '',
         edad: '',
+        admin: 'false',
       });
       setTelefono(undefined);
       if (fotoRef.current) fotoRef.current.value = '';
@@ -112,7 +115,7 @@ const SignupForm = ({ location }: ISignupForm) => {
     <div className={cx(styles['signup-form'])}>
       <Form onSubmit={e => handleSubmit(e)}>
         <Row>
-          <Col>
+          <Col sm="12" md="6">
             <Form.Group className="mb-3" controlId="nombre">
               <Form.Label>Nombre Completo</Form.Label>
               <Form.Control
@@ -167,31 +170,8 @@ const SignupForm = ({ location }: ISignupForm) => {
                 onChange={setTelefono as (value?: unknown) => void}
               />
             </Form.Group>
-            {dataUser && dataUser.admin && (
-              <Form.Group controlId="foto" className="mb-3">
-                <p>¿Administrador?</p>
-                <div key={`inline-radio`} className="mb-3">
-                  <Form.Check
-                    inline
-                    label="Si"
-                    name="admin"
-                    type="radio"
-                    id={`inline-radio-1`}
-                    value="true"
-                  />
-                  <Form.Check
-                    inline
-                    label="No"
-                    name="admin"
-                    type="radio"
-                    id={`inline-radio-2`}
-                    value="false"
-                  />
-                </div>
-              </Form.Group>
-            )}
           </Col>
-          <Col>
+          <Col sm="12" md="6">
             <Form.Group className="mb-3" controlId="calle">
               <Form.Label>Calle</Form.Label>
               <Form.Control
@@ -243,8 +223,35 @@ const SignupForm = ({ location }: ISignupForm) => {
             </Form.Group>
           </Col>
         </Row>
+        {dataUser && dataUser.admin && (
+          <Form.Group controlId="foto" className="mb-3">
+            <p>¿Administrador?</p>
+            <div key={`inline-radio`} className="mb-3">
+              <Form.Check
+                inline
+                label="Si"
+                name="admin"
+                type="radio"
+                id={`inline-radio-1`}
+                value="true"
+                onChange={handleChange}
+                checked={admin === 'true'}
+              />
+              <Form.Check
+                inline
+                label="No"
+                name="admin"
+                type="radio"
+                id={`inline-radio-2`}
+                value="false"
+                onChange={handleChange}
+                checked={admin === 'false'}
+              />
+            </div>
+          </Form.Group>
+        )}
         <Button className="mb-2" type="submit">
-          Registrarse
+          Registro
         </Button>
       </Form>
     </div>

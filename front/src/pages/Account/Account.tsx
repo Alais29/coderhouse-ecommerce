@@ -23,7 +23,7 @@ const Account = () => {
   };
 
   return (
-    <>
+    <div className="mb-3">
       <h1 className="text-center mt-5 pt-4">Mi cuenta</h1>
       {data === null ? (
         status === 'loading' ? (
@@ -45,7 +45,7 @@ const Account = () => {
         />
       )}
       {data !== null && data.admin && <Dashboard />}
-    </>
+    </div>
   );
 };
 

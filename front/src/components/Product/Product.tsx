@@ -1,5 +1,7 @@
 import { Button, Card } from 'react-bootstrap';
+import { useAppSelector } from 'hooks/redux';
 import { IItemAPI } from 'commons/interfaces';
+
 import cx from 'classnames/bind';
 import styles from './styles.module.scss';
 
@@ -17,6 +19,8 @@ const Product = ({
   handleToggleShowModal,
   handleAddToCart,
 }: IProps) => {
+  const { data } = useAppSelector(state => state.user);
+
   return (
     <Card>
       <Card.Img variant="top" src={`${product.foto}`} />
@@ -34,20 +38,22 @@ const Product = ({
           </Card.Text>
         </div>
         <div className={cx('d-flex', 'flex-column', styles['product-btns'])}>
-          <div className={cx('d-flex', 'mt-2', styles['product-add-edit'])}>
-            <Button
-              variant="danger"
-              onClick={() => handleToggleShowModal(product, 'delete')}
-            >
-              Eliminar
-            </Button>
-            <Button
-              variant="info"
-              onClick={() => handleToggleShowModal(product, 'edit')}
-            >
-              Editar
-            </Button>
-          </div>
+          {data && data.admin && (
+            <div className={cx('d-flex', 'mt-2', styles['product-add-edit'])}>
+              <Button
+                variant="danger"
+                onClick={() => handleToggleShowModal(product, 'delete')}
+              >
+                Eliminar
+              </Button>
+              <Button
+                variant="info"
+                onClick={() => handleToggleShowModal(product, 'edit')}
+              >
+                Editar
+              </Button>
+            </div>
+          )}
           <Button variant="primary" onClick={() => handleAddToCart(product)}>
             Agregar al carrito
           </Button>
