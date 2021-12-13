@@ -7,6 +7,7 @@ export interface IItemBase extends IObject {
   precio: number;
   categoria: string;
   foto: string;
+  fotoId?: string;
   timestamp: string;
   stock: number;
 }

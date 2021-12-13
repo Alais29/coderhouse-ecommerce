@@ -119,3 +119,11 @@ export class OrderCreateError extends BaseError {
     this.error = `-${EErrorCodes.OrderCreateError}`;
   }
 }
+
+export class FileValidation extends BaseError {
+  public error: string;
+  constructor(statusCode: number, message: string) {
+    super(statusCode, message);
+    this.error = `-${EErrorCodes.FileValidation}`;
+  }
+}

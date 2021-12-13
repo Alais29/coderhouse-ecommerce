@@ -68,8 +68,9 @@ const signUpFunc: VerifyFunctionWithRequest = async (
 
     if (req.files) {
       const file = req.files.foto as UploadedFile;
-      const imageUrl = await uploadToCloudinary(file, userData.email);
-      userData.foto = imageUrl;
+      const { secure_url, public_id } = await uploadToCloudinary(file, 'Users');
+      userData.foto = secure_url;
+      userData.fotoId = public_id;
     } else {
       throw new UserValidation(
         400,
