@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   Button,
   Col,
@@ -12,6 +12,7 @@ import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAppDispatch } from 'hooks/redux';
 import { addNewProduct } from 'features/products/productsSlice';
+import { IItemFormData } from 'commons/interfaces';
 
 const ProductForm = () => {
   const [addRequestStatus, setAddRequestStatus] = useState<'idle' | 'loading'>(
@@ -27,10 +28,9 @@ const ProductForm = () => {
     precio: '',
     categoria: '',
     stock: '',
-    foto: '',
   });
-  const { codigo, nombre, descripcion, precio, categoria, stock, foto } =
-    formValues;
+  const { codigo, nombre, descripcion, precio, categoria, stock } = formValues;
+  const fotoRef = useRef<HTMLInputElement>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormValues({
@@ -40,9 +40,20 @@ const ProductForm = () => {
   };
 
   const handleSaveProduct = async () => {
+    let fotoToUpload = null;
+
+    if (fotoRef.current) fotoToUpload = fotoRef.current.files;
+
+    const formData = new FormData() as IItemFormData;
+    Object.entries(formValues).forEach(formElement => {
+      formData.append(formElement[0], formElement[1]);
+    });
+    formData.append('foto', fotoToUpload ? fotoToUpload[0] : '');
+
     try {
       setAddRequestStatus('loading');
-      await dispatch(addNewProduct(formValues)).unwrap();
+
+      await dispatch(addNewProduct(formData)).unwrap();
       setFormValues({
         codigo: '',
         nombre: '',
@@ -50,8 +61,9 @@ const ProductForm = () => {
         precio: '',
         categoria: '',
         stock: '',
-        foto: '',
       });
+      if (fotoRef.current) fotoRef.current.value = '';
+
       toast.success('El producto fue agregado con éxito');
     } catch (e) {
       toast.error(e.message);
@@ -144,13 +156,14 @@ const ProductForm = () => {
           </Col>
         </Row>
         <Form.Group className="mb-3" controlId="foto">
-          <Form.Label>URL de imagen</Form.Label>
-          <Form.Control
+          <Form.Label>Imagen del producto</Form.Label>
+          {/* <Form.Control
             type="url"
             value={foto}
             name="foto"
             onChange={handleChange}
-          />
+          /> */}
+          <Form.Control type="file" ref={fotoRef} name="foto" />
         </Form.Group>
         <Button
           className="mb-2"

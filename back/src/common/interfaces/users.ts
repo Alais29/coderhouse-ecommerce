@@ -14,6 +14,7 @@ export interface IUserBase extends IObject {
   edad: number;
   telefono: string;
   foto: string;
+  fotoId: string;
   admin?: boolean;
 }
 

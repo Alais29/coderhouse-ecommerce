@@ -1,9 +1,14 @@
 import { Request, Response } from 'express';
+import { v4 as uuidv4 } from 'uuid';
+import { UploadedFile } from 'express-fileupload';
 import { isValidProduct } from 'utils/validations';
 import { IItem, IItemQuery } from 'common/interfaces/products';
-import { NotFound, NotImplemented } from 'errors';
+import { NotFound, NotImplemented, ProductValidation } from 'errors';
 import { productsAPI } from 'api/productos';
 import { isEmpty } from 'utils/others';
+import moment from 'moment';
+import { uploadToCloudinary } from 'utils/cloudImgUpload';
+import cloudinary from 'services/cloudinary';
 
 export const getProductos = async (
   req: Request,
@@ -60,6 +65,21 @@ export const saveProducto = async (
 
   isValidProduct(producto);
 
+  if (req.files) {
+    const file = req.files.foto as UploadedFile;
+    const { secure_url, public_id } = await uploadToCloudinary(
+      file,
+      'Products',
+    );
+    producto.foto = secure_url;
+    producto.fotoId = public_id;
+  } else {
+    throw new ProductValidation(
+      400,
+      'Por favor ingresa una imagen del producto.',
+    );
+  }
+
   const newProducto: IItem = await productsAPI.save(producto);
   res
     .location(`/api/productos/${newProducto.id}`)
@@ -75,6 +95,19 @@ export const updateProducto = async (
 
   dataToUpdate.precio = Number(dataToUpdate.precio);
   dataToUpdate.stock = Number(dataToUpdate.stock);
+
+  if (req.files) {
+    const file = req.files.foto as UploadedFile;
+    if (dataToUpdate.fotoId) {
+      await cloudinary.uploader.destroy(dataToUpdate.fotoId);
+    }
+    const { secure_url, public_id } = await uploadToCloudinary(
+      file,
+      'Products',
+    );
+    dataToUpdate.foto = secure_url;
+    dataToUpdate.fotoId = public_id;
+  }
 
   isValidProduct(dataToUpdate);
 

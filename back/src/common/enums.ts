@@ -11,6 +11,7 @@ export enum EErrorCodes {
   UserAlreadyExists,
   UserNotLoggedIn,
   OrderCreateError,
+  FileValidation,
 }
 
 export enum ModelType {

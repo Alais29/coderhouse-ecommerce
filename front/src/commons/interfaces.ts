@@ -12,6 +12,8 @@ export interface IItem {
   stock: string;
 }
 
+export interface IItemFormData extends FormData, IItem {}
+
 export interface IItemAPI extends IItem {
   id: string;
   timestamp: string;
