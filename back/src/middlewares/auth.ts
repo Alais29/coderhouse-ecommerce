@@ -4,14 +4,16 @@ import passportLocal, {
   IStrategyOptionsWithRequest,
   VerifyFunctionWithRequest,
 } from 'passport-local';
+import { UploadedFile } from 'express-fileupload';
+import { ValidationError } from 'joi';
 import Config from 'config';
 import { UserModel } from 'models/mongoDb/user';
 import { IUser, IUserBase, userJoiSchema } from 'common/interfaces/users';
 import { UnauthorizedRoute, UserValidation } from 'errors';
 import { logger } from 'services/logger';
 import { EmailService } from 'services/email';
-import { ValidationError } from 'joi';
 import { userAPI } from 'api/user';
+import { uploadToCloudinary } from 'utils/cloudImgUpload';
 
 interface User {
   _id?: string;
@@ -57,33 +59,23 @@ const signUpFunc: VerifyFunctionWithRequest = async (
   done,
 ) => {
   try {
-    const {
-      email,
-      password,
-      repeatPassword,
-      nombre,
-      calle,
-      altura,
-      codigoPostal,
-      piso,
-      depto,
-      edad,
-      telefono,
-    } = req.body;
     const userData: IUserBase = {
-      email,
-      password,
-      repeatPassword,
-      nombre,
-      calle,
-      altura,
-      codigoPostal,
-      piso: piso || '',
-      depto: depto || '',
-      edad: Number(edad),
-      telefono,
-      foto: req.file?.path || '',
+      ...req.body,
+      admin: false,
     };
+
+    await userJoiSchema.validateAsync(userData);
+
+    if (req.files) {
+      const file = req.files.foto as UploadedFile;
+      const imageUrl = await uploadToCloudinary(file, userData.email);
+      userData.foto = imageUrl;
+    } else {
+      throw new UserValidation(
+        400,
+        'Por favor ingresa una imagen para usar como perfil.',
+      );
+    }
 
     if (req.isAuthenticated()) {
       const loggedInUser = req.user as User;
@@ -92,8 +84,6 @@ const signUpFunc: VerifyFunctionWithRequest = async (
         userData.admin = admin === 'true';
       }
     }
-
-    await userJoiSchema.validateAsync(userData);
 
     const user = await userAPI.query(email);
 

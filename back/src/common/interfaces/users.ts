@@ -68,7 +68,4 @@ export const userJoiSchema = Joi.object({
     'string.empty': `Por favor ingresa tu teléfono`,
   }),
   admin: Joi.boolean().default(false),
-  foto: Joi.string().required().messages({
-    'string.empty': `Por favor ingresa una foto para usar como imagen de tu perfil`,
-  }),
 });

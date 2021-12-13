@@ -71,7 +71,6 @@ export const getMessageResponse = async (
 
       return message;
     }
-    //TODO: Send proper order information
     case 'orden': {
       const orders = (await ordenesAPI.get(userId)) as IOrder[];
       let message = '';

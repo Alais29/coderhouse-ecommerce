@@ -17,3 +17,6 @@ TWILIO_TOKEN=Twilio token
 TWILIO_CELLPHONE=cellphone provided by Twilio to send the messages
 TWILIO_CELLPHONE_WHATSAPP=+cellphone provided by Twilio to send whatsapp messages
 ADMIN_WHATSAPP=admin whatsapp number to receive the notifications
+CLOUD_NAME=cloudinary cloud name
+CLOUD_API_KEY=cloudinary api key
+CLOUD_API_SECRET=cloudinary api secret
