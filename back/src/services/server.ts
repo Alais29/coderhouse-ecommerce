@@ -6,6 +6,7 @@ import path from 'path';
 import * as http from 'http';
 import MongoStore from 'connect-mongo';
 import swaggerUi from 'swagger-ui-express';
+import fileUpload from 'express-fileupload';
 import docs from 'docs';
 import Config from 'config';
 import routes from 'routes';
@@ -23,6 +24,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(helmet());
+app.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: '/tmp/',
+  }),
+);
 
 app.use(
   session({

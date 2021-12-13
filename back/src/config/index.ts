@@ -26,6 +26,9 @@ const env = {
   TWILIO_CELLPHONE_WHATSAPP:
     process.env.TWILIO_CELLPHONE_WHATSAPP || '+123456789',
   ADMIN_WHATSAPP: process.env.ADMIN_WHATSAPP || '+123456789',
+  CLOUD_NAME: process.env.CLOUD_NAME || 'cloudinary cloud name',
+  CLOUD_API_KEY: process.env.CLOUD_API_KEY || 'cloudinary api key',
+  CLOUD_API_SECRET: process.env.CLOUD_API_SECRET || 'cloudinary api secret',
 };
 
 export default env;

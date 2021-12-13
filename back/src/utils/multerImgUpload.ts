@@ -2,6 +2,7 @@ import { UserValidation } from 'errors';
 import multer from 'multer';
 import path from 'path';
 
+// storage configuration for multer
 const storage = multer.diskStorage({
   destination: 'uploads',
   filename: (req, file, cb) => {
@@ -12,6 +13,7 @@ const storage = multer.diskStorage({
   },
 });
 
+// multer configuration
 export const fotoUpload = multer({
   storage,
   limits: {
