@@ -7,7 +7,6 @@ import { IItemAPI } from 'commons/interfaces';
 import { useAppDispatch, useAppSelector } from 'hooks/redux';
 import {
   fetchProducts,
-  editProduct,
   removeProductApi,
   removeProduct,
 } from 'features/products/productsSlice';
@@ -24,9 +23,6 @@ const Productos = () => {
   const [productToDelete, setProductToDelete] = useState<IItemAPI | null>(null);
   const [productToEdit, setProductToEdit] = useState<IItemAPI | null>(null);
   const [deleteRequestStatus, setDeleteRequestStatus] = useState<
-    'idle' | 'loading'
-  >('idle');
-  const [editRequestStatus, setEditRequestStatus] = useState<
     'idle' | 'loading'
   >('idle');
   const [addToCartRequestStatus, setAddToCartRequestStatus] = useState<
@@ -67,30 +63,6 @@ const Productos = () => {
         toast.error(e.message);
       } finally {
         setDeleteRequestStatus('idle');
-      }
-    }
-  };
-
-  const handleConfirmEdit = async (
-    formValues: IItemAPI,
-    callback: () => void,
-  ) => {
-    const { id } = formValues;
-    if (productToEdit) {
-      try {
-        setEditRequestStatus('loading');
-        await dispatch(editProduct({ id, product: formValues })).unwrap();
-        callback();
-        handleToggleShowModal();
-        toast.success(`${productToEdit.nombre} editado con éxito`);
-        setTimeout(() => {
-          // same case than for productToDelete
-          setProductToEdit(null);
-        }, 1000);
-      } catch (e) {
-        toast.error(e.message);
-      } finally {
-        setEditRequestStatus('idle');
       }
     }
   };
@@ -153,10 +125,9 @@ const Productos = () => {
         )}
         {productToEdit && (
           <EditModal
+            setProductToEdit={setProductToEdit}
             productToEdit={productToEdit}
-            handleConfirmEdit={handleConfirmEdit}
             handleToggleShowModal={handleToggleShowModal}
-            editRequestStatus={editRequestStatus}
           />
         )}
       </Modal>

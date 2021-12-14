@@ -157,12 +157,6 @@ const ProductForm = () => {
         </Row>
         <Form.Group className="mb-3" controlId="foto">
           <Form.Label>Imagen del producto</Form.Label>
-          {/* <Form.Control
-            type="url"
-            value={foto}
-            name="foto"
-            onChange={handleChange}
-          /> */}
           <Form.Control type="file" ref={fotoRef} name="foto" />
         </Form.Group>
         <Button
