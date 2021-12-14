@@ -19,6 +19,8 @@ export interface IItemAPI extends IItem {
   timestamp: string;
 }
 
+export interface IItemAPIFormData extends FormData, IItemAPI {}
+
 export interface IItemCarrito {
   producto: IItemAPI;
   quantity: number;
