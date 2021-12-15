@@ -8,3 +8,20 @@
     }
   }
 }
+
+.icons-container {
+  position: absolute;
+  top: 6px;
+  right: 0;
+  :global(.nav-link) {
+    color: rgba(255, 255, 255, 0.55);
+    &:hover {
+      color: rgba(255, 255, 255, 0.75);
+    }
+  }
+  :global(.navbar-nav) {
+    flex-direction: row;
+    gap: 1rem;
+    margin-right: 1rem;
+  }
+}

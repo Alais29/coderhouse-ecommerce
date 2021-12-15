@@ -1,12 +1,10 @@
 import { Request, Response } from 'express';
-import { v4 as uuidv4 } from 'uuid';
 import { UploadedFile } from 'express-fileupload';
 import { isValidProduct } from 'utils/validations';
 import { IItem, IItemQuery } from 'common/interfaces/products';
 import { NotFound, NotImplemented, ProductValidation } from 'errors';
 import { productsAPI } from 'api/productos';
 import { isEmpty } from 'utils/others';
-import moment from 'moment';
 import { uploadToCloudinary } from 'utils/cloudImgUpload';
 import cloudinary from 'services/cloudinary';
 
@@ -98,9 +96,8 @@ export const updateProducto = async (
 
   if (req.files) {
     const file = req.files.foto as UploadedFile;
-    if (dataToUpdate.fotoId) {
+    if (dataToUpdate.fotoId)
       await cloudinary.uploader.destroy(dataToUpdate.fotoId);
-    }
     const { secure_url, public_id } = await uploadToCloudinary(
       file,
       'Products',
@@ -119,6 +116,8 @@ export const deleteProducto = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
+  const producto = (await productsAPI.get(req.params.id)) as IItem;
+  if (producto.fotoId) await cloudinary.uploader.destroy(producto.fotoId);
   await productsAPI.delete(req.params.id);
   res.json({ data: 'Producto eliminado' });
 };

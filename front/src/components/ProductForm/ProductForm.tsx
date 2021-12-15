@@ -106,7 +106,7 @@ const ProductForm = () => {
                 onChange={handleChange}
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="nombre">
+            <Form.Group className="mb-3" controlId="nombreProducto">
               <Form.Label>Nombre</Form.Label>
               <Form.Control
                 type="text"
@@ -155,7 +155,7 @@ const ProductForm = () => {
             </Form.Group>
           </Col>
         </Row>
-        <Form.Group className="mb-3" controlId="foto">
+        <Form.Group className="mb-3" controlId="fotoProduct">
           <Form.Label>Imagen del producto</Form.Label>
           <Form.Control type="file" ref={fotoRef} name="foto" />
         </Form.Group>
