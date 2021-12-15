@@ -116,7 +116,7 @@ const SignupForm = ({ location }: ISignupForm) => {
       <Form onSubmit={e => handleSubmit(e)}>
         <Row>
           <Col sm="12" md="6">
-            <Form.Group className="mb-3" controlId="nombre">
+            <Form.Group className="mb-3" controlId="nombreSignup">
               <Form.Label>Nombre Completo</Form.Label>
               <Form.Control
                 type="nombre"
@@ -134,7 +134,7 @@ const SignupForm = ({ location }: ISignupForm) => {
                 onChange={handleChange}
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="nombre">
+            <Form.Group className="mb-3" controlId="email">
               <Form.Label>Email</Form.Label>
               <Form.Control
                 type="text"
@@ -152,7 +152,7 @@ const SignupForm = ({ location }: ISignupForm) => {
                 onChange={handleChange}
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="password">
+            <Form.Group className="mb-3" controlId="repeatPassword">
               <Form.Label>Repite tu contraseña</Form.Label>
               <Form.Control
                 type="password"
@@ -217,7 +217,7 @@ const SignupForm = ({ location }: ISignupForm) => {
                 onChange={handleChange}
               />
             </Form.Group>
-            <Form.Group controlId="foto" className="mb-3">
+            <Form.Group controlId="fotoSignup" className="mb-3">
               <Form.Label>Foto</Form.Label>
               <Form.Control type="file" ref={fotoRef} name="foto" />
             </Form.Group>
