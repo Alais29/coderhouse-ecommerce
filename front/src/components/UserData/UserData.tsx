@@ -1,5 +1,9 @@
+import { Button } from 'react-bootstrap';
+import { AdvancedImage, lazyload, placeholder } from '@cloudinary/react';
+import { thumbnail } from '@cloudinary/url-gen/actions/resize';
 import { IUser } from 'commons/interfaces';
-import { Alert, Button } from 'react-bootstrap';
+import { cld } from 'services/Cloudinary';
+
 import cx from 'classnames/bind';
 import styles from './styles.module.scss';
 
@@ -11,18 +15,15 @@ interface IUserData {
 }
 
 const UserData = ({ data, dashboard, handleLogout, status }: IUserData) => {
+  const profileImg = cld.image(`${data.fotoId}`);
+  profileImg.resize(thumbnail().width(200).height(200));
+
   return (
     <div>
-      <Alert variant="success">
-        <div className="text-center">
-          <span className="me-3 fw-bold">Bienvenido/a {data?.nombre}</span>
-        </div>
-      </Alert>
       <div className={cx(styles['user-data'])}>
-        <img
-          src={data?.foto}
-          alt={`foto ${data?.nombre}`}
-          className={cx(styles['user-data__img'])}
+        <AdvancedImage
+          cldImg={profileImg}
+          plugins={[lazyload(), placeholder('blur')]}
         />
         <div className={cx(styles['user-data__info'])}>
           <span>

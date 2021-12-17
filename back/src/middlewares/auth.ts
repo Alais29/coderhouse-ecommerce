@@ -102,12 +102,32 @@ const signUpFunc: VerifyFunctionWithRequest = async (
 
       const emailContent = `
         <h1>Nuevo Registro</h1>
-        <span style="display: block"><span style="font-weight: bold">Email:</span> ${userData.email}</span>
-        <span style="display: block"><span style="font-weight: bold">Nombre:</span> ${userData.nombre}</span>
-        <span style="display: block"><span style="font-weight: bold">Dirección:</span> ${userData.calle} ${userData.altura}, ${userData.piso} ${userData.depto}</span>
-        <span style="display: block"><span style="font-weight: bold">Código Postal:</span> ${userData.codigoPostal}</span>
-        <span style="display: block"><span style="font-weight: bold">Edad:</span> ${userData.edad}</span>
-        <span style="display: block"><span style="font-weight: bold">Teléfono:</span> ${userData.telefono}</span>
+        <span style="display: block">
+          <span style="font-weight: bold">Email:</span>
+          ${userData.email}
+        </span>
+        <span style="display: block">
+          <span style="font-weight: bold">Nombre:</span>
+          ${userData.nombre}
+        </span>
+        <span style="display: block">
+          <span style="font-weight: bold">Dirección:</span>
+          ${userData.calle} ${userData.altura}, 
+          ${`${userData.piso ? 'Piso ' + userData.piso : ''}`} 
+          ${`${userData.depto ? 'Depto.' + userData.depto : ''}`}
+        </span>
+        <span style="display: block">
+          <span  style="font-weight: bold">Código Postal:</span>
+          ${userData.codigoPostal}
+        </span>
+        <span style="display: block">
+          <span style="font-weight: bold">Edad:</span>
+          ${userData.edad}
+        </span>
+        <span style="display: block">
+          <span style="font-weight: bold">Teléfono:</span>
+          ${userData.telefono}
+        </span>
       `;
 
       EmailService.sendEmail(

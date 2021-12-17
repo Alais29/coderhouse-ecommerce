@@ -1,6 +1,9 @@
 import { Button, Card } from 'react-bootstrap';
+import { AdvancedImage, lazyload, placeholder } from '@cloudinary/react';
+import { thumbnail } from '@cloudinary/url-gen/actions/resize';
 import { useAppSelector } from 'hooks/redux';
 import { IItemAPI } from 'commons/interfaces';
+import { cld } from 'services/Cloudinary';
 
 import cx from 'classnames/bind';
 import styles from './styles.module.scss';
@@ -21,9 +24,15 @@ const Product = ({
 }: IProps) => {
   const { data } = useAppSelector(state => state.user);
 
+  const productImg = cld.image(`${product.fotoId}`);
+  productImg.resize(thumbnail().width(300).height(300));
+
   return (
     <Card>
-      <Card.Img variant="top" src={`${product.foto}`} />
+      <AdvancedImage
+        cldImg={productImg}
+        plugins={[lazyload(), placeholder('blur')]}
+      />
       <Card.Body>
         <div>
           <Card.Title>{product.nombre}</Card.Title>

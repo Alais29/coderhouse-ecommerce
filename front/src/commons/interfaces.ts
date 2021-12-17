@@ -16,6 +16,7 @@ export interface IItemFormData extends FormData, IItem {}
 
 export interface IItemAPI extends IItem {
   id: string;
+  fotoId: string;
   timestamp: string;
 }
 
@@ -46,6 +47,7 @@ export interface IUser {
   edad?: string;
   telefono?: string;
   foto?: string;
+  fotoId?: string;
   admin?: boolean;
 }
 

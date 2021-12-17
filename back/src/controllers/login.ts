@@ -7,6 +7,7 @@ interface User {
   edad: number;
   telefono: string;
   foto: string;
+  fotoId: string;
   calle: string;
   altura: string;
   codigoPostal: string;
@@ -29,6 +30,7 @@ export const loginUser = (req: Request, res: Response): void => {
       edad,
       telefono,
       foto,
+      fotoId,
       admin,
     } = req.user as User;
     userdata = {
@@ -42,6 +44,7 @@ export const loginUser = (req: Request, res: Response): void => {
       edad,
       telefono,
       foto,
+      fotoId,
       admin,
     };
   }
