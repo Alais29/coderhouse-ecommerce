@@ -4,7 +4,7 @@ import SignupForm from 'components/SignupForm/SignupForm';
 const Signup = () => {
   return (
     <div>
-      <h1 className="text-center mt-5 pt-3">Registro de Usuario</h1>
+      <h1 className="text-center mt-3">Registro de Usuario</h1>
       <SignupForm location="signupPage" />
       <hr />
       <div className="mb-3">

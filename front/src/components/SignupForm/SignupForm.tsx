@@ -1,11 +1,12 @@
 import React, { useState, useRef } from 'react';
+import PhoneInput from 'react-phone-number-input';
 import { useHistory } from 'react-router-dom';
 import { Button, Form, Row, Col } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { IObject, IUserFormData } from 'commons/interfaces';
-import PhoneInput from 'react-phone-number-input';
 import { useAppDispatch, useAppSelector } from 'hooks/redux';
 import { userLogin, userSignUp } from 'features/user/userSlice';
+import AvatarMock from './avatar-mock.jpg';
 
 import cx from 'classnames/bind';
 import styles from './styles.module.scss';
@@ -32,6 +33,7 @@ const SignupForm = ({ location }: ISignupForm) => {
     depto: '',
     edad: '',
     admin: 'false',
+    foto: '',
   });
   const [telefono, setTelefono] = useState();
   const {
@@ -46,15 +48,27 @@ const SignupForm = ({ location }: ISignupForm) => {
     depto,
     edad,
     admin,
+    foto,
   } = formValues;
 
   const fotoRef = useRef<HTMLInputElement>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormValues({
-      ...formValues,
-      [e.target.name]: e.target.value,
-    });
+    if (e.target.name === 'foto' && fotoRef.current && fotoRef.current.files) {
+      setFormValues({
+        ...formValues,
+        foto: URL.createObjectURL(fotoRef.current.files[0]),
+      });
+    } else {
+      setFormValues({
+        ...formValues,
+        [e.target.name]: e.target.value,
+      });
+    }
+  };
+
+  const handleChangeImage = () => {
+    if (fotoRef.current) fotoRef.current.click();
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -67,8 +81,8 @@ const SignupForm = ({ location }: ISignupForm) => {
     Object.entries(formValues).forEach(formElement => {
       formData.append(formElement[0], formElement[1]);
     });
-    formData.append('foto', fotoToUpload ? fotoToUpload[0] : '');
     formData.append('telefono', telefono || '');
+    formData.set('foto', fotoToUpload ? fotoToUpload[0] : '');
 
     try {
       await dispatch(userSignUp(formData)).unwrap();
@@ -84,6 +98,7 @@ const SignupForm = ({ location }: ISignupForm) => {
         depto: '',
         edad: '',
         admin: 'false',
+        foto: '',
       });
       setTelefono(undefined);
       if (fotoRef.current) fotoRef.current.value = '';
@@ -114,6 +129,26 @@ const SignupForm = ({ location }: ISignupForm) => {
   return (
     <div className={cx(styles['signup-form'])}>
       <Form onSubmit={e => handleSubmit(e)}>
+        <Form.Group
+          className="mb-3 d-flex gap-2 align-items-center justify-content-center flex-column"
+          controlId="fotoProduct"
+        >
+          <img
+            src={foto ? foto : AvatarMock}
+            alt={`foto-${nombre}`}
+            className={cx(styles['profile-image'])}
+          />
+          <Form.Control
+            type="file"
+            ref={fotoRef}
+            name="foto"
+            onChange={handleChange}
+            className="d-none"
+          />
+          <Button variant="primary" onClick={handleChangeImage}>
+            {foto ? 'Cambiar Imagen de Perfil' : 'Agregar Imagen de perfil'}
+          </Button>
+        </Form.Group>
         <Row>
           <Col sm="12" md="6">
             <Form.Group className="mb-3" controlId="nombreSignup">
@@ -217,39 +252,35 @@ const SignupForm = ({ location }: ISignupForm) => {
                 onChange={handleChange}
               />
             </Form.Group>
-            <Form.Group controlId="fotoSignup" className="mb-3">
-              <Form.Label>Foto</Form.Label>
-              <Form.Control type="file" ref={fotoRef} name="foto" />
-            </Form.Group>
+            {dataUser && dataUser.admin && (
+              <Form.Group controlId="foto" className="mb-3">
+                <p>¿Administrador?</p>
+                <div key={`inline-radio`} className="mb-3">
+                  <Form.Check
+                    inline
+                    label="Si"
+                    name="admin"
+                    type="radio"
+                    id={`inline-radio-1`}
+                    value="true"
+                    onChange={handleChange}
+                    checked={admin === 'true'}
+                  />
+                  <Form.Check
+                    inline
+                    label="No"
+                    name="admin"
+                    type="radio"
+                    id={`inline-radio-2`}
+                    value="false"
+                    onChange={handleChange}
+                    checked={admin === 'false'}
+                  />
+                </div>
+              </Form.Group>
+            )}
           </Col>
         </Row>
-        {dataUser && dataUser.admin && (
-          <Form.Group controlId="foto" className="mb-3">
-            <p>¿Administrador?</p>
-            <div key={`inline-radio`} className="mb-3">
-              <Form.Check
-                inline
-                label="Si"
-                name="admin"
-                type="radio"
-                id={`inline-radio-1`}
-                value="true"
-                onChange={handleChange}
-                checked={admin === 'true'}
-              />
-              <Form.Check
-                inline
-                label="No"
-                name="admin"
-                type="radio"
-                id={`inline-radio-2`}
-                value="false"
-                onChange={handleChange}
-                checked={admin === 'false'}
-              />
-            </div>
-          </Form.Group>
-        )}
         <Button className="mb-2" type="submit">
           Registro
         </Button>
