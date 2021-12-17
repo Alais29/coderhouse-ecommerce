@@ -72,14 +72,19 @@ export default {
           },
           foto: {
             type: 'string',
-            description: 'Path to where the user picture is sotraged.',
+            description: 'Path to where the user picture is stored.',
             example: 'uploads/foto-test1@example.com.png',
+          },
+          admin: {
+            type: 'boolean',
+            description: 'Determines if an user is admin or not.',
+            example: false,
           },
         },
       },
       UserData: {
         type: 'object',
-        description: 'User data.',
+        description: 'Logged in user data.',
         properties: {
           email: {
             type: 'string',
@@ -130,6 +135,11 @@ export default {
             type: 'string',
             description: 'Path to where the user picture is sotraged.',
             example: 'uploads/foto-test1@example.com.png',
+          },
+          admin: {
+            type: 'boolean',
+            description: 'Determines if an user is admin or not.',
+            example: false,
           },
         },
       },
@@ -211,10 +221,15 @@ export default {
             description: 'Product price',
             example: '123.4',
           },
+          categoria: {
+            type: 'string',
+            description: 'Product category',
+            example: 'Games',
+          },
           foto: {
             type: 'string',
-            description: 'Product image url',
-            example: 'https://picsum.photos/300?random=3',
+            description: 'Product image.',
+            format: 'binary',
           },
           stock: {
             type: 'number',
@@ -323,7 +338,7 @@ export default {
         description: 'A chat message.',
         properties: {
           user: {
-            $ref: '#/componentes/schemas/User',
+            $ref: '#/components/schemas/User',
           },
           text: {
             type: 'string',
@@ -333,8 +348,8 @@ export default {
           type: {
             type: 'string',
             description:
-              'Indicates if the message was sent by the user or by the system.',
-            example: 'Tu orden está en curso',
+              'Indicates if the message was sent by the user ("usuario") or by the system ("sistema").',
+            example: 'sistema',
           },
           date: {
             type: 'string',

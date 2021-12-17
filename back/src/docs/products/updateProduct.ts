@@ -1,7 +1,8 @@
 export default {
   put: {
     tags: ['Products'],
-    description: 'Update an existing product.',
+    description:
+      'Update an existing product, only available for logged in admin user.',
     operationId: 'updateProduct',
     parameters: [
       {
@@ -17,7 +18,7 @@ export default {
     requestBody: {
       required: 'true',
       content: {
-        'application/json': {
+        'multipart/form-data': {
           schema: {
             $ref: '#/components/schemas/ProductInput',
           },
