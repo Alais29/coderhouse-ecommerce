@@ -32,8 +32,8 @@ const ProductoSchema = new mongoose.Schema<IItemBase>({
     require: true,
     maxLength: [20, 'La categoría debe tener un máximo de 20 caracteres'],
   },
-  foto: { type: String, require: true },
-  fotoId: { type: String, require: true },
+  fotos: { type: [String], require: true },
+  fotosId: { type: [String], require: true },
   timestamp: { type: String, default: moment().format('DD/MM/YYYY HH:mm:ss') },
   stock: { type: Number, default: 0 },
 });

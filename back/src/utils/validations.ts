@@ -32,13 +32,6 @@ export const isValidProduct = (producto: IItem): boolean | Error => {
     );
   }
 
-  // if (!isUrl(producto.foto)) {
-  //   throw new ProductValidation(
-  //     400,
-  //     'Verifica los datos, la url de la foto no es válida',
-  //   );
-  // }
-
   if (!isValidCode(producto.codigo)) {
     throw new ProductValidation(
       400,

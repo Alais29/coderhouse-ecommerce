@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { UploadedFile } from 'express-fileupload';
+import _ from 'lodash';
 import { isValidProduct } from 'utils/validations';
 import { IItem, IItemQuery } from 'common/interfaces/products';
 import { NotFound, NotImplemented, ProductValidation } from 'errors';
@@ -64,13 +65,22 @@ export const saveProducto = async (
   isValidProduct(producto);
 
   if (req.files) {
-    const file = req.files.foto as UploadedFile;
-    const { secure_url, public_id } = await uploadToCloudinary(
-      file,
-      'Products',
-    );
-    producto.foto = secure_url;
-    producto.fotoId = public_id;
+    const files = req.files.fotos as UploadedFile[];
+    const imgArray = Array.isArray(files) ? files : [files];
+    const cldyImages: { fotosUrls: string[]; fotosId: string[] } = {
+      fotosUrls: [],
+      fotosId: [],
+    };
+    for await (const file of imgArray) {
+      const { secure_url, public_id } = await uploadToCloudinary(
+        file,
+        'Products',
+      );
+      cldyImages.fotosUrls.push(secure_url);
+      cldyImages.fotosId.push(public_id);
+    }
+    producto.fotos = cldyImages.fotosUrls;
+    producto.fotosId = cldyImages.fotosId;
   } else {
     throw new ProductValidation(
       400,
@@ -93,20 +103,42 @@ export const updateProducto = async (
 
   dataToUpdate.precio = Number(dataToUpdate.precio);
   dataToUpdate.stock = Number(dataToUpdate.stock);
-
-  if (req.files) {
-    const file = req.files.foto as UploadedFile;
-    if (dataToUpdate.fotoId)
-      await cloudinary.uploader.destroy(dataToUpdate.fotoId);
-    const { secure_url, public_id } = await uploadToCloudinary(
-      file,
-      'Products',
-    );
-    dataToUpdate.foto = secure_url;
-    dataToUpdate.fotoId = public_id;
-  }
+  dataToUpdate.fotos = JSON.parse(JSON.parse(dataToUpdate.fotos));
+  dataToUpdate.fotosId = JSON.parse(JSON.parse(dataToUpdate.fotosId));
 
   isValidProduct(dataToUpdate);
+
+  // if new files are uploaded, save them on cloudinary
+  if (req.files) {
+    const files = req.files.newFotos as UploadedFile[];
+    const imgArray = Array.isArray(files) ? files : [files];
+    const cldyImages: { fotosUrls: string[]; fotosId: string[] } = {
+      fotosUrls: [],
+      fotosId: [],
+    };
+    for await (const file of imgArray) {
+      const { secure_url, public_id } = await uploadToCloudinary(
+        file,
+        'Products',
+      );
+      cldyImages.fotosUrls.push(secure_url);
+      cldyImages.fotosId.push(public_id);
+    }
+    dataToUpdate.fotos = [...dataToUpdate.fotos, ...cldyImages.fotosUrls];
+    dataToUpdate.fotosId = [...dataToUpdate.fotosId, ...cldyImages.fotosId];
+  }
+
+  // check if an image was deleted from fotosId array, if so, delete that image from cloudinary
+  const productToUpdate = (await productsAPI.get(req.params.id)) as IItem;
+  if (productToUpdate?.fotosId?.length !== dataToUpdate.fotosId.length) {
+    const imagesToDelete = _.difference(
+      productToUpdate.fotosId,
+      dataToUpdate.fotosId,
+    );
+    for await (const imgId of imagesToDelete) {
+      await cloudinary.uploader.destroy(imgId);
+    }
+  }
 
   const producto = await productsAPI.update(req.params.id, dataToUpdate);
   res.json({ data: producto });
@@ -117,7 +149,11 @@ export const deleteProducto = async (
   res: Response,
 ): Promise<void> => {
   const producto = (await productsAPI.get(req.params.id)) as IItem;
-  if (producto.fotoId) await cloudinary.uploader.destroy(producto.fotoId);
+  if (producto.fotosId) {
+    for await (const fotoId of producto.fotosId) {
+      await cloudinary.uploader.destroy(fotoId);
+    }
+  }
   await productsAPI.delete(req.params.id);
   res.json({ data: 'Producto eliminado' });
 };
