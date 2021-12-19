@@ -2,8 +2,8 @@ import Dropzone from './Dropzone/Dropzone';
 import ListFiles from './ListFile/ListFile';
 
 interface IFileUpload {
-  files: File[];
-  handleRemove: (fileIndex: number) => void;
+  files: (File | string)[];
+  handleRemove: (fileToRemove: number, cldFile?: string) => void;
   handleDrop: (acceptedFiles: File[]) => void;
 }
 

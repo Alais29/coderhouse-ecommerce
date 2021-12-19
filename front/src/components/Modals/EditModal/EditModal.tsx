@@ -1,10 +1,4 @@
 import { useState, useRef } from 'react';
-import { toast } from 'react-toastify';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IItemAPI, IItemAPIFormData } from 'commons/interfaces';
-import { useAppDispatch } from 'hooks/redux';
-import { isEmpty } from 'utilities/others';
-import { editProduct } from 'features/products/productsSlice';
 import {
   Button,
   Form,
@@ -13,9 +7,12 @@ import {
   Spinner,
   Tooltip,
 } from 'react-bootstrap';
-
-import cx from 'classnames/bind';
-import styles from './styles.module.scss';
+import { toast } from 'react-toastify';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { IItemAPI, IItemAPIFormData } from 'commons/interfaces';
+import { useAppDispatch } from 'hooks/redux';
+import { editProduct } from 'features/products/productsSlice';
+import FileUpload from 'components/FileUpload/FileUpload';
 
 interface IEditModal {
   productToEdit: IItemAPI;
@@ -39,10 +36,21 @@ const EditModal = ({
     precio: productToEdit.precio,
     stock: productToEdit.stock,
     fotos: productToEdit.fotos,
+    fotosId: productToEdit.fotosId,
+    newFotos: [] as File[],
   });
 
-  const { codigo, nombre, descripcion, precio, categoria, stock, fotos } =
-    formValues;
+  const {
+    codigo,
+    nombre,
+    descripcion,
+    precio,
+    categoria,
+    stock,
+    fotos,
+    fotosId,
+    newFotos,
+  } = formValues;
   const fotoRef = useRef<HTMLInputElement>(null);
 
   const dispatch = useAppDispatch();
@@ -68,8 +76,31 @@ const EditModal = ({
     }
   };
 
-  const handleChangeImage = () => {
-    if (fotoRef.current) fotoRef.current.click();
+  const handleRemove = (fileToRemove: number, cldFile?: string) => {
+    if (cldFile) {
+      const newFotosId = [...fotosId].filter(fotoId => fotoId !== cldFile);
+      const newFotos = [...fotos].filter(foto => !foto.includes(cldFile));
+
+      setFormValues(prevFormValues => ({
+        ...prevFormValues,
+        fotos: newFotos,
+        fotosId: newFotosId,
+      }));
+    } else {
+      const newFotosFiles = [...newFotos];
+      newFotosFiles.splice(fileToRemove, 1);
+      setFormValues(prevFormValues => ({
+        ...prevFormValues,
+        newFotos: newFotosFiles,
+      }));
+    }
+  };
+
+  const handleDrop = (acceptedFiles: File[]) => {
+    setFormValues(prevFormValues => ({
+      ...prevFormValues,
+      newFotos: [...prevFormValues.newFotos].concat(acceptedFiles),
+    }));
   };
 
   const handleSubmit = async () => {
@@ -81,6 +112,7 @@ const EditModal = ({
 
     if (fotoRef.current) fotoToUpload = fotoRef.current.files;
 
+    //TODO: send the correct formvalues for fotos and newFotos in the form
     const formData = new FormData() as IItemAPIFormData;
     Object.entries(editedProduct).forEach(formElement => {
       if (typeof formElement[1] === 'string') {
@@ -124,6 +156,8 @@ const EditModal = ({
           precio: '',
           stock: '',
           fotos: [],
+          fotosId: [],
+          newFotos: [],
         });
         handleToggleShowModal();
         toast.success(`${productToEdit.nombre} editado con éxito`);
@@ -216,29 +250,12 @@ const EditModal = ({
               onChange={handleChange}
             />
           </Form.Group>
-          <Form.Group
-            className="mb-3 d-flex gap-2 align-items-center justify-content-center flex-column"
-            controlId="foto"
-          >
-            {!isEmpty(fotos) &&
-              fotos.map(foto => (
-                <img
-                  src={foto}
-                  alt={`foto-${nombre}`}
-                  className={cx(styles['product-image'])}
-                />
-              ))}
-            <Form.Control
-              type="file"
-              ref={fotoRef}
-              name="newFotos"
-              onChange={handleChange}
-              className="d-none"
-            />
-            <Button variant="primary" onClick={handleChangeImage}>
-              Cambiar Imagen
-            </Button>
-          </Form.Group>
+          <Form.Label>Imagenes</Form.Label>
+          <FileUpload
+            files={[...newFotos, ...fotosId]}
+            handleRemove={handleRemove}
+            handleDrop={handleDrop}
+          />
         </Form>
       </Modal.Body>
       <Modal.Footer>
