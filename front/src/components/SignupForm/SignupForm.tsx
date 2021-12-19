@@ -131,7 +131,7 @@ const SignupForm = ({ location }: ISignupForm) => {
       <Form onSubmit={e => handleSubmit(e)}>
         <Form.Group
           className="mb-3 d-flex gap-2 align-items-center justify-content-center flex-column"
-          controlId="fotoProduct"
+          controlId="fotoProfile"
         >
           <img
             src={foto ? foto : AvatarMock}

@@ -8,7 +8,7 @@ export interface IItem {
   codigo: string;
   precio: string;
   categoria: string;
-  foto: string;
+  fotos: string[];
   stock: string;
 }
 
@@ -16,7 +16,7 @@ export interface IItemFormData extends FormData, IItem {}
 
 export interface IItemAPI extends IItem {
   id: string;
-  fotoId: string;
+  fotosId: string[];
   timestamp: string;
 }
 

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   Col,
@@ -13,9 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAppDispatch } from 'hooks/redux';
 import { addNewProduct } from 'features/products/productsSlice';
 import { IItemFormData } from 'commons/interfaces';
-
-import cx from 'classnames/bind';
-import styles from './styles.module.scss';
+import FileUpload from 'components/FileUpload/FileUpload';
 
 const ProductForm = () => {
   const [addRequestStatus, setAddRequestStatus] = useState<'idle' | 'loading'>(
@@ -31,40 +29,49 @@ const ProductForm = () => {
     precio: '',
     categoria: '',
     stock: '',
-    foto: '',
+    fotos: [] as File[],
   });
-  const { codigo, nombre, descripcion, precio, categoria, stock, foto } =
+  const { codigo, nombre, descripcion, precio, categoria, stock, fotos } =
     formValues;
-  const fotoRef = useRef<HTMLInputElement>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.name === 'foto' && fotoRef.current && fotoRef.current.files) {
-      setFormValues({
-        ...formValues,
-        foto: URL.createObjectURL(fotoRef.current.files[0]),
-      });
-    } else {
-      setFormValues({
-        ...formValues,
-        [e.target.name]: e.target.value,
-      });
-    }
+    setFormValues({
+      ...formValues,
+      [e.target.name]: e.target.value,
+    });
   };
 
-  const handleChangeImage = () => {
-    if (fotoRef.current) fotoRef.current.click();
+  const handleDrop = (acceptedFiles: File[]) => {
+    setFormValues(prevFormValues => ({
+      ...prevFormValues,
+      fotos: [...prevFormValues.fotos].concat(acceptedFiles),
+    }));
+  };
+
+  const handleRemove = (fileToRemove: number) => {
+    const newFotos = [...fotos];
+    newFotos.splice(fileToRemove, 1);
+    setFormValues(prevFormValues => ({
+      ...prevFormValues,
+      fotos: newFotos,
+    }));
   };
 
   const handleSaveProduct = async () => {
-    let fotoToUpload = null;
-
-    if (fotoRef.current) fotoToUpload = fotoRef.current.files;
-
     const formData = new FormData() as IItemFormData;
     Object.entries(formValues).forEach(formElement => {
-      formData.append(formElement[0], formElement[1]);
+      if (typeof formElement[1] === 'string') {
+        formData.append(formElement[0], formElement[1]);
+      } else {
+        formElement[1].forEach(element => {
+          formData.append(formElement[0], element);
+        });
+      }
     });
-    formData.set('foto', fotoToUpload ? fotoToUpload[0] : '');
+
+    for (let pair of formData.values()) {
+      console.log(pair);
+    }
 
     try {
       setAddRequestStatus('loading');
@@ -77,9 +84,8 @@ const ProductForm = () => {
         precio: '',
         categoria: '',
         stock: '',
-        foto: '',
+        fotos: [],
       });
-      if (fotoRef.current) fotoRef.current.value = '';
 
       toast.success('El producto fue agregado con éxito');
     } catch (e) {
@@ -172,28 +178,12 @@ const ProductForm = () => {
             </Form.Group>
           </Col>
         </Row>
-        <Form.Group
-          className="mb-3 d-flex gap-2 align-items-center justify-content-center flex-column"
-          controlId="fotoProduct"
-        >
-          {foto && (
-            <img
-              src={foto}
-              alt={`foto-${nombre}`}
-              className={cx(styles['product-image'])}
-            />
-          )}
-          <Form.Control
-            type="file"
-            ref={fotoRef}
-            name="foto"
-            onChange={handleChange}
-            className="d-none"
-          />
-          <Button variant="primary" onClick={handleChangeImage}>
-            {foto ? 'Cambiar Imagen' : 'Agregar Imagen'}
-          </Button>
-        </Form.Group>
+        <Form.Label>Imagen(es)</Form.Label>
+        <FileUpload
+          files={fotos}
+          handleRemove={handleRemove}
+          handleDrop={handleDrop}
+        />
         <Button
           className="mb-2"
           onClick={handleSaveProduct}

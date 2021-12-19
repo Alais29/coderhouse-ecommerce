@@ -60,7 +60,7 @@ const ProductCarrito = ({ product, handleRemove }: IProductCarrito) => {
         className={cx('border', 'rounded', 'd-flex', styles['product-carrito'])}
       >
         <img
-          src={producto.foto}
+          src={producto.fotos[0]}
           alt={producto.nombre}
           className={cx(styles['product-carrito__img'])}
         />

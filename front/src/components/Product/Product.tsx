@@ -24,7 +24,7 @@ const Product = ({
 }: IProps) => {
   const { data } = useAppSelector(state => state.user);
 
-  const productImg = cld.image(`${product.fotoId}`);
+  const productImg = cld.image(`${product.fotosId[0]}`);
   productImg.resize(thumbnail().width(300).height(300));
 
   return (

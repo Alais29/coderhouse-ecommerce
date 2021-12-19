@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IItemAPI, IItemAPIFormData } from 'commons/interfaces';
 import { useAppDispatch } from 'hooks/redux';
+import { isEmpty } from 'utilities/others';
 import { editProduct } from 'features/products/productsSlice';
 import {
   Button,
@@ -37,20 +38,27 @@ const EditModal = ({
     descripcion: productToEdit.descripcion,
     precio: productToEdit.precio,
     stock: productToEdit.stock,
-    foto: productToEdit.foto,
+    fotos: productToEdit.fotos,
   });
 
-  const { codigo, nombre, descripcion, precio, categoria, stock, foto } =
+  const { codigo, nombre, descripcion, precio, categoria, stock, fotos } =
     formValues;
   const fotoRef = useRef<HTMLInputElement>(null);
 
   const dispatch = useAppDispatch();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.name === 'foto' && fotoRef.current && fotoRef.current.files) {
+    if (
+      e.target.name === 'newFotos' &&
+      fotoRef.current &&
+      fotoRef.current.files
+    ) {
+      const files = [...fotoRef.current.files].map(file =>
+        URL.createObjectURL(file),
+      );
       setFormValues({
         ...formValues,
-        foto: URL.createObjectURL(fotoRef.current.files[0]),
+        fotos: files,
       });
     } else {
       setFormValues({
@@ -75,16 +83,20 @@ const EditModal = ({
 
     const formData = new FormData() as IItemAPIFormData;
     Object.entries(editedProduct).forEach(formElement => {
-      formData.append(formElement[0], formElement[1]);
+      if (typeof formElement[1] === 'string') {
+        formData.append(formElement[0], formElement[1]);
+      } else {
+        formData.append(formElement[0], JSON.stringify(formElement[1]));
+      }
     });
-    formData.set(
-      'foto',
-      fotoToUpload && fotoToUpload[0] ? fotoToUpload[0] : productToEdit.foto,
-    );
+    if (fotoToUpload) {
+      [...fotoToUpload].forEach(file => {
+        formData.append('newFotos', file);
+      });
+    }
 
     const formDataValues = [];
     for (let pair of formData.values()) {
-      console.log(pair);
       formDataValues.push(pair);
     }
 
@@ -111,7 +123,7 @@ const EditModal = ({
           descripcion: '',
           precio: '',
           stock: '',
-          foto: '',
+          fotos: [],
         });
         handleToggleShowModal();
         toast.success(`${productToEdit.nombre} editado con éxito`);
@@ -208,15 +220,18 @@ const EditModal = ({
             className="mb-3 d-flex gap-2 align-items-center justify-content-center flex-column"
             controlId="foto"
           >
-            <img
-              src={foto}
-              alt={`foto-${nombre}`}
-              className={cx(styles['product-image'])}
-            />
+            {!isEmpty(fotos) &&
+              fotos.map(foto => (
+                <img
+                  src={foto}
+                  alt={`foto-${nombre}`}
+                  className={cx(styles['product-image'])}
+                />
+              ))}
             <Form.Control
               type="file"
               ref={fotoRef}
-              name="foto"
+              name="newFotos"
               onChange={handleChange}
               className="d-none"
             />

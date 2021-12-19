@@ -1,0 +1,15 @@
+.image-uploaded {
+  height: 150px;
+}
+
+.img-container {
+  position: relative;
+  &__remove {
+    background-color: #ffffff;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+  }
+}
