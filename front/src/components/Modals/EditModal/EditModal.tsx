@@ -108,34 +108,37 @@ const EditModal = ({
       ...productToEdit,
       ...formValues,
     };
-    let fotoToUpload = null;
 
-    if (fotoRef.current) fotoToUpload = fotoRef.current.files;
-
-    //TODO: send the correct formvalues for fotos and newFotos in the form
     const formData = new FormData() as IItemAPIFormData;
     Object.entries(editedProduct).forEach(formElement => {
-      if (typeof formElement[1] === 'string') {
-        formData.append(formElement[0], formElement[1]);
-      } else {
-        formData.append(formElement[0], JSON.stringify(formElement[1]));
+      switch (formElement[0]) {
+        case 'fotos':
+        case 'fotosId':
+          formData.append(formElement[0], JSON.stringify(formElement[1]));
+          break;
+        case 'newFotos':
+          ([...formElement[1]] as File[]).forEach(file => {
+            formData.append('newFotos', file);
+          });
+          break;
+        default:
+          formData.append(formElement[0], formElement[1] as string);
       }
     });
-    if (fotoToUpload) {
-      [...fotoToUpload].forEach(file => {
-        formData.append('newFotos', file);
-      });
-    }
 
     const formDataValues = [];
-    for (let pair of formData.values()) {
-      formDataValues.push(pair);
+    for (let value of formData.values()) {
+      formDataValues.push(value);
     }
 
     const productDataUnchanged = formDataValues.every(
       value =>
         Object.values(productToEdit)
-          .map(value => String(value))
+          .map(productToEditValue => {
+            if (typeof productToEditValue !== 'object')
+              return String(productToEditValue);
+            else return JSON.stringify(productToEditValue);
+          })
           .indexOf(value as string) !== -1,
     );
 

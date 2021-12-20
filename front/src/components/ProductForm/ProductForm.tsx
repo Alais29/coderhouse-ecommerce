@@ -69,10 +69,6 @@ const ProductForm = () => {
       }
     });
 
-    for (let pair of formData.values()) {
-      console.log(pair);
-    }
-
     try {
       setAddRequestStatus('loading');
 

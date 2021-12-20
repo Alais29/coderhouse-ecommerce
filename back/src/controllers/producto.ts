@@ -103,8 +103,8 @@ export const updateProducto = async (
 
   dataToUpdate.precio = Number(dataToUpdate.precio);
   dataToUpdate.stock = Number(dataToUpdate.stock);
-  dataToUpdate.fotos = JSON.parse(JSON.parse(dataToUpdate.fotos));
-  dataToUpdate.fotosId = JSON.parse(JSON.parse(dataToUpdate.fotosId));
+  dataToUpdate.fotos = JSON.parse(dataToUpdate.fotos);
+  dataToUpdate.fotosId = JSON.parse(dataToUpdate.fotosId);
 
   isValidProduct(dataToUpdate);
 
