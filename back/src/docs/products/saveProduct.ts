@@ -9,7 +9,7 @@ export default {
       content: {
         'multipart/form-data': {
           schema: {
-            $ref: '#/components/schemas/ProductInput',
+            $ref: '#/components/schemas/ProductInputAdd',
           },
         },
       },

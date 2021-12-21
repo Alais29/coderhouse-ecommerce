@@ -178,10 +178,22 @@ export default {
             description: 'Product category',
             example: 'Home',
           },
-          foto: {
-            type: 'string',
-            description: 'Product image url',
-            example: 'https://picsum.photos/300?random=3',
+          fotos: {
+            type: 'array',
+            description: 'Product images urls',
+            items: {
+              type: 'string',
+              example:
+                'https://res.cloudinary.com/alais29/image/upload/v1639511210/Products/hbi9dqnu5u3mq3qxsb6y.jpg',
+            },
+          },
+          fotosId: {
+            type: 'array',
+            description: 'Product images ids urls',
+            items: {
+              type: 'string',
+              example: 'Products/hbi9dqnu5u3mq3qxsb6y',
+            },
           },
           timestamp: {
             type: 'string',
@@ -195,10 +207,9 @@ export default {
           },
         },
       },
-      ProductInput: {
+      ProductInputAdd: {
         type: 'object',
-        description:
-          'Product data when saving a new product or editing an existing one.',
+        description: 'Product data when saving a new product.',
         properties: {
           nombre: {
             type: 'string',
@@ -226,10 +237,72 @@ export default {
             description: 'Product category',
             example: 'Games',
           },
-          foto: {
+          fotos: {
+            type: 'array',
+            description: 'Product images.',
+            items: {
+              type: 'string',
+              format: 'binary',
+            },
+          },
+          stock: {
+            type: 'number',
+            description: 'Product stock',
+            example: '21',
+          },
+        },
+      },
+      ProductInputEdit: {
+        type: 'object',
+        description: 'Product data when editing a product.',
+        properties: {
+          nombre: {
             type: 'string',
-            description: 'Product image.',
-            format: 'binary',
+            description: 'Product name',
+            example: 'Test Product',
+          },
+          descripcion: {
+            type: 'string',
+            description: 'Product description',
+            example:
+              'Ac nulla fringilla, suscipit justo in, facilisis velit. Vivamus ac tempus ligula. Donec facilisis augue quis felis vestibulum, vitae semper est egestas.',
+          },
+          codigo: {
+            type: 'string',
+            description: 'Product code',
+            example: 'ECOM-1234-1234',
+          },
+          precio: {
+            type: 'number',
+            description: 'Product price',
+            example: '123.4',
+          },
+          categoria: {
+            type: 'string',
+            description: 'Product category',
+            example: 'Games',
+          },
+          fotos: {
+            type: 'string',
+            description:
+              'Stringified array of product images urls. If you need to remove an existing image from the product, the image url needs to be removed from this stringified array.',
+            example:
+              '["https://res.cloudinary.com/alais29/image/upload/v1639511210/Products/hbi9dqnu5u3mq3qxsb6y.jpg"]',
+          },
+          fotosId: {
+            type: 'string',
+            description:
+              'Stringified array of product images ids. If you need to remove an existing image from the product, the image id needs to be removed from this stringified array',
+            example: '["Products/hbi9dqnu5u3mq3qxsb6y"]',
+          },
+          newFotos: {
+            type: 'array',
+            description:
+              'New product images if added. If no image is added then don\'t send the field (Uncheck "Send empty value" option)',
+            items: {
+              type: 'string',
+              format: 'binary',
+            },
           },
           stock: {
             type: 'number',
