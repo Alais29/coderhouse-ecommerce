@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-cd back && npm run prettier && git add . && cd ../front && npm run prettier && git add .
+cd back && npm run test && npm run prettier && git add . && cd ../front && npm run prettier && git add .

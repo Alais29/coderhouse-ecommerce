@@ -6,6 +6,8 @@ export const productosMock = [
     codigo: 'ECOM-2856-2940',
     precio: 120.68,
     fotos: ['https://picsum.photos/300?random=1'],
+    fotosId: ['Products/b7ogvbaswljkwvo9gxle'],
+    categoria: 'Games',
     stock: 44,
   },
   {
@@ -15,6 +17,8 @@ export const productosMock = [
     codigo: 'ECOM-3479-7869',
     precio: 121.7,
     fotos: ['https://picsum.photos/300?random=2'],
+    fotosId: ['Products/b7ogvbaswljkwvo9gxle'],
+    categoria: 'Games',
     stock: 16,
   },
   {
@@ -24,6 +28,8 @@ export const productosMock = [
     codigo: 'ECOM-9005-0919',
     precio: 476.66,
     fotos: ['https://picsum.photos/300?random=3'],
+    fotosId: ['Products/b7ogvbaswljkwvo9gxle'],
+    categoria: 'Games',
     stock: 93,
   },
   {
@@ -33,6 +39,8 @@ export const productosMock = [
     codigo: 'ECOM-5673-0278',
     precio: 27.24,
     fotos: ['https://picsum.photos/300?random=4'],
+    fotosId: ['Products/b7ogvbaswljkwvo9gxle'],
+    categoria: 'Tools',
     stock: 96,
   },
   {
@@ -42,6 +50,8 @@ export const productosMock = [
     codigo: 'ECOM-2869-7181',
     precio: 9.69,
     fotos: ['https://picsum.photos/300?random=5'],
+    fotosId: ['Products/b7ogvbaswljkwvo9gxle'],
+    categoria: 'Tools',
     stock: 13,
   },
   {
@@ -51,6 +61,8 @@ export const productosMock = [
     codigo: 'ECOM-1336-8501',
     precio: 478.15,
     fotos: ['https://picsum.photos/300?random=6'],
+    fotosId: ['Products/b7ogvbaswljkwvo9gxle'],
+    categoria: 'Tools',
     stock: 36,
   },
   {
@@ -60,6 +72,8 @@ export const productosMock = [
     codigo: 'ECOM-1801-5720',
     precio: 210.14,
     fotos: ['https://picsum.photos/300?random=7'],
+    fotosId: ['Products/b7ogvbaswljkwvo9gxle'],
+    categoria: 'Home',
     stock: 39,
   },
   {
@@ -69,6 +83,8 @@ export const productosMock = [
     codigo: 'ECOM-7757-5602',
     precio: 250.91,
     fotos: ['https://picsum.photos/300?random=8'],
+    fotosId: ['Products/b7ogvbaswljkwvo9gxle'],
+    categoria: 'Home',
     stock: 53,
   },
   {
@@ -78,6 +94,8 @@ export const productosMock = [
     codigo: 'ECOM-9619-1404',
     precio: 55.55,
     fotos: ['https://picsum.photos/300?random=9'],
+    fotosId: ['Products/b7ogvbaswljkwvo9gxle'],
+    categoria: 'Home',
     stock: 2,
   },
   {
@@ -87,6 +105,8 @@ export const productosMock = [
     codigo: 'ECOM-4585-6999',
     precio: 78.89,
     fotos: ['https://picsum.photos/300?random=10'],
+    fotosId: ['Products/b7ogvbaswljkwvo9gxle'],
+    categoria: 'Games',
     stock: 38,
   },
 ];

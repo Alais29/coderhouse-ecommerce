@@ -4,7 +4,8 @@ export const mockProduct1 = {
     'Lorem ipsum dolor sit amet, nam fierent perfecto ea, pro in albucius oportere accommodare.',
   codigo: 'ECOM-1234-1234',
   precio: 123.8,
-  foto: 'https://picsum.photos/300?random=2',
+  categoria: 'Home',
+  fotos: ['https://picsum.photos/300?random=2'],
   stock: 44,
 };
 export const mockProduct2 = {
@@ -14,7 +15,7 @@ export const mockProduct2 = {
     'Lorem ipsum dolor sit amet, nam fierent perfecto ea, pro in albucius oportere accommodare. Ius everti consectetuer et, meis mutat. Lorem ipsum dolor sit amet, nam fierent perfecto ea, pro in albucius oportere accommodare. Lorem ipsum dolor sit amet, nam fierent perfecto ea, pro in albucius oportere accommodare. Lorem ipsum dolor sit amet, nam fierent perfecto ea, pro in albucius oportere accommodare. Lorem ipsum dolor sit amet, nam fierent perfecto ea, pro in albucius oportere accommodare. Lorem ipsum dolor sit amet, nam fierent perfecto ea, pro in albucius oportere accommodare.',
   codigo: 'ECOM-1234-1234',
   precio: 6000,
-  foto: 'https://picsum.photos/300?random=2',
+  fotos: ['https://picsum.photos/300?random=2'],
   stock: 44,
 };
 export const mockProduct3 = {
@@ -23,6 +24,6 @@ export const mockProduct3 = {
     'Lorem ipsum dolor sit amet, nam fierent perfecto ea, pro in albucius oportere accommodare.',
   codigo: 'ECOM-1234-1234',
   precio: 123.8,
-  foto: 'https://picsum.photos/300?random=2',
+  fotos: ['https://picsum.photos/300?random=2'],
   stock: 44,
 };

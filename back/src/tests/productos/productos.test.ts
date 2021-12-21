@@ -49,11 +49,20 @@ describe('Productos api tests', () => {
       descripcion:
         'Lorem ipsum dolor sit amet, nam fierent perfecto ea, pro in albucius oportere accommodare.',
       codigo: 'ECOM-1234-1234',
-      precio: 123.8,
-      foto: 'https://picsum.photos/300?random=2',
-      stock: 44,
+      categoria: 'Games',
+      precio: '123.8',
+      stock: '44',
     };
-    const response = await request.post('/api/productos').send(mockProduct);
+
+    const response = await request
+      .post('/api/productos')
+      .field('nombre', mockProduct.nombre)
+      .field('descripcion', mockProduct.descripcion)
+      .field('codigo', mockProduct.codigo)
+      .field('categoria', mockProduct.categoria)
+      .field('precio', mockProduct.precio)
+      .field('stock', mockProduct.stock)
+      .attach('fotos', `${__dirname}/test-product-image.jpg`);
 
     const products = (await request.get('/api/productos')).body.data;
 
@@ -64,6 +73,8 @@ describe('Productos api tests', () => {
     expect(response.statusCode).toBe(201);
     expect(response.body.data.nombre).toEqual('Test product');
     expect(productAddedToDb.nombre).toEqual('Test product');
+    expect(response.body.data.fotos).toEqual(['secure url']);
+    expect(productAddedToDb.fotosId).toEqual(['public id']);
   });
 
   it('PUT: should edit a product and return it, 200 status code', async () => {
@@ -73,11 +84,22 @@ describe('Productos api tests', () => {
     const newProductData = {
       ...productToEdit,
       nombre: 'Put Test',
+      fotos: [],
+      fotosId: [],
     };
 
     const putResponse = await request
       .put(`/api/productos/${productToEdit.id}`)
-      .send(newProductData);
+      .field('nombre', newProductData.nombre)
+      .field('descripcion', newProductData.descripcion)
+      .field('codigo', newProductData.codigo)
+      .field('categoria', newProductData.categoria)
+      .field('precio', newProductData.precio)
+      .field('stock', newProductData.stock)
+      .field('fotos', JSON.stringify(newProductData.fotos))
+      .field('fotosId', JSON.stringify(newProductData.fotosId))
+      .attach('newFotos', `${__dirname}/test-product-image.jpg`)
+      .attach('newFotos', `${__dirname}/test-product-image.jpg`);
     const editedProduct = putResponse.body.data;
 
     const productEditedInDb = (
@@ -87,6 +109,22 @@ describe('Productos api tests', () => {
     expect(putResponse.statusCode).toBe(200);
     expect(editedProduct.nombre).toEqual('Put Test');
     expect(productEditedInDb.nombre).toEqual('Put Test');
+    expect(editedProduct.fotos.length).toBe(2);
+    expect(productEditedInDb.fotos.length).toBe(2);
+    expect(editedProduct.fotosId.length).toBe(2);
+    expect(productEditedInDb.fotosId.length).toBe(2);
+    expect(editedProduct.fotos).toEqual(
+      expect.not.arrayContaining(['https://picsum.photos/300?random=1']),
+    );
+    expect(productEditedInDb.fotos).toEqual(
+      expect.not.arrayContaining(['https://picsum.photos/300?random=1']),
+    );
+    expect(editedProduct.fotosId).toEqual(
+      expect.not.arrayContaining(['Products/b7ogvbaswljkwvo9gxle']),
+    );
+    expect(productEditedInDb.fotosId).toEqual(
+      expect.not.arrayContaining(['Products/b7ogvbaswljkwvo9gxle']),
+    );
   });
 
   it('DELETE: should delete a product by its id, 200 status code', async () => {

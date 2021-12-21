@@ -15,6 +15,8 @@ export const addUserAndLogin = async (
     edad: 31,
     telefono: '+56912345678',
     foto: 'uploads/test-image.jpg',
+    fotoId: 'Products/b7ogvbaswljkwvo9gxle',
+    admin: true,
   });
 
   await request

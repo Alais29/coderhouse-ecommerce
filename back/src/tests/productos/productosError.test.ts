@@ -37,7 +37,6 @@ describe('Productos api errors tests', () => {
   });
 
   it('POST: should return a proper error message if incorrect values are passed, 400 status code', async () => {
-    await request.post('/api/productos').send(mockProduct1);
     const response2 = await request.post('/api/productos').send(mockProduct2);
     const response3 = await request.post('/api/productos').send(mockProduct3);
 
@@ -48,8 +47,16 @@ describe('Productos api errors tests', () => {
   });
 
   it('PUT: should return a proper error message if incorrect values are passed, 400 status code', async () => {
-    const response = await request.get('/api/productos');
-    const productToEdit = response.body.data[0];
+    const response = await request
+      .post('/api/productos')
+      .field('nombre', mockProduct1.nombre)
+      .field('descripcion', mockProduct1.descripcion)
+      .field('codigo', mockProduct1.codigo)
+      .field('categoria', mockProduct1.categoria)
+      .field('precio', mockProduct1.precio)
+      .field('stock', mockProduct1.stock)
+      .attach('fotos', `${__dirname}/test-product-image.jpg`);
+    const productToEdit = response.body.data;
 
     const editedProduct = {
       ...productToEdit,
@@ -59,27 +66,42 @@ describe('Productos api errors tests', () => {
 
     const putResponse = await request
       .put(`/api/productos/${productToEdit.id}`)
-      .send(editedProduct);
+      .field('nombre', editedProduct.nombre)
+      .field('descripcion', editedProduct.descripcion)
+      .field('codigo', editedProduct.codigo)
+      .field('categoria', editedProduct.categoria)
+      .field('precio', editedProduct.precio)
+      .field('stock', editedProduct.stock)
+      .field('fotos', JSON.stringify(editedProduct.fotos))
+      .field('fotosId', JSON.stringify(editedProduct.fotosId))
+      .attach('newFotos', `${__dirname}/test-product-image.jpg`)
+      .attach('newFotos', `${__dirname}/test-product-image.jpg`);
 
     expect(putResponse.status).toBe(400);
     expect(putResponse.body.name).toEqual('ProductValidation');
   });
 
-  it('PUT: should return a proper error message if the product to edit does not exis', async () => {
+  it('PUT: should return a proper error message if the product to edit does not exists', async () => {
     const editedProduct = {
       ...mockProduct1,
       nombre: 'Put Edit',
+      fotosId: ['public id'],
     };
 
     const putResponse = await request
       .put('/api/productos/mockMongoId')
-      .send(editedProduct);
+      .field('nombre', editedProduct.nombre)
+      .field('descripcion', editedProduct.descripcion)
+      .field('codigo', editedProduct.codigo)
+      .field('categoria', editedProduct.categoria)
+      .field('precio', editedProduct.precio)
+      .field('stock', editedProduct.stock)
+      .field('fotos', JSON.stringify(editedProduct.fotos))
+      .field('fotosId', JSON.stringify(editedProduct.fotosId));
 
     expect(putResponse.status).toBe(404);
     expect(putResponse.body.name).toEqual('NotFound');
-    expect(putResponse.body.message).toEqual(
-      'El producto que desea actualizar no existe',
-    );
+    expect(putResponse.body.message).toEqual('Producto no encontrado');
   });
 
   it('DELETE: should return a proper error message if the product to delete does not exis', async () => {
@@ -87,8 +109,6 @@ describe('Productos api errors tests', () => {
 
     expect(deleteResponse.status).toBe(404);
     expect(deleteResponse.body.name).toEqual('NotFound');
-    expect(deleteResponse.body.message).toEqual(
-      'El producto que desea eliminar no existe',
-    );
+    expect(deleteResponse.body.message).toEqual('Producto no encontrado');
   });
 });

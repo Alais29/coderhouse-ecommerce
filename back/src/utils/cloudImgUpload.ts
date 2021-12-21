@@ -1,11 +1,16 @@
 import { UploadedFile } from 'express-fileupload';
 import { FileValidation } from 'errors';
+import Config from 'config';
 import cloudinary from 'services/cloudinary';
 
 export const uploadToCloudinary = async (
   file: UploadedFile,
   folder: 'Users' | 'Products',
 ): Promise<{ secure_url: string; public_id: string }> => {
+  if (Config.NODE_ENV === 'test') {
+    return { secure_url: 'secure url', public_id: 'public id' };
+  }
+
   const filetypes = /jpeg|jpg|png/;
   const mimetype = filetypes.test(file.mimetype);
   if (file.size > 1024 * 1024) {

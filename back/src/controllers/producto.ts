@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { UploadedFile } from 'express-fileupload';
 import _ from 'lodash';
+import Config from 'config';
 import { isValidProduct } from 'utils/validations';
 import { IItem, IItemQuery } from 'common/interfaces/products';
 import { NotFound, NotImplemented, ProductValidation } from 'errors';
@@ -106,7 +107,7 @@ export const updateProducto = async (
   dataToUpdate.fotos = JSON.parse(dataToUpdate.fotos);
   dataToUpdate.fotosId = JSON.parse(dataToUpdate.fotosId);
 
-  isValidProduct(dataToUpdate);
+  isValidProduct(dataToUpdate, ['fotos', 'fotosId']);
 
   // if new files are uploaded, save them on cloudinary
   if (req.files) {
@@ -130,7 +131,11 @@ export const updateProducto = async (
 
   // check if an image was deleted from fotosId array, if so, delete that image from cloudinary
   const productToUpdate = (await productsAPI.get(req.params.id)) as IItem;
-  if (productToUpdate?.fotosId?.length !== dataToUpdate.fotosId.length) {
+  if (
+    productToUpdate?.fotosId?.length !== dataToUpdate.fotosId.length &&
+    Config.NODE_ENV !== 'test'
+  ) {
+    //TODO: turn this process of deleting an image from cloudinary into a function
     const imagesToDelete = _.difference(
       productToUpdate.fotosId,
       dataToUpdate.fotosId,
@@ -149,7 +154,7 @@ export const deleteProducto = async (
   res: Response,
 ): Promise<void> => {
   const producto = (await productsAPI.get(req.params.id)) as IItem;
-  if (producto.fotosId) {
+  if (producto.fotosId && Config.NODE_ENV !== 'test') {
     for await (const fotoId of producto.fotosId) {
       await cloudinary.uploader.destroy(fotoId);
     }
