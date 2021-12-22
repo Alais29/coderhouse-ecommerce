@@ -101,7 +101,9 @@ describe('Productos api errors tests', () => {
 
     expect(putResponse.status).toBe(404);
     expect(putResponse.body.name).toEqual('NotFound');
-    expect(putResponse.body.message).toEqual('Producto no encontrado');
+    expect(putResponse.body.message).toEqual(
+      'El producto que desea actualizar no existe',
+    );
   });
 
   it('DELETE: should return a proper error message if the product to delete does not exis', async () => {
@@ -109,6 +111,8 @@ describe('Productos api errors tests', () => {
 
     expect(deleteResponse.status).toBe(404);
     expect(deleteResponse.body.name).toEqual('NotFound');
-    expect(deleteResponse.body.message).toEqual('Producto no encontrado');
+    expect(deleteResponse.body.message).toEqual(
+      'El producto que desea eliminar no existe',
+    );
   });
 });

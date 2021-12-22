@@ -1,14 +1,15 @@
 import { Request, Response } from 'express';
 import { UploadedFile } from 'express-fileupload';
-import _ from 'lodash';
-import Config from 'config';
 import { isValidProduct } from 'utils/validations';
 import { IItem, IItemQuery } from 'common/interfaces/products';
 import { NotFound, NotImplemented, ProductValidation } from 'errors';
 import { productsAPI } from 'api/productos';
 import { isEmpty } from 'utils/others';
-import { uploadToCloudinary } from 'utils/cloudImgUpload';
-import cloudinary from 'services/cloudinary';
+import {
+  deleteFromCloudinary,
+  uploadMultipleToCloudinary,
+  uploadToCloudinary,
+} from 'utils/cloudinary';
 
 export const getProductos = async (
   req: Request,
@@ -67,21 +68,9 @@ export const saveProducto = async (
 
   if (req.files) {
     const files = req.files.fotos as UploadedFile[];
-    const imgArray = Array.isArray(files) ? files : [files];
-    const cldyImages: { fotosUrls: string[]; fotosId: string[] } = {
-      fotosUrls: [],
-      fotosId: [],
-    };
-    for await (const file of imgArray) {
-      const { secure_url, public_id } = await uploadToCloudinary(
-        file,
-        'Products',
-      );
-      cldyImages.fotosUrls.push(secure_url);
-      cldyImages.fotosId.push(public_id);
-    }
-    producto.fotos = cldyImages.fotosUrls;
-    producto.fotosId = cldyImages.fotosId;
+    const cldyUrlsIds = await uploadMultipleToCloudinary(files, 'Products');
+    producto.fotos = cldyUrlsIds.fotosUrls;
+    producto.fotosId = cldyUrlsIds.fotosId;
   } else {
     throw new ProductValidation(
       400,
@@ -112,38 +101,13 @@ export const updateProducto = async (
   // if new files are uploaded, save them on cloudinary
   if (req.files) {
     const files = req.files.newFotos as UploadedFile[];
-    const imgArray = Array.isArray(files) ? files : [files];
-    const cldyImages: { fotosUrls: string[]; fotosId: string[] } = {
-      fotosUrls: [],
-      fotosId: [],
-    };
-    for await (const file of imgArray) {
-      const { secure_url, public_id } = await uploadToCloudinary(
-        file,
-        'Products',
-      );
-      cldyImages.fotosUrls.push(secure_url);
-      cldyImages.fotosId.push(public_id);
-    }
-    dataToUpdate.fotos = [...dataToUpdate.fotos, ...cldyImages.fotosUrls];
-    dataToUpdate.fotosId = [...dataToUpdate.fotosId, ...cldyImages.fotosId];
+    const cldyUrlsIds = await uploadMultipleToCloudinary(files, 'Products');
+    dataToUpdate.fotos = [...dataToUpdate.fotos, ...cldyUrlsIds.fotosUrls];
+    dataToUpdate.fotosId = [...dataToUpdate.fotosId, ...cldyUrlsIds.fotosId];
   }
 
-  // check if an image was deleted from fotosId array, if so, delete that image from cloudinary
-  const productToUpdate = (await productsAPI.get(req.params.id)) as IItem;
-  if (
-    productToUpdate?.fotosId?.length !== dataToUpdate.fotosId.length &&
-    Config.NODE_ENV !== 'test'
-  ) {
-    //TODO: turn this process of deleting an image from cloudinary into a function
-    const imagesToDelete = _.difference(
-      productToUpdate.fotosId,
-      dataToUpdate.fotosId,
-    );
-    for await (const imgId of imagesToDelete) {
-      await cloudinary.uploader.destroy(imgId);
-    }
-  }
+  // if images were removed from fotosId array delete those images from cloudinary
+  await deleteFromCloudinary(req.params.id, 'update', dataToUpdate);
 
   const producto = await productsAPI.update(req.params.id, dataToUpdate);
   res.json({ data: producto });
@@ -153,12 +117,7 @@ export const deleteProducto = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
-  const producto = (await productsAPI.get(req.params.id)) as IItem;
-  if (producto.fotosId && Config.NODE_ENV !== 'test') {
-    for await (const fotoId of producto.fotosId) {
-      await cloudinary.uploader.destroy(fotoId);
-    }
-  }
+  await deleteFromCloudinary(req.params.id, 'delete');
   await productsAPI.delete(req.params.id);
   res.json({ data: 'Producto eliminado' });
 };

@@ -13,7 +13,7 @@ import { UnauthorizedRoute, UserValidation } from 'errors';
 import { logger } from 'services/logger';
 import { EmailService } from 'services/email';
 import { userAPI } from 'api/user';
-import { uploadToCloudinary } from 'utils/cloudImgUpload';
+import { uploadToCloudinary } from 'utils/cloudinary';
 
 interface User {
   _id?: string;
