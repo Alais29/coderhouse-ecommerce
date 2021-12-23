@@ -8,6 +8,7 @@ import products from './products';
 import servers from './servers';
 import tags from './tags';
 import users from './users';
+import info from './info';
 
 export default {
   ...basicInfo,
@@ -21,5 +22,6 @@ export default {
     ...users,
     ...orders,
     ...chat,
+    ...info,
   },
 };

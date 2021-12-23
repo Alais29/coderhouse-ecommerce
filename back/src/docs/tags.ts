@@ -1,6 +1,9 @@
 export default {
   tags: [
     {
+      name: 'Server Info',
+    },
+    {
       name: 'Authentication',
     },
     {
