@@ -7,6 +7,7 @@ import {
   Redirect,
 } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+import { useIdleTimer } from 'react-idle-timer';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import LoadingScreen from 'components/LoadingScreen/LoadingScreen';
@@ -18,10 +19,12 @@ import Productos from 'pages/Productos/Productos';
 import Account from 'pages/Account/Account';
 import Chat from 'pages/Chat/Chat';
 import Orders from 'pages/Orders/Orders';
-import { useAppSelector, useAppDispatch } from 'hooks/redux';
-import { getUserData } from 'features/user/userSlice';
-import { getCookie } from 'utilities/others';
 import SuccesfulOrder from 'pages/SuccessfulOrder/SuccesfulOrder';
+import { getCookie } from 'utilities/others';
+import { useAppSelector, useAppDispatch } from 'hooks/redux';
+import { getUserData, userLogout } from 'features/user/userSlice';
+import { emptyCart } from 'features/cart/cartSlice';
+import { setMessages } from 'features/messages/messagesSlice';
 
 library.add(fas);
 
@@ -30,6 +33,19 @@ const App = () => {
   const dispatch = useAppDispatch();
 
   const isLoggedInCookie = getCookie('connect.sid');
+
+  useIdleTimer({
+    timeout: 1000 * 60 * 5,
+    onIdle: async () => {
+      await dispatch(userLogout());
+      dispatch(emptyCart());
+      dispatch(setMessages([]));
+    },
+    debounce: 500,
+    crossTab: {
+      emitOnAllTabs: true,
+    },
+  });
 
   useEffect(() => {
     if (isLoggedInCookie && status === 'idle') {
