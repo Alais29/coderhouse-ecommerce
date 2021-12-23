@@ -21,15 +21,10 @@ const Navigation = () => {
             <Nav.Link as={Link} to="/" href="/">
               Productos
             </Nav.Link>
-            <Nav.Link
-              as={Link}
-              href="/ordenes"
-              className="nav-link"
-              to="/ordenes"
-            >
+            <Nav.Link as={Link} href="/ordenes" to="/ordenes">
               Ordenes
             </Nav.Link>
-            <Nav.Link as={Link} href="/chat" className="nav-link" to="/chat">
+            <Nav.Link as={Link} href="/chat" to="/chat">
               Chat
             </Nav.Link>
             <Link

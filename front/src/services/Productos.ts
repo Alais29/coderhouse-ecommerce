@@ -24,6 +24,15 @@ export const getProducts = async (query?: IItemQuery) => {
   }
 };
 
+export const getProduct = async (productId: string) => {
+  try {
+    const response = await axios.get(`${baseUrl}/${productId}`);
+    return response.data.data;
+  } catch (e) {
+    throw new Error(e.response.data.message);
+  }
+};
+
 export const saveProduct = async (newProduct: IItem) => {
   try {
     const response = await axios.post(`${baseUrl}`, newProduct);

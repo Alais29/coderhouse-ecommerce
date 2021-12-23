@@ -1,4 +1,5 @@
 import { Button, Card } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import { AdvancedImage, lazyload, placeholder } from '@cloudinary/react';
 import { thumbnail } from '@cloudinary/url-gen/actions/resize';
 import { useAppSelector } from 'hooks/redux';
@@ -63,6 +64,9 @@ const Product = ({
               </Button>
             </div>
           )}
+          <Link className="btn btn-info" to={`/productos/${product.id}`}>
+            Ver detalles
+          </Link>
           <Button variant="primary" onClick={() => handleAddToCart(product)}>
             Agregar al carrito
           </Button>
