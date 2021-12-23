@@ -8,7 +8,6 @@ import { isEmpty } from 'utils/others';
 import {
   deleteFromCloudinary,
   uploadMultipleToCloudinary,
-  uploadToCloudinary,
 } from 'utils/cloudinary';
 
 export const getProductos = async (
