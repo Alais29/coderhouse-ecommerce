@@ -1,4 +1,5 @@
-import { Spinner } from 'react-bootstrap';
+import Loading from 'images/loading.gif';
+
 import cx from 'classnames/bind';
 import styles from './styles.module.scss';
 
@@ -9,7 +10,8 @@ interface ILoadingData {
 const LoadingData = ({ style }: ILoadingData) => {
   return (
     <div className={cx(styles['spinner-container'])} style={style}>
-      <Spinner animation="grow" variant="primary" />
+      <img src={Loading} alt="Loading" />
+      {/* <Spinner animation="grow" variant="primary" /> */}
     </div>
   );
 };

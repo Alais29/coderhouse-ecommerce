@@ -1,6 +1,22 @@
-.product-btns {
-  gap: 0.5rem;
-  .product-add-edit {
+.product-card {
+  border-radius: 0 !important;
+  transition: box-shadow 0.3s;
+  img {
+    width: 100%;
+  }
+  &:hover {
+    box-shadow: 10px 10px 21px -9px rgba(0, 0, 0, 0.63);
+  }
+  &__link {
+    color: var(--bs-body-color);
+    &:hover {
+      color: var(--bs-body-color);
+    }
+  }
+  &__btns {
+    gap: 0.5rem;
+  }
+  &__add-edit {
     gap: 0.5rem;
     button {
       flex-grow: 1;

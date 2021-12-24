@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Col, Row } from 'react-bootstrap';
+import { Button, Col, Row, Spinner } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 import { CloudinaryImage } from '@cloudinary/url-gen';
 import { AdvancedImage, lazyload, placeholder } from '@cloudinary/react';
 import { thumbnail } from '@cloudinary/url-gen/actions/resize';
+import { useAppDispatch } from 'hooks/redux';
+import { addProductToCart } from 'features/cart/cartSlice';
 import { getProduct } from 'services/Productos';
 import { cld } from 'services/Cloudinary';
 import { IItemAPI } from 'commons/interfaces';
@@ -17,6 +20,11 @@ const Producto = () => {
   let { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<IItemAPI>({} as IItemAPI);
   const [productImg, setProductImg] = useState<CloudinaryImage>();
+  const [addToCartRequestStatus, setAddToCartRequestStatus] = useState<
+    'idle' | 'loading'
+  >('idle');
+
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     getProduct(id).then(data => setProduct(data));
@@ -30,31 +38,86 @@ const Producto = () => {
     }
   }, [product]);
 
+  const handleAddToCart = async () => {
+    try {
+      setAddToCartRequestStatus('loading');
+      await dispatch(addProductToCart(product.id)).unwrap();
+      toast.success(`${product.nombre} agregado al carrito`);
+    } catch (e) {
+      toast.error(e.message);
+    } finally {
+      setAddToCartRequestStatus('idle');
+    }
+  };
+
   return (
-    <div>
-      {isEmpty(product) ? (
+    <div className={cx(styles['product-details'])}>
+      {isEmpty(product) || !productImg ? (
         <LoadingData />
       ) : (
-        <>
-          <h1 className="text-center mt-5 pt-4">{product.nombre}</h1>
-          <Row>
-            <Col sm="12" md="6">
-              <div className={cx(styles['product-image'])}>
-                <AdvancedImage
-                  cldImg={productImg as CloudinaryImage}
-                  plugins={[lazyload(), placeholder('blur')]}
-                />
-              </div>
-            </Col>
-            <Col sm="12" md="6">
-              <p>{product.codigo}</p>
+        <Row className={cx('align-items-center', 'w-100')}>
+          <Col md="12" lg="6">
+            <div className={cx(styles['product-details__image'])}>
+              <AdvancedImage
+                cldImg={productImg as CloudinaryImage}
+                plugins={[lazyload(), placeholder('blur')]}
+              />
+            </div>
+          </Col>
+          <Col md="12" lg="6">
+            <div className={cx(styles['product-details__info'])}>
+              <h1 className={cx('h2', 'mb-0')}>{product.nombre}</h1>
+              <p className={cx('small')}>{product.codigo}</p>
               <p>{product.descripcion}</p>
-              <p>{product.categoria}</p>
-              <p>${product.precio}</p>
-              <p>{Number(product.stock) > 0 ? 'En stock' : 'Fuera de stock'}</p>
-            </Col>
-          </Row>
-        </>
+              <p
+                className={cx(styles['product-details__stock'], {
+                  [styles['product-details__stock--out-stock']]:
+                    Number(product.stock) === 0,
+                  [styles['product-details__stock--last-units']]:
+                    Number(product.stock) !== 0 && Number(product.stock) <= 5,
+                })}
+              >
+                {Number(product.stock) > 0
+                  ? Number(product.stock) <= 5
+                    ? 'Últimas unidades!'
+                    : 'En stock'
+                  : 'Fuera de stock'}
+              </p>
+              <p>
+                <span className={cx('fw-bold')}>Categoría: </span>
+                {product.categoria}
+              </p>
+              <p className={cx(styles['product-details__price'])}>
+                ${product.precio}
+              </p>
+              <Button
+                variant="primary"
+                className={cx('w-100', {
+                  disabled: Number(product.stock) === 0,
+                })}
+                onClick={
+                  Number(product.stock) === 0 ? undefined : handleAddToCart
+                }
+                disabled={
+                  Number(product.stock) === 0 ||
+                  addToCartRequestStatus === 'loading'
+                }
+              >
+                {Number(product.stock) === 0
+                  ? 'Fuera de Stock'
+                  : 'Agregar al carrito'}
+                {addToCartRequestStatus === 'loading' && (
+                  <Spinner
+                    animation="border"
+                    size="sm"
+                    variant="light"
+                    className={cx('ms-3')}
+                  />
+                )}
+              </Button>
+            </div>
+          </Col>
+        </Row>
       )}
     </div>
   );

@@ -20,12 +20,12 @@ const OrderInfo = ({ order }: IOrderInfo) => {
 
   return (
     <div
-      className={cx(styles['last-order'], 'border', 'p-3', 'rounded', 'mt-4')}
+      className={cx(styles['last-order'], 'border', 'p-3', 'mt-4', 'bg-light')}
     >
       <Row>
         <Col md="12" lg="6">
           <h5>Información de tu pedido</h5>
-          <Table responsive striped bordered hover>
+          <Table responsive striped bordered>
             <thead>
               <tr>
                 <th>Cantidad</th>
@@ -36,7 +36,7 @@ const OrderInfo = ({ order }: IOrderInfo) => {
             <tbody>
               {order &&
                 order.productos.map(product => (
-                  <tr>
+                  <tr key={product.producto.id}>
                     <td>{product.quantity}</td>
                     <td>{product.producto.nombre}</td>
                     <td className="fw-bold">

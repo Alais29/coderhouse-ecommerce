@@ -4,6 +4,7 @@ import { userLogout } from 'features/user/userSlice';
 import { emptyCart } from 'features/cart/cartSlice';
 import { useAppDispatch, useAppSelector } from 'hooks/redux';
 import { setMessages } from 'features/messages/messagesSlice';
+import { emptyOrders } from 'features/orders/ordersSlice';
 import UserData from 'components/UserData/UserData';
 import LoadingData from 'components/LoadingData/LoadingData';
 import Dashboard from 'components/Dashboard/Dashboard';
@@ -17,6 +18,7 @@ const Account = () => {
       await dispatch(userLogout()).unwrap();
       dispatch(emptyCart());
       dispatch(setMessages([]));
+      dispatch(emptyOrders());
     } catch (e) {
       toast.error('Hubo un error, por favor intente de nuevo.');
     }

@@ -57,6 +57,7 @@ export const cartSlice = createSlice({
   reducers: {
     emptyCart(state) {
       state.data = [];
+      state.status = 'idle';
     },
   },
   extraReducers(builder) {

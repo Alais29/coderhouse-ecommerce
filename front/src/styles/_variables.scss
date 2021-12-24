@@ -1,0 +1,31 @@
+@import '~bootstrap/scss/functions';
+$sizes: ();
+@import '~bootstrap/scss/variables';
+@import url('https://fonts.googleapis.com/css2?family=Archivo&family=Open+Sans:wght@300;700&display=swap');
+
+// THEME
+$custom-colors: (
+  'primary': #13ad9b,
+  'secondary': #661d6b,
+  'info': #9d56cc,
+  'dark': #1a4a4f,
+  'other-1': #66c2cc,
+  'other-2': #ad72d5,
+);
+
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
+// GENERAL
+$body-bg: #f0f9fa;
+$enable-rounded: false;
+$font-family-base: 'Archivo', system-ui, -apple-system, 'Segoe UI', Roboto,
+  'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif,
+  'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+$nav-link-color: map-get($custom-colors, 'primary');
+$nav-link-hover-color: map-get($custom-colors, 'dark');
+
+// TABLES
+$table-border-color: map-get($custom-colors, 'primary');
+$table-striped-bg: #adece5;
+
+@import 'bootstrap/scss/bootstrap';

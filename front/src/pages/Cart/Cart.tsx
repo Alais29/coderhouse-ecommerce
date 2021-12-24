@@ -96,7 +96,7 @@ const Cart = () => {
         )
       ) : (
         <div className="d-flex justify-content-end gap-3 align-items-center">
-          <div className="border rounded p-3">
+          <div className="border rounded p-3 bg-light">
             <span className="fw-bold">Total:</span> ${total.toFixed(2)}
           </div>
           <Button variant="primary" size="lg" onClick={handleSendOrder}>

@@ -2,10 +2,14 @@ import { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
+import { AdvancedImage, lazyload, placeholder } from '@cloudinary/react';
+import { thumbnail } from '@cloudinary/url-gen/actions/resize';
+import { cld } from 'services/Cloudinary';
 import { IItemCarrito } from 'commons/interfaces';
 import { useAppDispatch } from 'hooks/redux';
 import { editProductInCart } from 'features/cart/cartSlice';
 import LoadingScreen from 'components/LoadingScreen/LoadingScreen';
+
 import cx from 'classnames/bind';
 import styles from './styles.module.scss';
 
@@ -24,6 +28,9 @@ const ProductCarrito = ({ product, handleRemove }: IProductCarrito) => {
   const { producto } = product;
 
   const dispatch = useAppDispatch();
+
+  const productImg = cld.image(`${producto.fotosId[0]}`);
+  productImg.resize(thumbnail().width(150).height(150));
 
   const handleEdit = () => {
     setQtyDisabled(false);
@@ -59,10 +66,9 @@ const ProductCarrito = ({ product, handleRemove }: IProductCarrito) => {
       <div
         className={cx('border', 'rounded', 'd-flex', styles['product-carrito'])}
       >
-        <img
-          src={producto.fotos[0]}
-          alt={producto.nombre}
-          className={cx(styles['product-carrito__img'])}
+        <AdvancedImage
+          cldImg={productImg}
+          plugins={[lazyload(), placeholder('blur')]}
         />
         <div className={cx(styles['product-carrito__info-container'])}>
           <div className={cx(styles['product-carrito__info'])}>

@@ -3,8 +3,8 @@ import { toast } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from 'hooks/redux';
 import { fetchOrders } from 'features/orders/ordersSlice';
 import { isEmpty } from 'utilities/others';
-import OrderInfo from 'components/OrderInfo/OrderInfo';
 import LoadingData from 'components/LoadingData/LoadingData';
+import OrdersList from '../../components/OrdersList/OrdersList';
 
 const Orders = () => {
   const { data, status, error } = useAppSelector(state => state.orders);
@@ -23,23 +23,27 @@ const Orders = () => {
     <div>
       <h1 className="text-center mt-5 pt-3">Ordenes</h1>
       {isEmpty(data) ? (
-        status === 'loading' ? (
+        status === 'succeeded' ? (
           <LoadingData />
         ) : (
-          <h1 className="mt-5 pt-3 mb-3">No haz realizado ninguna orden</h1>
+          <p className="mt-5 pt-3 mb-3 text-center display-6">
+            No haz realizado ninguna orden
+          </p>
         )
       ) : (
         <>
-          <h3>En curso</h3>
-          {data.map(item => {
-            if (item.estado === 'generada') return <OrderInfo order={item} />;
-            return null;
-          })}
-          <h3 className="mt-3">Completadas</h3>
-          {data.map(item => {
-            if (item.estado === 'completada') return <OrderInfo order={item} />;
-            return null;
-          })}
+          <h2>En curso</h2>
+          <OrdersList
+            orders={data}
+            ordersType="generada"
+            emptyMessage="No tienes ninguna orden en curso"
+          />
+          <h2 className="mt-3">Completadas</h2>
+          <OrdersList
+            orders={data}
+            ordersType="completada"
+            emptyMessage="No tienes ordenes completadas"
+          />
         </>
       )}
     </div>

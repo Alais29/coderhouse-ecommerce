@@ -25,6 +25,7 @@ import { useAppSelector, useAppDispatch } from 'hooks/redux';
 import { getUserData, userLogout } from 'features/user/userSlice';
 import { emptyCart } from 'features/cart/cartSlice';
 import { setMessages } from 'features/messages/messagesSlice';
+import { emptyOrders } from 'features/orders/ordersSlice';
 import Producto from 'pages/Producto/Producto';
 
 library.add(fas);
@@ -35,18 +36,19 @@ const App = () => {
 
   const isLoggedInCookie = getCookie('connect.sid');
 
-  // useIdleTimer({
-  //   timeout: 1000 * 60 * 5,
-  //   onIdle: async () => {
-  //     await dispatch(userLogout());
-  //     dispatch(emptyCart());
-  //     dispatch(setMessages([]));
-  //   },
-  //   debounce: 500,
-  //   crossTab: {
-  //     emitOnAllTabs: true,
-  //   },
-  // });
+  useIdleTimer({
+    timeout: 1000 * 60 * 5,
+    onIdle: async () => {
+      await dispatch(userLogout());
+      dispatch(emptyCart());
+      dispatch(setMessages([]));
+      dispatch(emptyOrders());
+    },
+    debounce: 500,
+    crossTab: {
+      emitOnAllTabs: true,
+    },
+  });
 
   useEffect(() => {
     if (isLoggedInCookie && status === 'idle') {

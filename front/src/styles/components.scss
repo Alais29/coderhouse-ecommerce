@@ -1,0 +1,24 @@
+p,
+label,
+input {
+  font-family: 'Open Sans';
+}
+
+.btn-primary,
+.btn-info {
+  color: #ffffff;
+  &:hover,
+  &:focus,
+  &:disabled,
+  &.disabled {
+    color: #ffffff;
+  }
+}
+
+.bg-dark {
+  background-color: #1a4a4f !important;
+}
+
+.bg-light {
+  background-color: #ffffff !important;
+}

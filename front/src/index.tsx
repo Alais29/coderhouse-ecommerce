@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-phone-number-input/style.css';
 import 'react-toastify/dist/ReactToastify.css';
+import 'styles/index.scss';
 
 ReactDOM.render(
   <React.StrictMode>

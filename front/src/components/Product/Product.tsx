@@ -29,27 +29,28 @@ const Product = ({
   productImg.resize(thumbnail().width(300).height(300));
 
   return (
-    <Card>
-      <AdvancedImage
-        cldImg={productImg}
-        plugins={[lazyload(), placeholder('blur')]}
-      />
+    <Card className={cx(styles['product-card'])}>
+      <Link
+        className={cx('text-decoration-none', styles['product-card__link'])}
+        to={`/productos/${product.id}`}
+      >
+        <AdvancedImage
+          cldImg={productImg}
+          plugins={[lazyload(), placeholder('blur')]}
+        />
+      </Link>
       <Card.Body>
         <div>
           <Card.Title>{product.nombre}</Card.Title>
-          <Card.Subtitle className="mb-2 text-muted">
-            ${product.precio}
-          </Card.Subtitle>
-          <Card.Text>{product.descripcion}</Card.Text>
+          <Card.Subtitle className="mb-2">${product.precio}</Card.Subtitle>
         </div>
-        <div className="text-end mt-2">
-          <Card.Text>
-            <small>{product.categoria}</small>
-          </Card.Text>
-        </div>
-        <div className={cx('d-flex', 'flex-column', styles['product-btns'])}>
+        <div
+          className={cx('d-flex', 'flex-column', styles['product-card__btns'])}
+        >
           {data && data.admin && (
-            <div className={cx('d-flex', 'mt-2', styles['product-add-edit'])}>
+            <div
+              className={cx('d-flex', 'mt-2', styles['product-card__add-edit'])}
+            >
               <Button
                 variant="danger"
                 onClick={() => handleToggleShowModal(product, 'delete')}
@@ -64,11 +65,17 @@ const Product = ({
               </Button>
             </div>
           )}
-          <Link className="btn btn-info" to={`/productos/${product.id}`}>
-            Ver detalles
-          </Link>
-          <Button variant="primary" onClick={() => handleAddToCart(product)}>
-            Agregar al carrito
+          <Button
+            variant="primary"
+            onClick={() => handleAddToCart(product)}
+            className={cx({
+              disabled: Number(product.stock) === 0,
+            })}
+            disabled={Number(product.stock) === 0}
+          >
+            {Number(product.stock) === 0
+              ? 'Fuera de Stock'
+              : 'Agregar al carrito'}
           </Button>
         </div>
       </Card.Body>
