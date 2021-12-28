@@ -29,11 +29,9 @@ const Productos = () => {
   >('idle');
 
   const { data, status, error } = useAppSelector(state => state.products);
-  const {
-    data: dataCart,
-    status: statusCart,
-    error: errorCart,
-  } = useAppSelector(state => state.cart);
+  const { status: statusCart, error: errorCart } = useAppSelector(
+    state => state.cart,
+  );
   const dispatch = useAppDispatch();
 
   const handleToggleShowModal = (
@@ -99,31 +97,33 @@ const Productos = () => {
     } else if (statusCart === 'failed') {
       toast.error(errorCart);
     }
-  }, [statusCart, dispatch, errorCart, dataCart]);
+  }, [statusCart, dispatch, errorCart]);
 
   return (
     <Container className="page-container">
+      <h1 className="text-center pt-3">Productos</h1>
       <Filter />
-      {isEmpty(data) ? (
-        status === 'loading' ? (
-          <LoadingData mode={'partial'} />
-        ) : (
-          <div className="text-center pt-4">
-            <h2>
-              No se encontraron productos, intenta con otros parámetros de
-              búsqueda
-            </h2>
-          </div>
-        )
-      ) : (
-        <>
-          <ProductList
-            location="home"
-            productos={data}
-            handleToggleShowModal={handleToggleShowModal}
-            handleAddToCart={handleAddToCart}
-          />
-        </>
+      {(isEmpty(data) || status === 'loading') && (
+        <LoadingData
+          mode={'partial'}
+          style={{ height: 'calc(100vh - 368px)' }}
+        />
+      )}
+      {isEmpty(data) && status === 'succeeded' && (
+        <div className="text-center pt-4">
+          <h2>
+            No se encontraron productos, intenta con otros parámetros de
+            búsqueda
+          </h2>
+        </div>
+      )}
+      {!isEmpty(data) && status === 'succeeded' && (
+        <ProductList
+          location="home"
+          productos={data}
+          handleToggleShowModal={handleToggleShowModal}
+          handleAddToCart={handleAddToCart}
+        />
       )}
       <Modal show={showModal} onHide={() => handleToggleShowModal()}>
         {productToDelete && (

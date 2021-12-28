@@ -32,9 +32,8 @@ const Navigation = () => {
       fixed="top"
       expand="sm"
       collapseOnSelect={true}
-      className="position-relative"
     >
-      <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+      <Navbar.Toggle aria-controls="responsive-navbar-nav" className="ms-2" />
       <Navbar.Collapse id="responsive-navbar-nav">
         <Container>
           <Nav className="me-auto">

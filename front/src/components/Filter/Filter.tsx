@@ -5,6 +5,7 @@ import { fetchProducts } from 'features/products/productsSlice';
 import { copyObj } from 'utilities/others';
 import cx from 'classnames/bind';
 import styles from './styles.module.scss';
+import { toast } from 'react-toastify';
 
 const Filter = () => {
   const [formValues, setFormValues] = useState({
@@ -16,7 +17,6 @@ const Filter = () => {
     maxStock: '',
   });
 
-  // const { data, status, error } = useAppSelector(state => state.products);
   const dispatch = useAppDispatch();
 
   const { nombre, codigo, minPrice, maxPrice, minStock, maxStock } = formValues;
@@ -28,19 +28,39 @@ const Filter = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formValuesCopy = copyObj(formValues);
     const notEmptyFields = Object.entries(formValuesCopy).filter(
       item => item[1] !== '',
     );
+    try {
+      await dispatch(
+        fetchProducts(Object.fromEntries(notEmptyFields)),
+      ).unwrap();
+    } catch (e) {
+      toast.error(e.message);
+    }
+  };
 
-    dispatch(fetchProducts(Object.fromEntries(notEmptyFields)));
+  const handleShowAll = async () => {
+    try {
+      setFormValues({
+        nombre: '',
+        codigo: '',
+        minPrice: '',
+        maxPrice: '',
+        minStock: '',
+        maxStock: '',
+      });
+      await dispatch(fetchProducts()).unwrap();
+    } catch (e) {
+      toast.error(e.message);
+    }
   };
 
   return (
     <div className={cx(styles['filter-container'])}>
-      <h2 className="text-center pt-4">Filtra tu búsqueda</h2>
       <Form onSubmit={handleSubmit}>
         <Row>
           <Col xs="12" sm="6">
@@ -124,7 +144,12 @@ const Filter = () => {
             </Form.Floating>
           </Col>
         </Row>
-        <Button type="submit">Buscar</Button>
+        <div className="d-flex gap-2">
+          <Button type="submit">Buscar</Button>
+          <Button variant="secondary" onClick={handleShowAll}>
+            Mostrar todo
+          </Button>
+        </div>
       </Form>
     </div>
   );
