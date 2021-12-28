@@ -41,7 +41,7 @@ const App = () => {
     onIdle: async () => {
       await dispatch(userLogout());
       dispatch(emptyCart());
-      dispatch(setMessages([]));
+      dispatch(setMessages({ data: [], status: 'idle' }));
       dispatch(emptyOrders());
       localStorage.removeItem('cartQty');
     },

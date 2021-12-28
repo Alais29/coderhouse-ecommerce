@@ -31,7 +31,7 @@ const ChatChannel = () => {
     if (dataUser && status === 'idle') {
       socket.emit('get messages', dataUser.email);
       socket.on('messages', data => {
-        dispatch(setMessages(data));
+        dispatch(setMessages({ data }));
       });
       socket.on('messages error', data => {
         toast.warning(data.message);
@@ -69,7 +69,7 @@ const ChatChannel = () => {
       });
 
       socket.on('new message saved', data => {
-        dispatch(setMessages(data));
+        dispatch(setMessages({ data }));
         setSavingMessage(false);
       });
 

@@ -17,7 +17,7 @@ const Account = () => {
     try {
       await dispatch(userLogout()).unwrap();
       dispatch(emptyCart());
-      dispatch(setMessages([]));
+      dispatch(setMessages({ data: [], status: 'idle' }));
       dispatch(emptyOrders());
       localStorage.removeItem('cartQty');
     } catch (e) {

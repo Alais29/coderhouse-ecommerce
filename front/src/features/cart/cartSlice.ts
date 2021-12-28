@@ -87,19 +87,14 @@ export const cartSlice = createSlice({
         }, 0);
       })
       .addCase(addProductToCart.fulfilled, (state, action) => {
-        if (state.data.length !== 0 || state.status === 'succeeded') {
-          const productIndex = state.data.findIndex(
-            item => item.producto.id === action.payload.producto.id,
-          );
-          if (productIndex === -1) {
-            state.data = state.data.concat(action.payload);
-          } else {
-            state.data[productIndex].quantity = action.payload.quantity;
-          }
-        }
-        state.cartItemsQty = state.data.reduce((total, item) => {
-          return (total += item.quantity);
-        }, 0);
+        state.data = action.payload;
+        state.status = 'succeeded';
+        state.cartItemsQty = action.payload.reduce(
+          (total: number, item: IItemCarrito) => {
+            return (total += item.quantity);
+          },
+          0,
+        );
       })
       .addCase(editProductInCart.fulfilled, (state, action) => {
         state.data = action.payload;

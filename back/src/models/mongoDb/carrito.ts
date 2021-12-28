@@ -89,7 +89,7 @@ export class CarritoModelMongoDb implements IModelCarritoMongo {
     }
   }
 
-  async save(userId: string, productId: string): Promise<IItemCarrito> {
+  async save(userId: string, productId: string): Promise<IItemCarrito[]> {
     try {
       const product = await this.productosModel.findById(productId);
 
@@ -113,12 +113,12 @@ export class CarritoModelMongoDb implements IModelCarritoMongo {
 
             await cart.save();
             const updatedCart = await cart.populate('productos.producto');
-            return updatedCart.productos[updatedCart.productos.length - 1];
+            return updatedCart.productos;
           } else {
             // if it's in the cart then add 1 more
             cart.productos[productInCartIndex].quantity += 1;
             await cart.save();
-            return cart.productos[productInCartIndex];
+            return cart.productos;
           }
         }
         throw new NotFound(404, 'El carrito no existe');

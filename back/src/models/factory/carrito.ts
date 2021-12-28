@@ -17,7 +17,7 @@ export interface IModelCarritoMongo {
     userId: string,
     productId?: string,
   ) => Promise<IItemCarrito | IItemCarrito[]>;
-  save: (userId: string, productId: string) => Promise<IItemCarrito>;
+  save: (userId: string, productId: string) => Promise<IItemCarrito[]>;
   update: (
     userId: string,
     productId: string,

@@ -32,14 +32,8 @@ export const saveCarritoProduct = async (
   res: Response,
 ): Promise<void> => {
   const { _id } = req.user as User;
-  const newProducto = (await carritoAPI.save(
-    _id,
-    req.params.id,
-  )) as IItemCarrito;
-  res
-    .location(`/api/productos/${newProducto.producto.id}`)
-    .status(201)
-    .json({ data: newProducto });
+  const newCart = (await carritoAPI.save(_id, req.params.id)) as IItemCarrito[];
+  res.status(200).json({ data: newCart });
 };
 
 export const editCarritoProduct = async (

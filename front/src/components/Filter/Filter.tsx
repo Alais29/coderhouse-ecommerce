@@ -1,11 +1,12 @@
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useAppDispatch } from 'hooks/redux';
 import { fetchProducts } from 'features/products/productsSlice';
 import { copyObj } from 'utilities/others';
+
 import cx from 'classnames/bind';
 import styles from './styles.module.scss';
-import { toast } from 'react-toastify';
 
 const Filter = () => {
   const [formValues, setFormValues] = useState({

@@ -16,8 +16,8 @@ export const messagesSlice = createSlice({
   initialState,
   reducers: {
     setMessages: (state, action) => {
-      state.data = action.payload;
-      state.status = 'succeeded';
+      state.data = action.payload.data;
+      state.status = action.payload.status || 'succeeded';
     },
     addMessage: (state, action) => {
       state.data.push(action.payload);

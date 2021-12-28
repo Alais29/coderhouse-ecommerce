@@ -1,10 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Button, Col, Container, Row, Spinner } from 'react-bootstrap';
+import {
+  Button,
+  Carousel,
+  Col,
+  Container,
+  Row,
+  Spinner,
+} from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { CloudinaryImage } from '@cloudinary/url-gen';
 import { AdvancedImage, lazyload, placeholder } from '@cloudinary/react';
 import { thumbnail } from '@cloudinary/url-gen/actions/resize';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAppDispatch } from 'hooks/redux';
 import { addProductToCart } from 'features/cart/cartSlice';
 import { getProduct } from 'services/Productos';
@@ -19,7 +27,7 @@ import styles from './styles.module.scss';
 const Producto = () => {
   let { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<IItemAPI>({} as IItemAPI);
-  const [productImg, setProductImg] = useState<CloudinaryImage>();
+  const [productImg, setProductImg] = useState<CloudinaryImage[]>([]);
   const [addToCartRequestStatus, setAddToCartRequestStatus] = useState<
     'idle' | 'loading'
   >('idle');
@@ -32,9 +40,15 @@ const Producto = () => {
 
   useEffect(() => {
     if (!isEmpty(product)) {
-      const productImgCld = cld.image(`${product.fotosId[0]}`);
-      productImgCld.resize(thumbnail().width(600).height(400));
-      setProductImg(productImgCld);
+      const productFotos: CloudinaryImage[] = [];
+      product.fotosId.forEach(item => {
+        const productImgCld = cld.image(`${item}`);
+        productImgCld.resize(thumbnail().width(600).height(400));
+        productFotos.push(productImgCld);
+      });
+      // const productImgCld = cld.image(`${product.fotosId[0]}`);
+      // productImgCld.resize(thumbnail().width(600).height(400));
+      setProductImg(productFotos);
     }
   }, [product]);
 
@@ -53,17 +67,49 @@ const Producto = () => {
   return (
     <Container className="page-container d-flex justify-content-center">
       <div className={cx(styles['product-details'])}>
-        {isEmpty(product) || !productImg ? (
-          <LoadingData mode={'partial'} />
+        {isEmpty(product) || isEmpty(productImg) ? (
+          <LoadingData mode="partial" />
         ) : (
           <Row className={cx('align-items-center', 'w-100')}>
             <Col md="12" lg="6">
-              <div className={cx(styles['product-details__image'])}>
+              {productImg.length === 1 ? (
                 <AdvancedImage
-                  cldImg={productImg as CloudinaryImage}
+                  cldImg={productImg[0]}
                   plugins={[lazyload(), placeholder('blur')]}
+                  className={cx(styles['product-details__image'])}
                 />
-              </div>
+              ) : (
+                <Carousel
+                  fade
+                  nextIcon={
+                    <FontAwesomeIcon
+                      icon="chevron-right"
+                      size="lg"
+                      color="#13ad9b"
+                    />
+                  }
+                  prevIcon={
+                    <FontAwesomeIcon
+                      icon="chevron-left"
+                      size="lg"
+                      color="#13ad9b"
+                    />
+                  }
+                  className={cx(styles['product-details__carousel'])}
+                >
+                  {productImg.map(item => (
+                    <Carousel.Item>
+                      <div>
+                        <AdvancedImage
+                          cldImg={item}
+                          plugins={[lazyload(), placeholder('blur')]}
+                          className={cx(styles['product-details__image'])}
+                        />
+                      </div>
+                    </Carousel.Item>
+                  ))}
+                </Carousel>
+              )}
             </Col>
             <Col md="12" lg="6">
               <div className={cx(styles['product-details__info'])}>

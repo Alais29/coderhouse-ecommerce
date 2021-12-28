@@ -24,6 +24,7 @@ const ListFiles = ({ files, handleRemove }: IListFiles) => {
                 <AdvancedImage
                   cldImg={image}
                   plugins={[lazyload(), placeholder('blur')]}
+                  style={{ height: '150px', width: '150px' }}
                 />
                 <div
                   onClick={() => handleRemove(index, file)}
