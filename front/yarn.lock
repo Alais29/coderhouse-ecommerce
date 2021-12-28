@@ -1418,6 +1418,13 @@
     "@types/yargs" "^15.0.0"
     "chalk" "^4.0.0"
 
+"@lottiefiles/react-lottie-player@^3.4.1":
+  "integrity" "sha512-HKhclI0dScyaJHPEKSyMaC7J8ZaTvVKy3f7Ru6h+Ygavvr4Zy7Jyd/YK+jYtulKIsxQC/gF6qGmWcsp65zYx+w=="
+  "resolved" "https://registry.npmjs.org/@lottiefiles/react-lottie-player/-/react-lottie-player-3.4.1.tgz"
+  "version" "3.4.1"
+  dependencies:
+    "lottie-web" "^5.7.8"
+
 "@nodelib/fs.scandir@2.1.4":
   "integrity" "sha512-33g3pMJk3bg5nXbL/+CY6I2eJDzZAni49PfJnL5fghPTggPvBd/pFNSgJsdAgWptuFu7qq/ERvOYFlhvsLTCKA=="
   "resolved" "https://registry.npmjs.org/@nodelib/fs.scandir/-/fs.scandir-2.1.4.tgz"
@@ -7557,6 +7564,11 @@
   "version" "1.4.0"
   dependencies:
     "js-tokens" "^3.0.0 || ^4.0.0"
+
+"lottie-web@^5.7.8":
+  "integrity" "sha512-9gIizWADlaHC2GCt+D+yNpk5l2clZQFqnVWWIVdY0LnxC/uLa39dYltAe3fcmC/hrZ2IUQ8dLlY0O934Npjs7Q=="
+  "resolved" "https://registry.npmjs.org/lottie-web/-/lottie-web-5.8.1.tgz"
+  "version" "5.8.1"
 
 "loud-rejection@^1.0.0":
   "integrity" "sha1-W0b4AUft7leIcPCG0Eghz5mOVR8="

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Modal } from 'react-bootstrap';
+import { Container, Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { isEmpty } from 'utilities/others';
@@ -10,11 +10,10 @@ import {
   removeProductApi,
   removeProduct,
 } from 'features/products/productsSlice';
-import { addProductToCart } from 'features/cart/cartSlice';
+import { addProductToCart, fetchProductsCart } from 'features/cart/cartSlice';
 import ConfirmationModal from 'components/Modals/ConfirmationModal/ConfirmationModal';
 import ProductList from 'components/ProductList/ProductList';
 import EditModal from 'components/Modals/EditModal/EditModal';
-import LoadingScreen from 'components/LoadingScreen/LoadingScreen';
 import Filter from 'components/Filter/Filter';
 import LoadingData from 'components/LoadingData/LoadingData';
 
@@ -30,6 +29,11 @@ const Productos = () => {
   >('idle');
 
   const { data, status, error } = useAppSelector(state => state.products);
+  const {
+    data: dataCart,
+    status: statusCart,
+    error: errorCart,
+  } = useAppSelector(state => state.cart);
   const dispatch = useAppDispatch();
 
   const handleToggleShowModal = (
@@ -89,14 +93,22 @@ const Productos = () => {
     }
   }, [status, dispatch, error]);
 
+  useEffect(() => {
+    if (statusCart === 'idle') {
+      dispatch(fetchProductsCart());
+    } else if (statusCart === 'failed') {
+      toast.error(errorCart);
+    }
+  }, [statusCart, dispatch, errorCart, dataCart]);
+
   return (
-    <>
-      <h1 className="text-center mt-5 pt-4">Productos</h1>
+    <Container className="page-container">
+      <Filter />
       {isEmpty(data) ? (
         status === 'loading' ? (
-          <LoadingData />
+          <LoadingData mode={'partial'} />
         ) : (
-          <div className="text-center mt-4">
+          <div className="text-center pt-4">
             <h2>
               No se encontraron productos, intenta con otros parámetros de
               búsqueda
@@ -105,7 +117,6 @@ const Productos = () => {
         )
       ) : (
         <>
-          <Filter />
           <ProductList
             location="home"
             productos={data}
@@ -132,11 +143,12 @@ const Productos = () => {
         )}
       </Modal>
       {addToCartRequestStatus === 'loading' && (
-        <LoadingScreen
+        <LoadingData
           style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)', zIndex: 2000 }}
+          mode="fullscreen"
         />
       )}
-    </>
+    </Container>
   );
 };
 

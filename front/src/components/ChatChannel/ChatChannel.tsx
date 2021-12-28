@@ -6,6 +6,8 @@ import { socket } from 'services/Socket';
 import { isEmpty } from 'utilities/others';
 import { useAppSelector, useAppDispatch } from 'hooks/redux';
 import { setMessages, addMessage } from 'features/messages/messagesSlice';
+import LoadingData from 'components/LoadingData/LoadingData';
+
 import cx from 'classnames/bind';
 import styles from './styles.module.scss';
 
@@ -89,9 +91,7 @@ const ChatChannel = () => {
         })}
       >
         {status === 'idle' && (
-          <Spinner animation="border" role="status" variant="primary">
-            <span className="visually-hidden">Loading...</span>
-          </Spinner>
+          <LoadingData style={{ height: '100%' }} mode="partial" />
         )}
         {status === 'succeeded' && messages.length === 0 ? (
           <h3 className="text-center">No tienes mensajes</h3>
@@ -114,7 +114,11 @@ const ChatChannel = () => {
                 </span>
                 <span className={cx(styles['chat-channel__message-text'])}>
                   {msg.type === 'sistema'
-                    ? msg.text.split('$nl').map(item => <p>{item}</p>)
+                    ? msg.text.split('$nl').map((item, index) => (
+                        <span className="d-block" key={index}>
+                          {item}
+                        </span>
+                      ))
                     : msg.text}
                 </span>
               </p>

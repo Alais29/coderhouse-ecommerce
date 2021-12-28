@@ -40,7 +40,7 @@ const Filter = () => {
 
   return (
     <div className={cx(styles['filter-container'])}>
-      <h2 className="text-center mt-4">Filtra tu búsqueda</h2>
+      <h2 className="text-center pt-4">Filtra tu búsqueda</h2>
       <Form onSubmit={handleSubmit}>
         <Row>
           <Col xs="12" sm="6">

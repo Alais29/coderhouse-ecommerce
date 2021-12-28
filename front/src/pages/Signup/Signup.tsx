@@ -1,10 +1,11 @@
+import { Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import SignupForm from 'components/SignupForm/SignupForm';
 
 const Signup = () => {
   return (
-    <div>
-      <h1 className="text-center mt-3">Registro de Usuario</h1>
+    <Container>
+      <h1 className="text-center mt-3">Crea una cuenta</h1>
       <SignupForm location="signupPage" />
       <hr />
       <div className="mb-3">
@@ -13,7 +14,7 @@ const Signup = () => {
           Login
         </Link>
       </div>
-    </div>
+    </Container>
   );
 };
 

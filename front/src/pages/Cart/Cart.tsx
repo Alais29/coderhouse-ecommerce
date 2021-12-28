@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
+import { Button, Container } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { useAppDispatch, useAppSelector } from 'hooks/redux';
@@ -12,7 +12,6 @@ import {
 import { createOrder } from 'features/orders/ordersSlice';
 import { isEmpty } from 'utilities/others';
 import ProductList from 'components/ProductList/ProductList';
-import LoadingScreen from 'components/LoadingScreen/LoadingScreen';
 import LoadingData from 'components/LoadingData/LoadingData';
 
 const Cart = () => {
@@ -75,16 +74,11 @@ const Cart = () => {
   }, [data]);
 
   return (
-    <>
+    <Container className="page-container">
       <h1 className="text-center mt-5 pt-3 mb-">Carrito</h1>
-      <ProductList
-        productos={data}
-        location="cart"
-        handleRemove={handleRemove}
-      />
       {isEmpty(data) ? (
         status === 'loading' ? (
-          <LoadingData />
+          <LoadingData mode={'partial'} />
         ) : (
           <div className="text-center">
             <h2>El carrito está vacío</h2>
@@ -95,22 +89,30 @@ const Cart = () => {
           </div>
         )
       ) : (
-        <div className="d-flex justify-content-end gap-3 align-items-center">
-          <div className="border rounded p-3 bg-light">
-            <span className="fw-bold">Total:</span> ${total.toFixed(2)}
+        <>
+          <ProductList
+            productos={data}
+            location="cart"
+            handleRemove={handleRemove}
+          />
+          <div className="d-flex justify-content-end gap-3 align-items-center">
+            <div className="border rounded p-3 bg-light">
+              <span className="fw-bold">Total:</span> ${total.toFixed(2)}
+            </div>
+            <Button variant="primary" size="lg" onClick={handleSendOrder}>
+              Enviar orden
+            </Button>
           </div>
-          <Button variant="primary" size="lg" onClick={handleSendOrder}>
-            Enviar orden
-          </Button>
-        </div>
+        </>
       )}
       {(deleteProductRequestStatus === 'loading' ||
         sendOrderRequestStatus === 'loading') && (
-        <LoadingScreen
+        <LoadingData
           style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)', zIndex: 2000 }}
+          mode="fullscreen"
         />
       )}
-    </>
+    </Container>
   );
 };
 

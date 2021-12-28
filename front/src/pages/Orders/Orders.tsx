@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { Container } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from 'hooks/redux';
 import { fetchOrders } from 'features/orders/ordersSlice';
@@ -20,11 +21,11 @@ const Orders = () => {
   }, [dispatch, error, status]);
 
   return (
-    <div>
-      <h1 className="text-center mt-5 pt-3">Ordenes</h1>
+    <Container className="page-container">
+      <h1 className="text-center mt-5 pt-3">Tus Ordenes</h1>
       {isEmpty(data) ? (
-        status === 'succeeded' ? (
-          <LoadingData />
+        status === 'loading' ? (
+          <LoadingData mode="partial" />
         ) : (
           <p className="mt-5 pt-3 mb-3 text-center display-6">
             No haz realizado ninguna orden
@@ -46,7 +47,7 @@ const Orders = () => {
           />
         </>
       )}
-    </div>
+    </Container>
   );
 };
 

@@ -4,8 +4,6 @@ $sizes: ();
 @import '../../styles/variables';
 
 .product-details {
-  margin-top: 56px;
-  height: calc(100vh - 56px);
   display: flex;
   align-items: center;
   justify-content: center;

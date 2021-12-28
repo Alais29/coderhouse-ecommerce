@@ -11,12 +11,14 @@ interface CartState {
   data: IItemCarrito[];
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null | undefined;
+  cartItemsQty: number;
 }
 
 const initialState: CartState = {
   data: [],
   status: 'idle',
   error: null,
+  cartItemsQty: 0,
 };
 
 export const fetchProductsCart = createAsyncThunk(
@@ -58,6 +60,7 @@ export const cartSlice = createSlice({
     emptyCart(state) {
       state.data = [];
       state.status = 'idle';
+      state.cartItemsQty = 0;
     },
   },
   extraReducers(builder) {
@@ -69,6 +72,9 @@ export const cartSlice = createSlice({
         state.status = 'succeeded';
         state.data = state.data.concat(action.payload);
         state.error = null;
+        state.cartItemsQty = state.data.reduce((total, item) => {
+          return (total += item.quantity);
+        }, 0);
       })
       .addCase(fetchProductsCart.rejected, (state, action) => {
         state.status = 'failed';
@@ -76,6 +82,9 @@ export const cartSlice = createSlice({
       })
       .addCase(removeProductCart.fulfilled, (state, action) => {
         state.data = action.payload;
+        state.cartItemsQty = state.data.reduce((total, item) => {
+          return (total += item.quantity);
+        }, 0);
       })
       .addCase(addProductToCart.fulfilled, (state, action) => {
         if (state.data.length !== 0 || state.status === 'succeeded') {
@@ -88,9 +97,15 @@ export const cartSlice = createSlice({
             state.data[productIndex].quantity = action.payload.quantity;
           }
         }
+        state.cartItemsQty = state.data.reduce((total, item) => {
+          return (total += item.quantity);
+        }, 0);
       })
       .addCase(editProductInCart.fulfilled, (state, action) => {
         state.data = action.payload;
+        state.cartItemsQty = state.data.reduce((total, item) => {
+          return (total += item.quantity);
+        }, 0);
       });
   },
 });

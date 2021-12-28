@@ -37,6 +37,7 @@ const Product = ({
         <AdvancedImage
           cldImg={productImg}
           plugins={[lazyload(), placeholder('blur')]}
+          style={{ height: '300px' }}
         />
       </Link>
       <Card.Body>

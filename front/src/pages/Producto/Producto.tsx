@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Button, Col, Row, Spinner } from 'react-bootstrap';
+import { Button, Col, Container, Row, Spinner } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { CloudinaryImage } from '@cloudinary/url-gen';
 import { AdvancedImage, lazyload, placeholder } from '@cloudinary/react';
@@ -51,75 +51,77 @@ const Producto = () => {
   };
 
   return (
-    <div className={cx(styles['product-details'])}>
-      {isEmpty(product) || !productImg ? (
-        <LoadingData />
-      ) : (
-        <Row className={cx('align-items-center', 'w-100')}>
-          <Col md="12" lg="6">
-            <div className={cx(styles['product-details__image'])}>
-              <AdvancedImage
-                cldImg={productImg as CloudinaryImage}
-                plugins={[lazyload(), placeholder('blur')]}
-              />
-            </div>
-          </Col>
-          <Col md="12" lg="6">
-            <div className={cx(styles['product-details__info'])}>
-              <h1 className={cx('h2', 'mb-0')}>{product.nombre}</h1>
-              <p className={cx('small')}>{product.codigo}</p>
-              <p>{product.descripcion}</p>
-              <p
-                className={cx(styles['product-details__stock'], {
-                  [styles['product-details__stock--out-stock']]:
-                    Number(product.stock) === 0,
-                  [styles['product-details__stock--last-units']]:
-                    Number(product.stock) !== 0 && Number(product.stock) <= 5,
-                })}
-              >
-                {Number(product.stock) > 0
-                  ? Number(product.stock) <= 5
-                    ? 'Últimas unidades!'
-                    : 'En stock'
-                  : 'Fuera de stock'}
-              </p>
-              <p>
-                <span className={cx('fw-bold')}>Categoría: </span>
-                {product.categoria}
-              </p>
-              <p className={cx(styles['product-details__price'])}>
-                ${product.precio}
-              </p>
-              <Button
-                variant="primary"
-                className={cx('w-100', {
-                  disabled: Number(product.stock) === 0,
-                })}
-                onClick={
-                  Number(product.stock) === 0 ? undefined : handleAddToCart
-                }
-                disabled={
-                  Number(product.stock) === 0 ||
-                  addToCartRequestStatus === 'loading'
-                }
-              >
-                {Number(product.stock) === 0
-                  ? 'Fuera de Stock'
-                  : 'Agregar al carrito'}
-                {addToCartRequestStatus === 'loading' && (
-                  <Spinner
-                    animation="border"
-                    size="sm"
-                    variant="light"
-                    className={cx('ms-3')}
-                  />
-                )}
-              </Button>
-            </div>
-          </Col>
-        </Row>
-      )}
-    </div>
+    <Container className="page-container d-flex justify-content-center">
+      <div className={cx(styles['product-details'])}>
+        {isEmpty(product) || !productImg ? (
+          <LoadingData mode={'partial'} />
+        ) : (
+          <Row className={cx('align-items-center', 'w-100')}>
+            <Col md="12" lg="6">
+              <div className={cx(styles['product-details__image'])}>
+                <AdvancedImage
+                  cldImg={productImg as CloudinaryImage}
+                  plugins={[lazyload(), placeholder('blur')]}
+                />
+              </div>
+            </Col>
+            <Col md="12" lg="6">
+              <div className={cx(styles['product-details__info'])}>
+                <h1 className={cx('h2', 'mb-0')}>{product.nombre}</h1>
+                <p className={cx('small')}>{product.codigo}</p>
+                <p>{product.descripcion}</p>
+                <p
+                  className={cx(styles['product-details__stock'], {
+                    [styles['product-details__stock--out-stock']]:
+                      Number(product.stock) === 0,
+                    [styles['product-details__stock--last-units']]:
+                      Number(product.stock) !== 0 && Number(product.stock) <= 5,
+                  })}
+                >
+                  {Number(product.stock) > 0
+                    ? Number(product.stock) <= 5
+                      ? 'Últimas unidades!'
+                      : 'En stock'
+                    : 'Fuera de stock'}
+                </p>
+                <p>
+                  <span className={cx('fw-bold')}>Categoría: </span>
+                  {product.categoria}
+                </p>
+                <p className={cx(styles['product-details__price'])}>
+                  ${product.precio}
+                </p>
+                <Button
+                  variant="primary"
+                  className={cx('w-100', {
+                    disabled: Number(product.stock) === 0,
+                  })}
+                  onClick={
+                    Number(product.stock) === 0 ? undefined : handleAddToCart
+                  }
+                  disabled={
+                    Number(product.stock) === 0 ||
+                    addToCartRequestStatus === 'loading'
+                  }
+                >
+                  {Number(product.stock) === 0
+                    ? 'Fuera de Stock'
+                    : 'Agregar al carrito'}
+                  {addToCartRequestStatus === 'loading' && (
+                    <Spinner
+                      animation="border"
+                      size="sm"
+                      variant="light"
+                      className={cx('ms-3')}
+                    />
+                  )}
+                </Button>
+              </div>
+            </Col>
+          </Row>
+        )}
+      </div>
+    </Container>
   );
 };
 

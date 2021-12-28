@@ -1,0 +1,9 @@
+.left-login {
+  min-height: calc(100vh - 56px);
+}
+.right-image {
+  min-height: calc(100vh - 56px);
+  background-image: url('login-image.jpg');
+  background-size: cover;
+  background-position: center;
+}

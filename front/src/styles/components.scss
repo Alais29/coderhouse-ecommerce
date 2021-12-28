@@ -1,7 +1,7 @@
 p,
 label,
 input {
-  font-family: 'Open Sans';
+  font-family: 'Open Sans', sans-serif;
 }
 
 .btn-primary,
@@ -21,4 +21,13 @@ input {
 
 .bg-light {
   background-color: #ffffff !important;
+}
+
+.page-container {
+  margin-top: 56px;
+  min-height: calc(100vh - 112px);
+}
+
+.page-container-login {
+  min-height: calc(100vh - 112px);
 }

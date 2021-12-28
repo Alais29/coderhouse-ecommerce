@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
@@ -8,7 +8,7 @@ import { cld } from 'services/Cloudinary';
 import { IItemCarrito } from 'commons/interfaces';
 import { useAppDispatch } from 'hooks/redux';
 import { editProductInCart } from 'features/cart/cartSlice';
-import LoadingScreen from 'components/LoadingScreen/LoadingScreen';
+import LoadingData from 'components/LoadingData/LoadingData';
 
 import cx from 'classnames/bind';
 import styles from './styles.module.scss';
@@ -32,8 +32,20 @@ const ProductCarrito = ({ product, handleRemove }: IProductCarrito) => {
   const productImg = cld.image(`${producto.fotosId[0]}`);
   productImg.resize(thumbnail().width(150).height(150));
 
+  const editBtnRef = useRef<HTMLButtonElement>(null);
+
   const handleEdit = () => {
     setQtyDisabled(false);
+  };
+
+  const handleCancelEdit = () => {
+    setQtyDisabled(true);
+    setQuantity(product.quantity);
+  };
+
+  const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (editBtnRef.current) editBtnRef.current.click();
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,16 +71,16 @@ const ProductCarrito = ({ product, handleRemove }: IProductCarrito) => {
   return (
     <>
       {editProductRequestStatus === 'loading' && (
-        <LoadingScreen
+        <LoadingData
           style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)', zIndex: 2000 }}
+          mode="fullscreen"
         />
       )}
-      <div
-        className={cx('border', 'rounded', 'd-flex', styles['product-carrito'])}
-      >
+      <div className={cx('border', 'd-flex', styles['product-carrito'])}>
         <AdvancedImage
           cldImg={productImg}
           plugins={[lazyload(), placeholder('blur')]}
+          style={{ width: '150px' }}
         />
         <div className={cx(styles['product-carrito__info-container'])}>
           <div className={cx(styles['product-carrito__info'])}>
@@ -76,7 +88,7 @@ const ProductCarrito = ({ product, handleRemove }: IProductCarrito) => {
             <p>{producto.descripcion}</p>
             <div className={cx(styles['product-carrito__qty-price'])}>
               <div className={cx(styles['product-carrito__qty-form'])}>
-                <Form>
+                <Form onSubmit={handleSubmit}>
                   <Form.Group
                     className={cx(
                       'mb-3',
@@ -103,14 +115,22 @@ const ProductCarrito = ({ product, handleRemove }: IProductCarrito) => {
             </div>
           </div>
           <div className={cx(styles['product-carrito__btns'])}>
-            <Button variant="danger" onClick={() => handleRemove(producto.id)}>
-              Eliminar
+            <Button
+              variant="danger"
+              onClick={
+                qtyDisabled
+                  ? () => handleRemove(producto.id)
+                  : () => handleCancelEdit()
+              }
+            >
+              {qtyDisabled ? 'Eliminar' : 'Cancelar'}
             </Button>
             <Button
               variant={qtyDisabled ? 'primary' : 'success'}
               onClick={
                 qtyDisabled ? () => handleEdit() : () => handleSaveChanges()
               }
+              ref={editBtnRef}
             >
               {qtyDisabled ? 'Editar' : 'Guardar'}
             </Button>

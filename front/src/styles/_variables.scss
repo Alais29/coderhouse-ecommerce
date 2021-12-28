@@ -23,6 +23,9 @@ $font-family-base: 'Archivo', system-ui, -apple-system, 'Segoe UI', Roboto,
   'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 $nav-link-color: map-get($custom-colors, 'primary');
 $nav-link-hover-color: map-get($custom-colors, 'dark');
+$link-color: lighten(map-get($custom-colors, 'primary'), 10%);
+$link-shade-percentage: 20%;
+$link-hover-color: shift-color($link-color, $link-shade-percentage);
 
 // TABLES
 $table-border-color: map-get($custom-colors, 'primary');

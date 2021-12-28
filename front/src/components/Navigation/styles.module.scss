@@ -1,4 +1,7 @@
+@import '../../styles/_variables.scss';
+
 .cart-icon {
+  position: relative;
   svg {
     transition: fill 0.3s ease-in-out;
   }
@@ -7,6 +10,25 @@
       fill: #ffffff;
     }
   }
+  .cart-badge {
+    font-size: 0.6rem;
+    padding: 1px 6px;
+    background-color: map-get($custom-colors, 'primary');
+    color: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    right: -2px;
+    &--mobile {
+      right: -7px;
+    }
+  }
+}
+
+.brand-icon {
+  position: absolute;
+  left: 50%;
+  top: 6px;
 }
 
 .icons-container {

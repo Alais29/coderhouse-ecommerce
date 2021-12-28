@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { Container } from 'react-bootstrap';
 import {
   HashRouter as Router,
   Switch,
@@ -10,12 +9,14 @@ import { ToastContainer } from 'react-toastify';
 import { useIdleTimer } from 'react-idle-timer';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
-import LoadingScreen from 'components/LoadingScreen/LoadingScreen';
+import LoadingData from 'components/LoadingData/LoadingData';
 import Navigation from 'components/Navigation/Navigation';
+import Footer from 'components/Footer/Footer';
 import Login from 'pages/Login/Login';
 import Signup from 'pages/Signup/Signup';
 import Cart from 'pages/Cart/Cart';
 import Productos from 'pages/Productos/Productos';
+import Producto from 'pages/Producto/Producto';
 import Account from 'pages/Account/Account';
 import Chat from 'pages/Chat/Chat';
 import Orders from 'pages/Orders/Orders';
@@ -26,7 +27,6 @@ import { getUserData, userLogout } from 'features/user/userSlice';
 import { emptyCart } from 'features/cart/cartSlice';
 import { setMessages } from 'features/messages/messagesSlice';
 import { emptyOrders } from 'features/orders/ordersSlice';
-import Producto from 'pages/Producto/Producto';
 
 library.add(fas);
 
@@ -43,6 +43,7 @@ const App = () => {
       dispatch(emptyCart());
       dispatch(setMessages([]));
       dispatch(emptyOrders());
+      localStorage.removeItem('cartQty');
     },
     debounce: 500,
     crossTab: {
@@ -66,41 +67,40 @@ const App = () => {
   return (
     <Router>
       {isLoggedInCookie && (status === 'idle' || status === 'loading') ? (
-        <LoadingScreen />
+        <LoadingData mode={'fullscreen'} />
       ) : (
         <>
           {isLoggedIn && <Navigation />}
-          <Container>
-            <Switch>
-              <Route path="/login">
-                {isLoggedIn ? <Redirect to="/" /> : <Login />}
-              </Route>
-              <Route path="/signup">
-                {isLoggedIn ? <Redirect to="/" /> : <Signup />}
-              </Route>
-              <Route path="/chat">
-                {isLoggedIn ? <Chat /> : <Redirect to="/login" />}
-              </Route>
-              <Route path="/cart">
-                {isLoggedIn ? <Cart /> : <Redirect to="/login" />}
-              </Route>
-              <Route path="/successful-order">
-                {isLoggedIn ? <SuccesfulOrder /> : <Redirect to="/login" />}
-              </Route>
-              <Route path="/ordenes">
-                {isLoggedIn ? <Orders /> : <Redirect to="/login" />}
-              </Route>
-              <Route path="/account">
-                {isLoggedIn ? <Account /> : <Redirect to="/login" />}
-              </Route>
-              <Route path="/productos/:id">
-                {isLoggedIn ? <Producto /> : <Redirect to="/login" />}
-              </Route>
-              <Route path="/">
-                {isLoggedIn ? <Productos /> : <Redirect to="/login" />}
-              </Route>
-            </Switch>
-          </Container>
+          <Switch>
+            <Route path="/login">
+              {isLoggedIn ? <Redirect to="/" /> : <Login />}
+            </Route>
+            <Route path="/signup">
+              {isLoggedIn ? <Redirect to="/" /> : <Signup />}
+            </Route>
+            <Route path="/chat">
+              {isLoggedIn ? <Chat /> : <Redirect to="/login" />}
+            </Route>
+            <Route path="/cart">
+              {isLoggedIn ? <Cart /> : <Redirect to="/login" />}
+            </Route>
+            <Route path="/successful-order">
+              {isLoggedIn ? <SuccesfulOrder /> : <Redirect to="/login" />}
+            </Route>
+            <Route path="/ordenes">
+              {isLoggedIn ? <Orders /> : <Redirect to="/login" />}
+            </Route>
+            <Route path="/account">
+              {isLoggedIn ? <Account /> : <Redirect to="/login" />}
+            </Route>
+            <Route path="/productos/:id">
+              {isLoggedIn ? <Producto /> : <Redirect to="/login" />}
+            </Route>
+            <Route path="/">
+              {isLoggedIn ? <Productos /> : <Redirect to="/login" />}
+            </Route>
+          </Switch>
+          <Footer />
         </>
       )}
       <ToastContainer />
