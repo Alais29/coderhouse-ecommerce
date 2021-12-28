@@ -5,7 +5,7 @@ import { IItemCarrito } from 'common/interfaces/carrito';
 import { carritoAPI } from 'api/carrito';
 import { EmailService } from 'services/email';
 import { SmsService } from 'services/twilio';
-import { isEmpty, isProductPopulated } from 'utils/others';
+import { isEmpty, isProductPopulated, isUserPopulated } from 'utils/others';
 import { ordenesAPI } from 'api/ordenes';
 
 interface User {
@@ -96,6 +96,14 @@ export const createOrder = async (
   }
 };
 
+export const getAllOrders = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const orders = await ordenesAPI.get();
+  res.json({ data: orders });
+};
+
 export const getOrders = async (req: Request, res: Response): Promise<void> => {
   const { _id } = req.user as User;
   const orders = await ordenesAPI.get(_id);
@@ -112,8 +120,10 @@ export const completeOrder = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
-  const { email } = req.user as User;
+  let email = '';
   const completedOrder = await ordenesAPI.update(req.body.id);
+
+  if (isUserPopulated(completedOrder.user)) email = completedOrder.user.email;
 
   const total = completedOrder.productos.reduce((total, item) => {
     if (isProductPopulated(item.producto))

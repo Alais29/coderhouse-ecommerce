@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { IOrder, IOrderBase } from 'common/interfaces/ordenes';
 import { NotFound, OrderCreateError } from 'errors';
+import { UserModel } from './user';
 
 const Schema = mongoose.Schema;
 
@@ -47,9 +48,11 @@ const OrdenesModel = mongoose.model<IOrder>('Order', OrderSchema);
 
 export class OrdenesModelMongoDb {
   private ordenesModel;
+  private userModel;
 
   constructor() {
     this.ordenesModel = OrdenesModel;
+    this.userModel = UserModel;
   }
 
   async save(userId: string, order: IOrderBase): Promise<IOrder> {
@@ -79,16 +82,26 @@ export class OrdenesModelMongoDb {
     }
   }
 
-  async get(userId: string, orderId?: string): Promise<IOrder | IOrder[]> {
+  async get(userId?: string, orderId?: string): Promise<IOrder | IOrder[]> {
     try {
       let output: IOrder | IOrder[] = [];
 
-      if (orderId) {
-        const order = await this.ordenesModel.findById(orderId).populate({
-          path: 'productos.producto',
-          select: 'nombre descripcion precio',
-        });
-        if (order && userId.toString() === order.user.toString())
+      if (userId && orderId) {
+        const user = await this.userModel.findById(userId);
+        const order = await this.ordenesModel
+          .findById(orderId)
+          .populate({
+            path: 'productos.producto',
+            select: 'nombre descripcion precio',
+          })
+          .populate({
+            path: 'user',
+            select: 'email',
+          });
+        if (
+          order &&
+          (userId.toString() === order.user.id.toString() || user?.admin)
+        )
           output = order;
         else
           throw new NotFound(
@@ -96,10 +109,16 @@ export class OrdenesModelMongoDb {
             'No se encontró la orden, por favor verifica el número de orden',
           );
       } else {
-        const orders = await this.ordenesModel.find({ user: userId }).populate({
-          path: 'productos.producto',
-          select: 'nombre descripcion precio',
-        });
+        const orders = await this.ordenesModel
+          .find(userId ? { user: userId } : {})
+          .populate({
+            path: 'productos.producto',
+            select: 'nombre descripcion precio',
+          })
+          .populate({
+            path: 'user',
+            select: 'email',
+          });
         output = orders;
       }
       return output;
@@ -123,10 +142,16 @@ export class OrdenesModelMongoDb {
 
   async update(orderId: string): Promise<IOrder> {
     try {
-      const orderToUpdate = await this.ordenesModel.findById(orderId).populate({
-        path: 'productos.producto',
-        select: 'nombre descripcion precio',
-      });
+      const orderToUpdate = await this.ordenesModel
+        .findById(orderId)
+        .populate({
+          path: 'productos.producto',
+          select: 'nombre descripcion precio',
+        })
+        .populate({
+          path: 'user',
+          select: 'email',
+        });
 
       if (!orderToUpdate || orderToUpdate.estado !== 'generada') {
         throw new NotFound(

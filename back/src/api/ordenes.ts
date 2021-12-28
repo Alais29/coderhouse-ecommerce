@@ -9,9 +9,10 @@ class OrdenesAPI {
     this.factory = OrdenesModelFactory.model(modelTypeToUse);
   }
 
-  async get(userId: string, orderId?: string) {
-    if (orderId) return this.factory.get(userId, orderId);
-    return this.factory.get(userId);
+  async get(userId?: string, orderId?: string) {
+    if (userId && orderId) return this.factory.get(userId, orderId);
+    if (userId) return this.factory.get(userId);
+    return this.factory.get();
   }
 
   async save(userId: string, order: IOrderBase) {

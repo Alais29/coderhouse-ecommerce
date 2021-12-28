@@ -4,6 +4,7 @@ import { productsAPI } from 'api/productos';
 import { IItemCarrito } from 'common/interfaces/carrito';
 import { IOrder } from 'common/interfaces/ordenes';
 import { IItem } from 'common/interfaces/products';
+import { IUser } from 'common/interfaces/users';
 import { Types } from 'mongoose';
 
 /**
@@ -38,6 +39,15 @@ export const isProductPopulated = (
   obj: IItem | Types.ObjectId,
 ): obj is IItem => {
   return (obj as IItem).nombre !== undefined;
+};
+
+/**
+ * TS type guard to check if user property from orders is populated
+ * @param obj object of type IUser or Types.ObjectId
+ * @returns boolean
+ */
+export const isUserPopulated = (obj: IUser | Types.ObjectId): obj is IUser => {
+  return (obj as IUser).email !== undefined;
 };
 
 /**

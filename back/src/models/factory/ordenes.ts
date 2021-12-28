@@ -4,7 +4,7 @@ import { OrdenesModelMongoDb } from 'models/mongoDb/ordenes';
 
 interface IModel {
   save: (userId: string, data: IOrderBase) => Promise<IOrder>;
-  get: (userId: string, orderId?: string) => Promise<IOrder | IOrder[]>;
+  get: (userId?: string, orderId?: string) => Promise<IOrder | IOrder[]>;
   update: (orderId: string) => Promise<IOrder>;
 }
 
