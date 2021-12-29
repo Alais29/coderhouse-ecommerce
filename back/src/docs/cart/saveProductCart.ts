@@ -15,12 +15,16 @@ export default {
       },
     ],
     responses: {
-      201: {
+      200: {
         description: 'Product was added to cart.',
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/ProductCart',
+              type: 'array',
+              description: 'Array of products in cart.',
+              items: {
+                $ref: '#/components/schemas/ProductCart',
+              },
             },
           },
         },

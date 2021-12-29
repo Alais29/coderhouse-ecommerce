@@ -365,7 +365,18 @@ export default {
         description: 'An Order.',
         properties: {
           user: {
-            $ref: '#/components/schemas/UserId',
+            type: 'object',
+            description: 'User id and email',
+            properties: {
+              id: {
+                $ref: '#/components/schemas/UserId',
+              },
+              email: {
+                type: 'string',
+                description: 'Email of the user who created the order.',
+                example: 'test1@example.com',
+              },
+            },
           },
           productos: {
             $ref: '#/components/schemas/ProductOrder',

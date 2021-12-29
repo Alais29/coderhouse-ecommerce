@@ -1,5 +1,5 @@
 export default {
-  post: {
+  put: {
     tags: ['Orders'],
     description:
       'Change an order "estado" property from "generada" to "completada" to complete the order.',

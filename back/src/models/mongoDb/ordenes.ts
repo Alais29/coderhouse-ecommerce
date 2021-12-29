@@ -62,10 +62,11 @@ export class OrdenesModelMongoDb {
         ...order,
       });
       await newOrder.save();
-      return await newOrder.populate({
+      const populatedOrder = await newOrder.populate({
         path: 'productos.producto',
         select: 'nombre descripcion precio',
       });
+      return populatedOrder.populate({ path: 'user', select: 'email' });
     } catch (e) {
       if (e instanceof mongoose.Error.CastError) {
         throw new OrderCreateError(
