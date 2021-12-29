@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from 'hooks/redux';
-import { fetchOrders } from 'features/orders/ordersSlice';
+import { fetchOwnOrders } from 'features/orders/ordersSlice';
 import { isEmpty } from 'utilities/others';
 import LoadingData from 'components/LoadingData/LoadingData';
 import OrdersList from '../../components/OrdersList/OrdersList';
@@ -13,7 +13,7 @@ const Orders = () => {
 
   useEffect(() => {
     if (status === 'idle') {
-      dispatch(fetchOrders());
+      dispatch(fetchOwnOrders());
     }
     if (status === 'failed') {
       toast.error(error || 'Ocurrió un error');

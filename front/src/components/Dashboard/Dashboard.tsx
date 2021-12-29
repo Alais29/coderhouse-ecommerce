@@ -1,3 +1,4 @@
+import AllOrders from 'components/AllOrders/AllOrders';
 import ProductForm from 'components/ProductForm/ProductForm';
 import SignupForm from 'components/SignupForm/SignupForm';
 import { Tab, Tabs } from 'react-bootstrap';
@@ -15,6 +16,11 @@ const Dashboard = () => {
         <Tab eventKey="usuarios" title="Agregar usuario">
           <div className="bg-light p-3 border">
             <SignupForm location="dashboard" />
+          </div>
+        </Tab>
+        <Tab eventKey="ordenes" title="Ordenes">
+          <div className="bg-light p-3 border">
+            <AllOrders />
           </div>
         </Tab>
       </Tabs>

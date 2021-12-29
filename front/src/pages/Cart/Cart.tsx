@@ -75,7 +75,7 @@ const Cart = () => {
 
   return (
     <Container className="page-container">
-      <h1 className="text-center mt-5 pt-3 mb-">Carrito</h1>
+      <h1 className="text-center mt-5 pt-3">Carrito</h1>
       {isEmpty(data) ? (
         status === 'loading' ? (
           <LoadingData mode={'partial'} />
@@ -95,7 +95,7 @@ const Cart = () => {
             location="cart"
             handleRemove={handleRemove}
           />
-          <div className="d-flex justify-content-end gap-3 align-items-center">
+          <div className="d-flex justify-content-end gap-3 align-items-center mb-3">
             <div className="border rounded p-3 bg-light">
               <span className="fw-bold">Total:</span> ${total.toFixed(2)}
             </div>

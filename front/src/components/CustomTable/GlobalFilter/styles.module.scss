@@ -1,0 +1,9 @@
+.search-box {
+  border: none;
+  outline: 0;
+  width: 100%;
+  &:focus {
+    border: none;
+    outline: 0;
+  }
+}

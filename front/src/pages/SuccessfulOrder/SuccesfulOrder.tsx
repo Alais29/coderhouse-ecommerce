@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { useAppSelector, useAppDispatch } from 'hooks/redux';
-import { fetchOrders } from 'features/orders/ordersSlice';
+import { fetchOwnOrders } from 'features/orders/ordersSlice';
 import LoadingData from 'components/LoadingData/LoadingData';
 import OrderInfo from 'components/OrderInfo/OrderInfo';
 
@@ -12,7 +12,7 @@ const SuccesfulOrder = () => {
 
   useEffect(() => {
     if (status === 'idle') {
-      dispatch(fetchOrders());
+      dispatch(fetchOwnOrders());
     }
     if (status === 'failed') {
       toast.error(error || 'Ocurrió un error obteniendo la última orden');
