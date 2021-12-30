@@ -1,7 +1,7 @@
 export default {
   servers: [
     {
-      url: 'http://localhost:8080/api',
+      url: 'https://mern-ecommerce-coder.herokuapp.com/api',
       description: 'Local server',
     },
   ],
