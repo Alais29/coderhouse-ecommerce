@@ -11,6 +11,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import LoadingData from 'components/LoadingData/LoadingData';
 import Navigation from 'components/Navigation/Navigation';
+import Helmet from 'components/Helmet/Helmet';
 import Footer from 'components/Footer/Footer';
 import Login from 'pages/Login/Login';
 import Signup from 'pages/Signup/Signup';
@@ -66,6 +67,7 @@ const App = () => {
 
   return (
     <Router>
+      <Helmet />
       {isLoggedInCookie && (status === 'idle' || status === 'loading') ? (
         <LoadingData mode={'fullscreen'} />
       ) : (

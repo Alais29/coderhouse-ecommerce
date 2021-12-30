@@ -32,7 +32,7 @@ const Orders = () => {
           </p>
         )
       ) : (
-        <>
+        <div className="mb-3">
           <h2>En curso</h2>
           <OrdersList
             orders={data}
@@ -45,7 +45,7 @@ const Orders = () => {
             ordersType="completada"
             emptyMessage="No tienes ordenes completadas"
           />
-        </>
+        </div>
       )}
     </Container>
   );
