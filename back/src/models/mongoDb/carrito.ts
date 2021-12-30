@@ -66,15 +66,12 @@ export class CarritoModelMongoDb implements IModelCarritoMongo {
         .populate('productos.producto');
 
       if (cart && productId) {
-        // if there's a productId in the request, search for that product in the cart
         const product = cart.productos.find(
           item => item.producto.id.toString() === productId,
         );
-        // if the product is in the cart return that product, if not throw an error
         if (product) output = product;
         else throw new NotFound(404, 'El producto no está en el carrito');
       } else if (cart) {
-        // if there's no productId in the request return all the products in the cart
         output = cart.productos;
       }
       return output;
