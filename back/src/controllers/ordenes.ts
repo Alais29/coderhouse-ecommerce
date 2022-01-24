@@ -4,7 +4,7 @@ import { CartIsEmpty } from 'errors';
 import { IItemCarrito } from 'common/interfaces/carrito';
 import { carritoAPI } from 'api/carrito';
 import { EmailService } from 'services/email';
-import { SmsService } from 'services/twilio';
+// import { SmsService } from 'services/twilio';
 import { isEmpty, isProductPopulated, isUserPopulated } from 'utils/others';
 import { ordenesAPI } from 'api/ordenes';
 
@@ -28,7 +28,7 @@ export const createOrder = async (
     _id,
     email,
     nombre,
-    telefono,
+    // telefono,
     calle,
     altura,
     codigoPostal,
@@ -73,17 +73,17 @@ export const createOrder = async (
       emailContent,
     );
 
-    SmsService.sendMessage(
-      Config.ADMIN_WHATSAPP,
-      `Nuevo pedido de: ${nombre}, ${email}`,
-      'whatsapp',
-    );
+    // SmsService.sendMessage(
+    //   Config.ADMIN_WHATSAPP,
+    //   `Nuevo pedido de: ${nombre}, ${email}`,
+    //   'whatsapp',
+    // );
 
-    SmsService.sendMessage(
-      telefono,
-      `Tu pedido ha sido recibido y está siendo procesado`,
-      'sms',
-    );
+    // SmsService.sendMessage(
+    //   telefono,
+    //   `Tu pedido ha sido recibido y está siendo procesado`,
+    //   'sms',
+    // );
 
     await carritoAPI.delete(_id);
 

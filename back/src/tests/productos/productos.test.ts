@@ -6,6 +6,8 @@ import { IItem } from 'common/interfaces/products';
 import { addProductsMockDb } from '../utils/addProductsMockDb';
 import { addUserAndLogin } from '../utils/addUserAndLogin';
 
+jest.useFakeTimers('legacy');
+
 describe('Productos api tests', () => {
   let request: SuperAgentTest;
 
