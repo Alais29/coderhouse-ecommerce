@@ -1,5 +1,4 @@
 import { Helmet as ReactHelmet } from 'react-helmet-async';
-import ogImage from 'images/ogImage.jpg';
 
 const Helmet = () => {
   return (
@@ -25,7 +24,11 @@ const Helmet = () => {
         property="og:description"
         content="A fullstack MERN ecommerce application"
       />
-      <meta name="image" property="og:image" content={ogImage} />
+      <meta
+        name="image"
+        property="og:image"
+        content="https://res.cloudinary.com/alais29/image/upload/v1643209711/ogImage_ekmmnq.jpg"
+      />
     </ReactHelmet>
   );
 };

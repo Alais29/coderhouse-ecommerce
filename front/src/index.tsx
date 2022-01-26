@@ -10,7 +10,7 @@ import 'react-phone-number-input/style.css';
 import 'react-toastify/dist/ReactToastify.css';
 import 'styles/index.scss';
 
-ReactDOM.render(
+ReactDOM.hydrate(
   <HelmetProvider>
     <React.StrictMode>
       <Provider store={store}>
