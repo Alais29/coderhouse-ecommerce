@@ -14,21 +14,27 @@ const Helmet = () => {
       />
       <title>MERN Ecommerce</title>
       <meta name="author" content="Alfonsina Lizardo" />
+      <meta property="og:type" content="website" />
+      <meta property="og:site_name" content="MERN Ecommerce" />
       <meta
         name="description"
-        content="A fullstack MERN ecommerce application"
+        content="A fullstack MERN ecommerce application built in Typescript. Includes several features such as login/signup, cart, orders, chat with websockets, among others."
       />
       <meta name="title" property="og:title" content="MERN Ecommerce" />
       <meta
         name="description"
         property="og:description"
-        content="A fullstack MERN ecommerce application"
+        content="A fullstack MERN ecommerce application built in Typescript. Includes several features such as login/signup, cart, orders, chat with websockets, among others."
       />
       <meta
         name="image"
         property="og:image"
         content="https://res.cloudinary.com/alais29/image/upload/v1643209711/ogImage_ekmmnq.jpg"
       />
+      <meta property="og:image:alt" content="Application homepage screenshot" />
+      <meta property="og:image:type" content="image/jpeg" />
+      <meta property="og:image:width" content="1048" />
+      <meta property="og:image:height" content="936" />
     </ReactHelmet>
   );
 };
