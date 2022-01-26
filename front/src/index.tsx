@@ -10,16 +10,31 @@ import 'react-phone-number-input/style.css';
 import 'react-toastify/dist/ReactToastify.css';
 import 'styles/index.scss';
 
-ReactDOM.hydrate(
-  <HelmetProvider>
-    <React.StrictMode>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </React.StrictMode>
-  </HelmetProvider>,
-  document.getElementById('root'),
-);
+const rootElement = document.getElementById('root');
+
+if (rootElement?.hasChildNodes()) {
+  ReactDOM.hydrate(
+    <HelmetProvider>
+      <React.StrictMode>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </React.StrictMode>
+    </HelmetProvider>,
+    rootElement,
+  );
+} else {
+  ReactDOM.render(
+    <HelmetProvider>
+      <React.StrictMode>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </React.StrictMode>
+    </HelmetProvider>,
+    rootElement,
+  );
+}
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
