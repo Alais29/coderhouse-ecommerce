@@ -1,10 +1,12 @@
-import { Helmet as ReactHelmet } from 'react-helmet';
+import { Helmet as ReactHelmet } from 'react-helmet-async';
 import ogImage from 'images/ogImage.jpg';
 
 const Helmet = () => {
   return (
     <ReactHelmet>
       <meta charSet="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <meta name="theme-color" content="#000000" />
       <link
         rel="icon"
         type="image/png"

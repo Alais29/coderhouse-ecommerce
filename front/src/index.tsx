@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import { store } from 'store';
 import { Provider } from 'react-redux';
+import { HelmetProvider } from 'react-helmet-async';
 // import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-phone-number-input/style.css';
@@ -10,11 +11,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'styles/index.scss';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </React.StrictMode>,
+  <HelmetProvider>
+    <React.StrictMode>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </React.StrictMode>
+  </HelmetProvider>,
   document.getElementById('root'),
 );
 
