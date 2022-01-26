@@ -12,10 +12,6 @@ interface IOrderInfo {
 const OrderInfo = ({ order }: IOrderInfo) => {
   const { data: userData } = useAppSelector(state => state.user);
 
-  const total = order.productos.reduce((total, item) => {
-    return (total += Number(item.producto.precio) * item.quantity);
-  }, 0);
-
   const estado = order.estado.charAt(0).toUpperCase() + order.estado.slice(1);
 
   return (
@@ -35,20 +31,31 @@ const OrderInfo = ({ order }: IOrderInfo) => {
             </thead>
             <tbody>
               {order &&
-                order.productos.map(product => (
-                  <tr key={product.producto.id}>
-                    <td>{product.quantity}</td>
-                    <td>{product.producto.nombre}</td>
-                    <td className="fw-bold">
-                      ${Number(product.producto.precio) * product.quantity}
-                    </td>
-                  </tr>
-                ))}
+                order.productos.map((product, index) => {
+                  if (product.producto === null) {
+                    return (
+                      <tr key={index}>
+                        <td colSpan={3}>
+                          Este producto ya no existe en nuestra tienda
+                        </td>
+                      </tr>
+                    );
+                  }
+                  return (
+                    <tr key={product.producto.id}>
+                      <td>{product.quantity}</td>
+                      <td>{product.producto.nombre}</td>
+                      <td className="fw-bold">
+                        ${Number(product.producto.precio) * product.quantity}
+                      </td>
+                    </tr>
+                  );
+                })}
               <tr>
                 <td colSpan={2} className="text-end">
                   Total:
                 </td>
-                <td className="fw-bold">${total}</td>
+                <td className="fw-bold">${order.total}</td>
               </tr>
             </tbody>
           </Table>
