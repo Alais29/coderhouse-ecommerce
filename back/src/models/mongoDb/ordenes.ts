@@ -1,9 +1,19 @@
 import mongoose from 'mongoose';
-import { IOrder, IOrderBase } from 'common/interfaces/ordenes';
+import { IOrder, IOrderBase, IOrderProduct } from 'common/interfaces/ordenes';
 import { NotFound, OrderCreateError } from 'errors';
 import { UserModel } from './user';
 
 const Schema = mongoose.Schema;
+
+const subSchemaOrderProduct = new Schema<IOrderProduct>(
+  {
+    id: { type: String, required: true },
+    nombre: { type: String, required: true },
+    precio: { type: Number, required: true },
+    descripcion: { type: String, required: true },
+  },
+  { _id: false },
+);
 
 const OrderSchema = new Schema<IOrder>(
   {
@@ -14,10 +24,7 @@ const OrderSchema = new Schema<IOrder>(
     productos: [
       {
         _id: false,
-        producto: {
-          type: 'ObjectId',
-          ref: 'Producto',
-        },
+        producto: subSchemaOrderProduct,
         quantity: {
           type: Number,
           required: true,
@@ -62,11 +69,7 @@ export class OrdenesModelMongoDb {
         ...order,
       });
       await newOrder.save();
-      const populatedOrder = await newOrder.populate({
-        path: 'productos.producto',
-        select: 'nombre descripcion precio',
-      });
-      return populatedOrder.populate({ path: 'user', select: 'email' });
+      return newOrder.populate({ path: 'user', select: 'email' });
     } catch (e) {
       if (e instanceof mongoose.Error.CastError) {
         throw new OrderCreateError(
@@ -89,16 +92,10 @@ export class OrdenesModelMongoDb {
 
       if (userId && orderId) {
         const user = await this.userModel.findById(userId);
-        const order = await this.ordenesModel
-          .findById(orderId)
-          .populate({
-            path: 'productos.producto',
-            select: 'nombre descripcion precio',
-          })
-          .populate({
-            path: 'user',
-            select: 'email',
-          });
+        const order = await this.ordenesModel.findById(orderId).populate({
+          path: 'user',
+          select: 'email',
+        });
         if (
           order &&
           (userId.toString() === order.user.id.toString() || user?.admin)
@@ -112,10 +109,6 @@ export class OrdenesModelMongoDb {
       } else {
         const orders = await this.ordenesModel
           .find(userId ? { user: userId } : {})
-          .populate({
-            path: 'productos.producto',
-            select: 'nombre descripcion precio',
-          })
           .populate({
             path: 'user',
             select: 'email',

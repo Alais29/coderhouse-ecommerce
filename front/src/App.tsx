@@ -24,6 +24,7 @@ import Orders from 'pages/Orders/Orders';
 import SuccesfulOrder from 'pages/SuccessfulOrder/SuccesfulOrder';
 import { getCookie } from 'utilities/others';
 import { useAppSelector, useAppDispatch } from 'hooks/redux';
+import useHasMounted from 'hooks/useHasMounted';
 import { getUserData, userLogout } from 'features/user/userSlice';
 import { emptyCart } from 'features/cart/cartSlice';
 import { setMessages } from 'features/messages/messagesSlice';
@@ -36,6 +37,8 @@ const App = () => {
   const dispatch = useAppDispatch();
 
   const isLoggedInCookie = getCookie('connect.sid');
+
+  const hasMounted = useHasMounted();
 
   useIdleTimer({
     timeout: 1000 * 60 * 5,
@@ -68,7 +71,9 @@ const App = () => {
   return (
     <Router>
       <Helmet />
-      {isLoggedInCookie && (status === 'idle' || status === 'loading') ? (
+      {isLoggedInCookie &&
+      (status === 'idle' || status === 'loading') &&
+      hasMounted ? (
         <LoadingData mode={'fullscreen'} />
       ) : (
         <>

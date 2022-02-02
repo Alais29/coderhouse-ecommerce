@@ -10,7 +10,11 @@ import {
   removeProductApi,
   removeProduct,
 } from 'features/products/productsSlice';
-import { addProductToCart, fetchProductsCart } from 'features/cart/cartSlice';
+import {
+  addProductToCart,
+  fetchProductsCart,
+  removeProductCart,
+} from 'features/cart/cartSlice';
 import ConfirmationModal from 'components/Modals/ConfirmationModal/ConfirmationModal';
 import ProductList from 'components/ProductList/ProductList';
 import EditModal from 'components/Modals/EditModal/EditModal';
@@ -55,6 +59,7 @@ const Productos = () => {
         setDeleteRequestStatus('loading');
         await dispatch(removeProductApi(productToDelete.id)).unwrap();
         dispatch(removeProduct(productToDelete.id));
+        dispatch(removeProductCart(productToDelete.id));
         handleToggleShowModal();
         toast.success(`${productToDelete.nombre} eliminado con éxito`);
         setTimeout(() => {

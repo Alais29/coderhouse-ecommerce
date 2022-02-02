@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import Config from 'config';
 import { CartIsEmpty } from 'errors';
 import { IItemCarrito } from 'common/interfaces/carrito';
+import { IItem } from 'common/interfaces/products';
 import { carritoAPI } from 'api/carrito';
 import { EmailService } from 'services/email';
 // import { SmsService } from 'services/twilio';
@@ -44,8 +45,20 @@ export const createOrder = async (
       else return total;
     }, 0);
 
+    const productosCopy = JSON.parse(JSON.stringify(productos));
+
     const orderToSave = {
-      productos,
+      productos: productosCopy.map(
+        (producto: { producto: IItem; quantity: number }) => ({
+          producto: {
+            id: producto.producto.id,
+            nombre: producto.producto.nombre,
+            descripcion: producto.producto.descripcion,
+            precio: producto.producto.precio,
+          },
+          quantity: producto.quantity,
+        }),
+      ),
       estado: 'generada' as const,
       total,
       direccionEntrega: `${calle} ${altura}${piso ? `, Piso ${piso}` : ''}${
@@ -126,9 +139,7 @@ export const completeOrder = async (
   if (isUserPopulated(completedOrder.user)) email = completedOrder.user.email;
 
   const total = completedOrder.productos.reduce((total, item) => {
-    if (isProductPopulated(item.producto))
-      return (total += item.producto.precio * item.quantity);
-    else return total;
+    return (total += item.producto.precio * item.quantity);
   }, 0);
 
   let emailContent = `
@@ -137,8 +148,7 @@ export const completeOrder = async (
   `;
 
   completedOrder.productos.forEach(item => {
-    if (isProductPopulated(item.producto))
-      emailContent += `
+    emailContent += `
         <span style="display: block">- ${item.quantity} ${item.producto.nombre}, $${item.producto.precio} </span>
         `;
   });

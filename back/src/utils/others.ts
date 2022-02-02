@@ -96,8 +96,7 @@ export const getMessageResponse = async (
           lastOrder.direccionEntrega
         }. Los productos incluidos en la orden son: $nl`;
         lastOrder.productos.map(item => {
-          if (isProductPopulated(item.producto))
-            message += `- Cantidad: ${item.quantity}, Producto: ${item.producto.nombre}, Precio: $${item.producto.precio} c/u.$nl`;
+          message += `- Cantidad: ${item.quantity}, Producto: ${item.producto.nombre}, Precio: $${item.producto.precio} c/u.$nl`;
         });
         message += `Total: $${lastOrder.total}.$nl`;
       }

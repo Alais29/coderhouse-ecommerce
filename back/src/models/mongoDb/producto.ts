@@ -3,6 +3,7 @@ import moment from 'moment';
 import mongoose, { FilterQuery } from 'mongoose';
 import { NotFound, ProductValidation } from 'errors';
 import uniqueValidator from 'mongoose-unique-validator';
+import { CarritoModel } from './carrito';
 import { isQueryValid } from 'utils/validations';
 
 const ProductoSchema = new mongoose.Schema<IItemBase>({
@@ -57,8 +58,10 @@ export const ProductosModel = mongoose.model<IItemBase>(
 
 export class ProductosModelMongoDb {
   private productos;
+  private carritoModel;
   constructor() {
     this.productos = ProductosModel;
+    this.carritoModel = CarritoModel;
   }
 
   async get(id?: string): Promise<IItem[] | IItem> {
@@ -134,6 +137,14 @@ export class ProductosModelMongoDb {
   async delete(id: string): Promise<void> {
     try {
       const productDeleted = await this.productos.findByIdAndRemove(id);
+      const carritos = await this.carritoModel.find({});
+      carritos.forEach(carrito => {
+        const newCarritoProducts = carrito.productos.filter(
+          producto => producto.producto.toString() !== id,
+        );
+        carrito.productos = newCarritoProducts;
+        carrito.save();
+      });
       if (productDeleted === null)
         throw new NotFound(404, 'El producto que desea eliminar no existe');
     } catch (e) {

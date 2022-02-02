@@ -23,6 +23,7 @@ if (Config.MODE === 'cluster' && cluster.isMaster) {
 } else {
   Server.listen(PORT, () => {
     logger.info(`Servidor inicializado en http://localhost:${PORT}`);
+    logger.info(`Se utilizará BD: ${Config.MONGO_ATLAS_DB}`);
   });
   Server.on('error', error => logger.error(`Error en el servidor: ${error}`));
 }

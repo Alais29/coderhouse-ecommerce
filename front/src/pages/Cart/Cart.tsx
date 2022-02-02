@@ -6,7 +6,7 @@ import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { useAppDispatch, useAppSelector } from 'hooks/redux';
 import {
   fetchProductsCart,
-  removeProductCart,
+  removeProductCartApi,
   emptyCart,
 } from 'features/cart/cartSlice';
 import { createOrder } from 'features/orders/ordersSlice';
@@ -31,7 +31,7 @@ const Cart = () => {
     try {
       setDeleteProductRequestStatus('loading');
       disableBodyScroll(document.body);
-      await dispatch(removeProductCart(id)).unwrap();
+      await dispatch(removeProductCartApi(id)).unwrap();
       toast.success('Producto eliminado del carrito');
     } catch (e) {
       toast.error(e.message);

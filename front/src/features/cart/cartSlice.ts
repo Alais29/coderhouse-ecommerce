@@ -45,7 +45,7 @@ export const editProductInCart = createAsyncThunk(
   },
 );
 
-export const removeProductCart = createAsyncThunk(
+export const removeProductCartApi = createAsyncThunk(
   'cart/removeProductCart',
   async (productId: string) => {
     const response = await deleteCarritoProduct(productId);
@@ -61,6 +61,11 @@ export const cartSlice = createSlice({
       state.data = [];
       state.status = 'idle';
       state.cartItemsQty = 0;
+    },
+    removeProductCart(state, action) {
+      state.data = state.data.filter(
+        item => item.producto.id !== action.payload,
+      );
     },
   },
   extraReducers(builder) {
@@ -80,7 +85,7 @@ export const cartSlice = createSlice({
         state.status = 'failed';
         state.error = action.error.message;
       })
-      .addCase(removeProductCart.fulfilled, (state, action) => {
+      .addCase(removeProductCartApi.fulfilled, (state, action) => {
         state.data = action.payload;
         state.cartItemsQty = state.data.reduce((total, item) => {
           return (total += item.quantity);
@@ -105,6 +110,6 @@ export const cartSlice = createSlice({
   },
 });
 
-export const { emptyCart } = cartSlice.actions;
+export const { emptyCart, removeProductCart } = cartSlice.actions;
 
 export default cartSlice.reducer;

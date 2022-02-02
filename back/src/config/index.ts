@@ -1,7 +1,7 @@
 import 'dotenv/config.js';
 
 const env = {
-  NODE_ENV: process.env.NODE_ENV || 'dev',
+  NODE_ENV: process.env.NODE_ENV || 'development',
   PORT: process.env.PORT || 8080,
   MODE: process.env.MODE || 'noCluster',
   PERSISTENCE: process.env.PERSISTENCE || 'mongoAtlas',
@@ -12,7 +12,10 @@ const env = {
   MONGO_ATLAS_USER: process.env.MONGO_ATLAS_USER || 'user',
   MONGO_ATLAS_PASSWORD: process.env.MONGO_ATLAS_PASSWORD || 'pasw',
   MONGO_ATLAS_CLUSTER: process.env.MONGO_ATLAS_CLUSTER || 'clusterUrl',
-  MONGO_ATLAS_DB: process.env.MONGO_ATLAS_DB || 'mongoDatabase',
+  MONGO_ATLAS_DB:
+    process.env.NODE_ENV === 'development'
+      ? process.env.MONGO_ATLAS_DB_DEV
+      : process.env.MONGO_ATLAS_DB || 'mongoDatabase',
   FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID || 'firebaseProjectId',
   FIREBASE_CLIENT_EMAIL:
     process.env.FIREBASE_CLIENT_EMAIL || 'firebaseClientEmail',

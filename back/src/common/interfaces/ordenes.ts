@@ -1,8 +1,16 @@
 import { Types, Document } from 'mongoose';
-import { IItemCarrito } from './carrito';
 
+export interface IOrderProduct {
+  id: string;
+  nombre: string;
+  precio: number;
+  descripcion: string;
+}
 export interface IOrderBase {
-  productos: IItemCarrito[];
+  productos: {
+    producto: IOrderProduct;
+    quantity: number;
+  }[];
   estado: 'generada' | 'completada';
   total: number;
   direccionEntrega: string;

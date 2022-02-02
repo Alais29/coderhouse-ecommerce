@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build:ui": "rm -rf public && rm -rf build/public && cd ../front/ && npm run build --prod && cp -r build ../back/public && cp -r build ../back/build/public",
-    "dev": "nodemon -L -r tsconfig-paths/register ./src/index.ts",
+    "dev": "NODE_ENV=development nodemon -L -r tsconfig-paths/register ./src/index.ts",
     "build": "ttsc -P ./tsconfig.json",
     "start": "node ./build/src/index.js",
     "build:start": "npm run build && npm run start",
