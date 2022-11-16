@@ -110,7 +110,7 @@ export class CarritoModelMongoDb implements IModelCarritoMongo {
 
             await cart.save();
             const updatedCart = await cart.populate('productos.producto');
-            return updatedCart.productos;
+            return updatedCart.productos as IItemCarrito[];
           } else {
             // if it's in the cart then add 1 more
             cart.productos[productInCartIndex].quantity += 1;

@@ -27,7 +27,7 @@ UserSchema.pre('save', async function (next) {
   next();
 });
 
-UserSchema.methods.isValidPassword = async function (password) {
+UserSchema.methods.isValidPassword = async function (password: string) {
   const compare = await bcrypt.compare(password, this.password);
   return compare;
 };
@@ -82,7 +82,7 @@ export class UserModelMongoDb {
   }
 
   async update(id: string, data: IUserBase): Promise<IUser> {
-    return this.userModel.findByIdAndUpdate(id, data);
+    return this.userModel.findByIdAndUpdate(id, data) as unknown as IUser;
   }
 
   async delete(id: string): Promise<void> {
