@@ -55,7 +55,7 @@
     "socket.io": "^4.5.3",
     "sqlite3": "^5.0.3",
     "supertest": "^6.1.6",
-    "swagger-ui-express": "^4.1.6",
+    "swagger-ui-express": "^4.6.0",
     "ts-jest": "^27.0.7",
     "tsconfig-paths": "^3.11.0",
     "twilio": "^3.71.1",
