@@ -1,7 +1,7 @@
 <h1 align="center">Welcome to MERN Ecommerce 👋</h1>
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
-  <a href="https://mern-ecommerce-coder.herokuapp.com/api-docs/" target="_blank">
+  <a href="https://mern-ecommerce-wiyh.onrender.com/api-docs/" target="_blank">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
   </a>
   <a href="#" target="_blank">
@@ -11,7 +11,8 @@
 
 > A fullstack MERN ecommerce application with Typescript.
 
-### ✨ [Demo](https://mern-ecommerce-coder.herokuapp.com/)
+### ✨ [Demo](https://mern-ecommerce-wiyh.onrender.com/)
+<sub>(Please bear in mind that the site will take a while to load since it's deployed on Render free tier, but it will load, just give it some time :wink:)</sub>
 
 ## Current Features
 
