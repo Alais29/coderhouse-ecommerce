@@ -34,7 +34,7 @@
     "react-phone-number-input": "^3.1.35",
     "react-redux": "^7.2.5",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.3",
+    "react-scripts": "5.0.1",
     "react-table": "^7.7.0",
     "react-toastify": "^8.0.3",
     "sass": "^1.56.1",
