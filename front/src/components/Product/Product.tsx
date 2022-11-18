@@ -36,7 +36,7 @@ const Product = ({
       >
         <AdvancedImage
           cldImg={productImg}
-          plugins={[lazyload(), placeholder('blur')]}
+          plugins={[lazyload(), placeholder({mode: 'blur'})]}
           style={{ height: '300px' }}
         />
       </Link>

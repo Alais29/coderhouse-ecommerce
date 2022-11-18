@@ -58,7 +58,10 @@ const Producto = () => {
       await dispatch(addProductToCart(product.id)).unwrap();
       toast.success(`${product.nombre} agregado al carrito`);
     } catch (e) {
-      toast.error(e.message);
+      if (e instanceof Error) toast.error(e.message);
+      else
+        console.log(e)
+        toast.error('Ocurrió un error, por favor intenta de nuevo más tarde.');
     } finally {
       setAddToCartRequestStatus('idle');
     }
@@ -75,7 +78,7 @@ const Producto = () => {
               {productImg.length === 1 ? (
                 <AdvancedImage
                   cldImg={productImg[0]}
-                  plugins={[lazyload(), placeholder('blur')]}
+                  plugins={[lazyload(), placeholder({mode: 'blur'})]}
                   className={cx(styles['product-details__image'])}
                 />
               ) : (
@@ -102,7 +105,7 @@ const Producto = () => {
                       <div>
                         <AdvancedImage
                           cldImg={item}
-                          plugins={[lazyload(), placeholder('blur')]}
+                          plugins={[lazyload(), placeholder({mode: 'blur'})]}
                           className={cx(styles['product-details__image'])}
                         />
                       </div>

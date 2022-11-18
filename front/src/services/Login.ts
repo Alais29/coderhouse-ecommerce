@@ -8,7 +8,9 @@ export const loginUser = async (data: IUser) => {
     const response = await axios.post(`${baseUrl}/login`, data);
     return response.data.data;
   } catch (e) {
-    throw e.response.data;
+    if(axios.isAxiosError(e))
+      throw new Error(e.response?.data);
+    else console.log(e)
   }
 };
 
@@ -17,6 +19,8 @@ export const logoutUser = async () => {
     const response = await axios.get(`${baseUrl}/logout`);
     return response.data.data;
   } catch (e) {
-    throw new Error(e.response.data.message);
+    if(axios.isAxiosError(e))
+      throw new Error(e.response?.data.message);
+    else console.log(e)
   }
 };

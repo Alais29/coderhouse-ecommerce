@@ -7,7 +7,9 @@ export const getCarritoProducts = async () => {
     const response = await axios.get(`${baseUrl}`);
     return response.data.data;
   } catch (e) {
-    throw new Error(e.response.data.message);
+    if(axios.isAxiosError(e))
+      throw new Error(e.response?.data.message);
+    else console.log(e)
   }
 };
 
@@ -16,7 +18,9 @@ export const saveCarritoProduct = async (id: string) => {
     const response = await axios.post(`${baseUrl}/${id}`);
     return response.data.data;
   } catch (e) {
-    throw new Error(e.response.data.message);
+    if(axios.isAxiosError(e))
+      throw new Error(e.response?.data.message);
+    else console.log(e)
   }
 };
 
@@ -28,7 +32,9 @@ export const editCarritoProduct = async (productData: {
     const response = await axios.put(`${baseUrl}`, productData);
     return response.data.data;
   } catch (e) {
-    throw new Error(e.response.data.message);
+    if(axios.isAxiosError(e))
+      throw new Error(e.response?.data.message);
+    else console.log(e)
   }
 };
 
@@ -37,6 +43,8 @@ export const deleteCarritoProduct = async (id: string) => {
     const response = await axios.delete(`${baseUrl}/${id}`);
     return response.data.data;
   } catch (e) {
-    throw new Error(e.response.data.message);
+    if(axios.isAxiosError(e))
+      throw new Error(e.response?.data.message);
+    else console.log(e)
   }
 };

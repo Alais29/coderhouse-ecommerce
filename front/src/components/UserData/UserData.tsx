@@ -23,7 +23,7 @@ const UserData = ({ data, dashboard, handleLogout, status }: IUserData) => {
       <div className={cx(styles['user-data'])}>
         <AdvancedImage
           cldImg={profileImg}
-          plugins={[lazyload(), placeholder('blur')]}
+          plugins={[lazyload(), placeholder({mode: 'blur'})]}
         />
         <div className={cx(styles['user-data__info'])}>
           <span>

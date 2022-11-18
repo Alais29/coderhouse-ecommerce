@@ -23,7 +23,7 @@ const ListFiles = ({ files, handleRemove }: IListFiles) => {
               <div key={`${file}`} className={styles['img-container']}>
                 <AdvancedImage
                   cldImg={image}
-                  plugins={[lazyload(), placeholder('blur')]}
+                  plugins={[lazyload(), placeholder({mode: 'blur'})]}
                   style={{ height: '150px', width: '150px' }}
                 />
                 <div

@@ -169,7 +169,10 @@ const EditModal = ({
           setProductToEdit(null);
         }, 1000);
       } catch (e) {
-        toast.error(e.message);
+        if (e instanceof Error) toast.error(e.message);
+        else
+          console.log(e)
+          toast.error('Ocurrió un error, por favor intenta de nuevo más tarde.');
       } finally {
         setEditRequestStatus('idle');
       }

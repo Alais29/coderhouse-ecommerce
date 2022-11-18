@@ -48,7 +48,10 @@ const AllOrders = () => {
         await dispatch(finishOrder(orderId)).unwrap();
         toast.success(`Orden completada con éxito`);
       } catch (e) {
-        toast.error(e.message);
+        if (e instanceof Error) toast.error(e.message);
+        else
+          console.log(e)
+          toast.error('Ocurrió un error, por favor intenta de nuevo más tarde.');
       } finally {
         setFinishOrderStatus('idle');
       }

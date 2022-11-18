@@ -67,7 +67,10 @@ const Productos = () => {
           setProductToDelete(null);
         }, 1000);
       } catch (e) {
-        toast.error(e.message);
+        if (e instanceof Error) toast.error(e.message);
+        else
+          console.log(e)
+          toast.error('Ocurrió un error, por favor intenta de nuevo más tarde.');
       } finally {
         setDeleteRequestStatus('idle');
       }
@@ -81,7 +84,10 @@ const Productos = () => {
       await dispatch(addProductToCart(producto.id)).unwrap();
       toast.success(`${producto.nombre} agregado al carrito`);
     } catch (e) {
-      toast.error(e.message);
+      if (e instanceof Error) toast.error(e.message);
+      else
+        console.log(e)
+        toast.error('Ocurrió un error, por favor intenta de nuevo más tarde.');
     } finally {
       setAddToCartRequestStatus('idle');
       enableBodyScroll(document.body);

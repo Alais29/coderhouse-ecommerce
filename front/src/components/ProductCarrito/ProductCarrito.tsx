@@ -61,7 +61,10 @@ const ProductCarrito = ({ product, handleRemove }: IProductCarrito) => {
       ).unwrap();
       setQtyDisabled(true);
     } catch (e) {
-      toast.error(e.message);
+      if (e instanceof Error) toast.error(e.message);
+      else
+        console.log(e)
+        toast.error('Ocurrió un error, por favor intenta de nuevo más tarde.');
     } finally {
       setEditProductRequestStatus('idle');
       enableBodyScroll(document.body);
@@ -79,7 +82,7 @@ const ProductCarrito = ({ product, handleRemove }: IProductCarrito) => {
       <div className={cx('border', 'd-flex', styles['product-carrito'])}>
         <AdvancedImage
           cldImg={productImg}
-          plugins={[lazyload(), placeholder('blur')]}
+          plugins={[lazyload(), placeholder({mode: 'blur'})]}
           style={{ width: '150px' }}
         />
         <div className={cx(styles['product-carrito__info-container'])}>

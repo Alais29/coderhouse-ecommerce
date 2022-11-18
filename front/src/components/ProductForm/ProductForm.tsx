@@ -85,7 +85,10 @@ const ProductForm = () => {
 
       toast.success('El producto fue agregado con éxito');
     } catch (e) {
-      toast.error(e.message);
+      if (e instanceof Error) toast.error(e.message);
+      else
+        console.log(e)
+        toast.error('Ocurrió un error, por favor intenta de nuevo más tarde.');
     } finally {
       setAddRequestStatus('idle');
     }

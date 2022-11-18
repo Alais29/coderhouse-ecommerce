@@ -20,7 +20,9 @@ export const getProducts = async (query?: IItemQuery) => {
     const response = await axios.get(`${baseUrl}${queryString}`);
     return response.data.data;
   } catch (e) {
-    throw new Error(e.response.data.message);
+    if(axios.isAxiosError(e))
+      throw new Error(e.response?.data.message);
+    else console.log(e)
   }
 };
 
@@ -29,7 +31,9 @@ export const getProduct = async (productId: string) => {
     const response = await axios.get(`${baseUrl}/${productId}`);
     return response.data.data;
   } catch (e) {
-    throw new Error(e.response.data.message);
+    if(axios.isAxiosError(e))
+      throw new Error(e.response?.data.message);
+    else console.log(e)
   }
 };
 
@@ -38,7 +42,9 @@ export const saveProduct = async (newProduct: IItem) => {
     const response = await axios.post(`${baseUrl}`, newProduct);
     return response.data.data;
   } catch (e) {
-    throw new Error(e.response.data.message);
+    if(axios.isAxiosError(e))
+      throw new Error(e.response?.data.message);
+    else console.log(e)
   }
 };
 
@@ -47,7 +53,9 @@ export const deleteProduct = async (id: string) => {
     const response = await axios.delete(`${baseUrl}/${id}`);
     return response.data.data;
   } catch (e) {
-    throw new Error(e.response.data.message);
+    if(axios.isAxiosError(e))
+      throw new Error(e.response?.data.message);
+    else console.log(e);
   }
 };
 
@@ -56,6 +64,8 @@ export const updateProduct = async (id: string, product: IItem) => {
     const response = await axios.put(`${baseUrl}/${id}`, product);
     return response.data.data;
   } catch (e) {
-    throw new Error(e.response.data.message);
+    if(axios.isAxiosError(e))
+      throw new Error(e.response?.data.message);
+    else console.log(e)
   }
 };

@@ -118,11 +118,16 @@ const SignupForm = ({ location }: ISignupForm) => {
         history.push('/account');
       }
     } catch (e) {
-      const message =
+      if (e instanceof Error) {
+        const message =
         e.message === 'Missing credentials'
           ? 'Todos los campos son obligatorios'
           : e.message;
-      toast.error(message);
+        toast.error(message);
+      }
+      else
+        console.log(e)
+        toast.error('Ocurrió un error, por favor intenta de nuevo más tarde.');
     }
   };
 
