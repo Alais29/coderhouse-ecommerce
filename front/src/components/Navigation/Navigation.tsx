@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAppSelector } from 'hooks/redux';
@@ -8,22 +7,7 @@ import cx from 'classnames/bind';
 import styles from './styles.module.scss';
 
 const Navigation = () => {
-  const [cartQty, setCartQty] = useState(0);
   const { cartItemsQty } = useAppSelector(state => state.cart);
-
-  useEffect(() => {
-    const localStorageCartQty = localStorage.getItem('cartQty');
-    if (localStorageCartQty) {
-      setCartQty(Number(localStorageCartQty));
-    }
-  }, []);
-
-  useEffect(() => {
-    if (cartItemsQty !== 0) {
-      localStorage.setItem('cartQty', String(cartItemsQty));
-      setCartQty(cartItemsQty);
-    }
-  }, [cartItemsQty]);
 
   return (
     <Navbar
@@ -65,8 +49,8 @@ const Navigation = () => {
               to="/cart"
             >
               <FontAwesomeIcon icon="shopping-cart" />
-              {cartQty !== 0 && (
-                <span className={cx(styles['cart-badge'])}>{cartQty}</span>
+              {cartItemsQty !== 0 && (
+                <span className={cx(styles['cart-badge'])}>{cartItemsQty}</span>
               )}
             </Link>
             <Link className="nav-link d-none d-sm-block" to="/account">

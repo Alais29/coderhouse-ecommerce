@@ -55,8 +55,6 @@ const Cart = () => {
       toast.error(
         'Hubo un error enviando la orden, por favor intente de nuevo.',
       );
-    } finally {
-      setSendOrderRequestStatus('idle');
     }
   };
 
