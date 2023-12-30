@@ -14,7 +14,7 @@ const LoadingData = ({ style, mode }: ILoadingData) => {
       <Player
         autoplay
         loop
-        src="https://res.cloudinary.com/alais29/raw/upload/v1640633299/ecommerce-loading_bppouf.json"
+        src="https://lottie.host/5b8ee2d1-fc3b-4f4e-9662-7ed1a4bd269a/XH1c5afVds.json"
         style={{ height: '200px', width: '200px' }}
       />
     </div>

@@ -68,9 +68,8 @@ const Productos = () => {
         }, 1000);
       } catch (e) {
         if (e instanceof Error) toast.error(e.message);
-        else
-          console.log(e)
-          toast.error('Ocurrió un error, por favor intenta de nuevo más tarde.');
+        else console.log(e);
+        toast.error('Ocurrió un error, por favor intenta de nuevo más tarde.');
       } finally {
         setDeleteRequestStatus('idle');
       }
@@ -85,9 +84,8 @@ const Productos = () => {
       toast.success(`${producto.nombre} agregado al carrito`);
     } catch (e) {
       if (e instanceof Error) toast.error(e.message);
-      else
-        console.log(e)
-        toast.error('Ocurrió un error, por favor intenta de nuevo más tarde.');
+      else console.log(e);
+      toast.error('Ocurrió un error, por favor intenta de nuevo más tarde.');
     } finally {
       setAddToCartRequestStatus('idle');
       enableBodyScroll(document.body);
@@ -114,7 +112,7 @@ const Productos = () => {
     <Container className="page-container">
       <h1 className="text-center pt-3">Productos</h1>
       <Filter />
-      {(isEmpty(data) || status === 'loading') && (
+      {status === 'loading' && (
         <LoadingData
           mode={'partial'}
           style={{ height: 'calc(100vh - 368px)' }}
