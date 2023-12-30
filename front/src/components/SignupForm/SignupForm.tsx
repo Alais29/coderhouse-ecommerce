@@ -117,17 +117,17 @@ const SignupForm = ({ location }: ISignupForm) => {
         await dispatch(userLogin(loginData)).unwrap();
         history.push('/account');
       }
-    } catch (e) {
-      if (e instanceof Error) {
+    } catch (e: any) {
+      if (e.name === 'Error') {
         const message =
-        e.message === 'Missing credentials'
-          ? 'Todos los campos son obligatorios'
-          : e.message;
+          e.message === 'Missing credentials'
+            ? 'Todos los campos son obligatorios'
+            : e.message;
         toast.error(message);
-      }
-      else
-        console.log(e)
+      } else {
+        console.log(e);
         toast.error('Ocurrió un error, por favor intenta de nuevo más tarde.');
+      }
     }
   };
 

@@ -64,9 +64,8 @@ const signUpFunc: VerifyFunctionWithRequest = async (
       admin: false,
     };
 
-    await userJoiSchema.validateAsync(userData);
-
     if (req.files) {
+      await userJoiSchema.validateAsync(userData);
       const file = req.files.foto as UploadedFile;
       const { secure_url, public_id } = await uploadToCloudinary(file, 'Users');
       userData.foto = secure_url;
